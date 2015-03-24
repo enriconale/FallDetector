@@ -1,9 +1,11 @@
-package esp1415.thetrumannshow.unipd.it.falldetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import esp1415.thetrumannshow.unipd.it.falldetector.R;
 
 
 public class MainActivity extends ActionBarActivity {
