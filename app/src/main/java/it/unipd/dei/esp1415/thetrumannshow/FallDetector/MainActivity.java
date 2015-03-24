@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import esp1415.thetrumannshow.unipd.it.falldetector.R;
-
 
 public class MainActivity extends ActionBarActivity {
 
