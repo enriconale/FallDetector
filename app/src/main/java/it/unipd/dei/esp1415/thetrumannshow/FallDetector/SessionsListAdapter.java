@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapter.MyViewHolder> {
@@ -11,11 +12,18 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTestTextView;
-
+        protected ImageView mSessionIcon;
+        protected TextView mSessionName;
+        protected TextView mNumOfFalls;
+        protected TextView mStartDateTime;
+        protected TextView mSessionDuration;
         public MyViewHolder(View v) {
             super(v);
-            mTestTextView = (TextView)v.findViewById(R.id.test_textview);
+            mSessionName = (TextView)v.findViewById(R.id.session_name);
+            mSessionIcon = (ImageView)v.findViewById(R.id.session_icon);
+            mNumOfFalls = (TextView)v.findViewById(R.id.number_of_falls);
+            mStartDateTime = (TextView)v.findViewById(R.id.session_start_date_time);
+            mSessionDuration = (TextView)v.findViewById(R.id.session_duration);
         }
     }
 
@@ -36,7 +44,10 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     // card
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
-        viewHolder.mTestTextView.setText("Hello");
+        viewHolder.mSessionName.setText("Session name");
+        viewHolder.mNumOfFalls.setText("Falls: 10");
+        viewHolder.mStartDateTime.setText("25/03/2015 14:55");
+        viewHolder.mSessionDuration.setText("7 hours");
     }
 
     //Numbers of element in the list
