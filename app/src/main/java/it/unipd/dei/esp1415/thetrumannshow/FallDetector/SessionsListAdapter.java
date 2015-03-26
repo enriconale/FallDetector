@@ -44,7 +44,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     // card
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
-        viewHolder.mSessionName.setText("Session name");
+        viewHolder.mSessionName.setText(mDataset[i]);
         viewHolder.mNumOfFalls.setText("Falls: 10");
         viewHolder.mStartDateTime.setText("25/03/2015 14:55");
         viewHolder.mSessionDuration.setText("7 hours");

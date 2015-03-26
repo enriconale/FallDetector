@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        String[] myDataset = {"a", "b"};
+        String[] myDataset = {"Session 1", "Session 2", "Session 3"};
         mAdapter = new SessionsListAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
 

@@ -5,7 +5,10 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:orientation="horizontal"
     card_view:cardCornerRadius="2dp" >
 
@@ -19,6 +22,8 @@
             android:id="@+id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:orientation="horizontal" >
 
             <ImageView
@@ -32,14 +37,18 @@
             <TextView
                 android:id="@+id/session_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/number_of_falls"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:textSize="14sp"/>
 
 
         </RelativeLayout>
