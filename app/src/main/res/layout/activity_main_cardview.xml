@@ -15,7 +15,12 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:orientation="vertical" >
 
         <RelativeLayout
@@ -23,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal" >
 
             <ImageView
@@ -32,14 +37,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true" />
+                android:layout_centerInParent="true"
+                android:layout_marginRight="4dp"
+                android:layout_marginEnd="4dp"
+                android:src="@mipmap/temporary_placeholder"/>
 
             <TextView
                 android:id="@+id/session_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:textSize="20sp" />
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@id/session_icon"
+                android:layout_toEndOf="@id/session_icon"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/number_of_falls"
@@ -47,8 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:textSize="14sp"/>
+                android:layout_centerInParent="true"
+                android:textSize="18sp"/>
 
 
         </RelativeLayout>
@@ -57,13 +67,17 @@
             android:id="@+id/session_start_date_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/header_layout"/>
+            android:layout_marginBottom="4dp"
+            android:layout_below="@id/header_layout"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/session_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/session_start_date_time"/>
+            android:layout_marginBottom="4dp"
+            android:layout_below="@id/session_start_date_time"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
