@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Fall Detector</string>
-
-    <string name="hello_world">Hello world!</string>
+    <string name="action_start_session">Start new session</string>
     <string name="action_settings">Settings</string>
+
+    <string name="session_icon">Session icon.</string>
 </resources>

@@ -17,6 +17,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         protected TextView mNumOfFalls;
         protected TextView mStartDateTime;
         protected TextView mSessionDuration;
+
         public MyViewHolder(View v) {
             super(v);
             mSessionName = (TextView)v.findViewById(R.id.session_name);
