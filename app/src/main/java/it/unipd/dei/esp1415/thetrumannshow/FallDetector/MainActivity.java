@@ -28,8 +28,16 @@ public class MainActivity extends ActionBarActivity {
         mAdapter = new SessionsListAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
-
-
+        // Eikes soon-to-be-removed test code
+        DataAcquisitionUnit dau = new DataAcquisitionUnit(getApplicationContext());
+        try{
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e) {}
+        dau.writeToFile("testData.csv");
+        android.widget.Toast.makeText(getApplicationContext(),
+                getApplicationContext().getFilesDir().toString(),
+                android.widget.Toast.LENGTH_LONG).show();
     }
 
 
