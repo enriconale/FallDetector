@@ -17,8 +17,9 @@ public class DataAcquisitionUnit implements SensorEventListener {
     private Sensor mAccelerometer;
     private Context mContext;
 
-    private final static int samples = 200;
+    private final static int samples = 50;
 
+    private long[] timeBuffer = new long[samples];
     private float[] xBuffer = new float[samples];
     private float[] yBuffer = new float[samples];
     private float[] zBuffer = new float[samples];
@@ -29,7 +30,7 @@ public class DataAcquisitionUnit implements SensorEventListener {
     public DataAcquisitionUnit(Context c){
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(this, mAccelerometer, 1000000/samples);
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
         mContext = c;
     }
 
@@ -37,9 +38,15 @@ public class DataAcquisitionUnit implements SensorEventListener {
     }
 
     public void onSensorChanged(SensorEvent event){
+        timeBuffer[i % samples] = event.timestamp;
         xBuffer[i % samples] = event.values[0];
         yBuffer[i % samples] = event.values[1];
         zBuffer[i % samples] = event.values[2];
+
+        android.widget.Toast.makeText(mContext,
+                "SENSOR CHANGED",
+                android.widget.Toast.LENGTH_LONG).show();
+        i++;
     }
 
     public void writeToFile(String filename){
@@ -50,7 +57,7 @@ public class DataAcquisitionUnit implements SensorEventListener {
 
             for(int j = 0; j < samples; j++)
             {
-                osw.write(xBuffer[j]+"; "+yBuffer[j]+"; "+zBuffer[j]+";\n");
+                osw.write(timeBuffer[j]+"; "+xBuffer[j]+"; "+yBuffer[j]+"; "+zBuffer[j]+";\n");
             }
 
             osw.close();
