@@ -17,7 +17,7 @@ public class DataAcquisitionUnit implements SensorEventListener {
     private Sensor mAccelerometer;
     private Context mContext;
 
-    private final static int samples = 50;
+    private final static int samples = 1000;
 
     private long[] timeBuffer = new long[samples];
     private float[] xBuffer = new float[samples];
@@ -47,6 +47,9 @@ public class DataAcquisitionUnit implements SensorEventListener {
                 "SENSOR CHANGED",
                 android.widget.Toast.LENGTH_LONG).show();
         i++;
+        if (i == samples){
+            writeToFile("autoSave"+i/samples+".csv");
+        }
     }
 
     public void writeToFile(String filename){
