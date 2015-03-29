@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -26,8 +27,7 @@ public class DataAcquisitionUnit implements SensorEventListener {
 
     private int i = 0;
 
-
-    public DataAcquisitionUnit(Context c){
+    DataAcquisitionUnit(Context c){
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
@@ -45,14 +45,14 @@ public class DataAcquisitionUnit implements SensorEventListener {
 
         android.widget.Toast.makeText(mContext,
                 "SENSOR CHANGED",
-                android.widget.Toast.LENGTH_LONG).show();
+                Toast.LENGTH_SHORT).show();
         i++;
         if (i == samples){
             writeToFile("autoSave"+i/samples+".csv");
         }
     }
 
-    public void writeToFile(String filename){
+    void writeToFile(String filename){
         try {
             java.io.FileOutputStream fOut = mContext.openFileOutput(filename,
                     Context.MODE_WORLD_READABLE);
@@ -68,5 +68,9 @@ public class DataAcquisitionUnit implements SensorEventListener {
         catch (IOException e){
             System.out.println("Writing to file failed: "+ e);
         }
+    }
+
+    void detach(){
+        mSensorManager.unregisterListener(this);
     }
 }

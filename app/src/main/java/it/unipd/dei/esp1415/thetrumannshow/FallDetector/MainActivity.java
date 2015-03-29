@@ -13,6 +13,8 @@ public class MainActivity extends ActionBarActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private DataAcquisitionUnit dau;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +30,15 @@ public class MainActivity extends ActionBarActivity {
         mAdapter = new SessionsListAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
-        // Eikes soon-to-be-removed test code
-        DataAcquisitionUnit dau = new DataAcquisitionUnit(getApplicationContext());
+        // starting data acquisition, for now only till pause
+        dau = new DataAcquisitionUnit(getApplicationContext());
     }
 
+    @Override
+    protected void onPause(){
+        dau.detach();
+        dau.writeToFile("finalData.csv");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
