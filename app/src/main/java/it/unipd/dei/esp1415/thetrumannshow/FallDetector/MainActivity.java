@@ -28,8 +28,8 @@ public class MainActivity extends ActionBarActivity {
         mAdapter = new SessionsListAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
-
-
+        // Eikes soon-to-be-removed test code
+        DataAcquisitionUnit dau = new DataAcquisitionUnit(getApplicationContext());
     }
 
 
