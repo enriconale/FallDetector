@@ -1,10 +1,8 @@
-.so
-.out
+*.so
+*.out
 .gradle
-.iml
+*.iml
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
-.idea/
+/.idea/
