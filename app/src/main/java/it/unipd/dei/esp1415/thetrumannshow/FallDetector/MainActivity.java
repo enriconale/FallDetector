@@ -36,6 +36,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onPause(){
+        super.onPause();
         dau.detach();
         dau.writeToFile("finalData.csv");
     }

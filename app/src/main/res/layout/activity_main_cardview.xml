@@ -86,8 +86,6 @@
             android:layout_below="@id/session_start_date_time"
             android:textSize="14sp" />
 
-
-
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
