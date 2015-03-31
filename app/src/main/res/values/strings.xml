@@ -7,4 +7,5 @@
     <string name="title_activity_fall_details">Fall Details</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_session_details">Session Details</string>
 </resources>

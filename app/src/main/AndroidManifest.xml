@@ -20,6 +20,14 @@
             android:name=".FallDetailsActivity"
             android:label="@string/title_activity_fall_details" >
         </activity>
+        <activity
+            android:name=".SessionDetailsActivity"
+            android:label="@string/title_activity_session_details"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.unipd.dei.esp1415.thetrumannshow.FallDetector.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
