@@ -4,14 +4,33 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
 
 
 public class SessionDetailsActivity extends ActionBarActivity {
+    private static SimpleDateFormat mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
+            java.util.Locale.getDefault());
+
+    private Session mSession;
+    private TextView mSessionName;
+    private TextView mCreationDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_details);
+
+        int positionInList = getIntent().getExtras().getInt(SessionsListAdapter.SESSION_DETAILS);
+        mSession = SessionsLab.get(getApplicationContext()).getSessions().get(positionInList);
+
+        mSessionName = (TextView)findViewById(R.id.session_name);
+        mCreationDate = (TextView)findViewById(R.id.date_time);
+
+        mSessionName.setText(mSession.getSessionName());
+        mCreationDate.setText(mDateFormatter.format(mSession.getDate()));
+
     }
 
 

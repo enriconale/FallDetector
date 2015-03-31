@@ -40,13 +40,13 @@
         android:layout_below="@id/layout1"
         android:textSize="24sp"
         android:text="Date and Hour"
-        android:id="@+id/data_time" />
+        android:id="@+id/date_time" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/data_time"
+        android:layout_below="@+id/date_time"
         android:textSize="24sp"
         android:layout_marginTop="32dp"
         android:text="Duration"

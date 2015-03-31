@@ -12,9 +12,10 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapter.MyViewHolder> {
+    public static final String SESSION_DETAILS = "session_details";
+
     private Context mAppContext;
     private ArrayList<Session> mDataset;
     private static SimpleDateFormat mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
@@ -22,6 +23,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
+        protected Session mSessionVisualized;
+        protected int mPosition;
         protected RelativeLayout mMainCardLayout;
         protected ImageView mSessionIcon;
         protected TextView mSessionName;
@@ -42,6 +45,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(v.getContext(), SessionDetailsActivity.class);
+                    i.putExtra(SESSION_DETAILS, mPosition);
                     v.getContext().startActivity(i);
                 }
             });
@@ -66,17 +70,21 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     // card
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
-        viewHolder.mSessionName.setText(mDataset.get(i).getSessionName());
+        Session tmpSession = mDataset.get(i);
+        viewHolder.mSessionName.setText(tmpSession.getSessionName());
 
         String tmpStrBuilder = mAppContext.getString(R.string.cardview_falls) + " " +
-                mDataset.get(i).getFalls().size();
+                tmpSession.getFalls().size();
         viewHolder.mNumOfFalls.setText(tmpStrBuilder);
         tmpStrBuilder = mAppContext.getString(R.string.cardview_startdate) + " " +
-                mDateFormatter.format(mDataset.get(i).getDate());
+                mDateFormatter.format(tmpSession.getDate());
         viewHolder.mStartDateTime.setText(tmpStrBuilder);
         tmpStrBuilder = mAppContext.getString(R.string.cardview_duration) + " " +
-                mDataset.get(i).getDuration();
+                tmpSession.getDuration();
         viewHolder.mSessionDuration.setText(tmpStrBuilder);
+
+        viewHolder.mPosition = i;
+        viewHolder.mSessionVisualized = tmpSession;
     }
 
     //Numbers of element in the list
