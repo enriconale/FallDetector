@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Created by Eike Trumann on 29.03.15.
@@ -88,5 +89,43 @@ public class DataAcquisitionUnit implements SensorEventListener {
 
     void detach(){
         mSensorManager.unregisterListener(this);
+    }
+
+    int[] getSurroundingSecond(int index){
+        return getSurroundingSecondIndex(timeBuffer[index]);
+    }
+
+    // for effiency reasons we could implement a binary search.
+    // the second in question must be part of the buffer.
+    int[] getSurroundingSecondIndex(long nanosecond){
+        int j;
+        for(j = 0; timeBuffer[j] < (nanosecond - 500000000); j++);
+        int begin = j;
+        for(; timeBuffer[j] < (nanoseconnd + 500000000); j++){
+            j = j % samples;
+        }
+        int end = j;
+        return new int[]{begin,end};
+    }
+
+    private Fall constructFallObject(int index){
+        int[] interval = getSurroundingSecond(index);
+        long [] timeArr;
+        float[] xArr;
+        float[] yArr;
+        float[] zArr;
+        if (interval[0] < interval[1]){
+            timeArr = Arrays.copyOfRange(timeBuffer,interval[0],interval[1]);
+            xArr = Arrays.copyOfRange(xBuffer,interval[0],interval[1]);
+            yArr = Arrays.copyOfRange(yBuffer,interval[0],interval[1]);
+            zArr = Arrays.copyOfRange(zBuffer,interval[0],interval[1]);
+        }
+        else {
+            int sampleCount = interval[1] + samples - interval [0];
+            timeArr = new long[sampleCount];
+            timeArr = Arrays.
+        }
+
+        return new Fall()
     }
 }

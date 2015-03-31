@@ -33,14 +33,14 @@ public class MainActivity extends ActionBarActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         // starting data acquisition, for now only till pause
-        //dau = new DataAcquisitionUnit(getApplicationContext());
+        dau = new DataAcquisitionUnit(getApplicationContext());
     }
 
     @Override
     protected void onPause(){
         super.onPause();
-        //dau.detach();
-        //dau.writeToFile("finalData.csv");
+        dau.detach();
+        dau.writeToFile("finalData.csv");
     }
 
     @Override
