@@ -43,10 +43,8 @@ public class DataAcquisitionUnit implements SensorEventListener {
         yBuffer[i % samples] = event.values[1];
         zBuffer[i % samples] = event.values[2];
 
-        android.widget.Toast.makeText(mContext,
-                "SENSOR CHANGED",
-                Toast.LENGTH_SHORT).show();
         i++;
+        
         if (i == samples){
             writeToFile("autoSave"+i/samples+".csv");
         }
