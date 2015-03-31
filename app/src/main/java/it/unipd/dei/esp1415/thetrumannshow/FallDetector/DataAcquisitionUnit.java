@@ -49,7 +49,7 @@ public class DataAcquisitionUnit implements SensorEventListener {
             if(isFall()){
                 fall();
             }
-            writeToFile("autoSave"+i/samples+".csv");
+            // writeToFile("autoSave"+i/samples+".csv");
         }
     }
 
@@ -76,7 +76,7 @@ public class DataAcquisitionUnit implements SensorEventListener {
         for(int j = 0; j < samples; j++) {
             double acc = Math.sqrt(xBuffer[j] * xBuffer[j] + yBuffer[j] * yBuffer[j]
                     + zBuffer[j] * zBuffer[j]);
-            if (acc > 20.0)
+            if (acc > 20.0 || acc < 3.0)
                 return true;
         }
         return false;
