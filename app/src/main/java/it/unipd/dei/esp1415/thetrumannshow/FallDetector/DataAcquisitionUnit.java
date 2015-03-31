@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -19,14 +20,14 @@ public class DataAcquisitionUnit implements SensorEventListener {
     private Sensor mAccelerometer;
     private Context mContext;
 
-    private final static int samples = 60;
+    private final static int samples = 1000;
 
-    private long[] timeBuffer = new long[samples];
-    private float[] xBuffer = new float[samples];
-    private float[] yBuffer = new float[samples];
-    private float[] zBuffer = new float[samples];
+    private LongRingBuffer timeBuffer = new LongRingBuffer(samples);
+    private FloatRingBuffer xBuffer = new FloatRingBuffer(samples);
+    private FloatRingBuffer yBuffer = new FloatRingBuffer(samples);
+    private FloatRingBuffer zBuffer = new FloatRingBuffer(samples);
 
-    private int i = 0;
+    private long i = 0;
 
     DataAcquisitionUnit(Context c){
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
@@ -39,10 +40,10 @@ public class DataAcquisitionUnit implements SensorEventListener {
     }
 
     public void onSensorChanged(SensorEvent event){
-        timeBuffer[i % samples] = event.timestamp;
-        xBuffer[i % samples] = event.values[0];
-        yBuffer[i % samples] = event.values[1];
-        zBuffer[i % samples] = event.values[2];
+        timeBuffer.insert(event.timestamp);
+        xBuffer.insert(event.values[0]);
+        yBuffer.insert(event.values[1]);
+        zBuffer.insert(event.values[2]);
 
         i++;
 
@@ -55,7 +56,7 @@ public class DataAcquisitionUnit implements SensorEventListener {
     }
 
     void writeToFile(String filename){
-        try {
+        /*try {
             java.io.FileOutputStream fOut = mContext.openFileOutput(filename,
                     Context.MODE_WORLD_READABLE);
             java.io.OutputStreamWriter osw = new java.io.OutputStreamWriter(fOut);
@@ -69,14 +70,15 @@ public class DataAcquisitionUnit implements SensorEventListener {
         }
         catch (IOException e){
             System.out.println("Writing to file failed: "+ e);
-        }
+        } */
     }
 
     // dummy implementation of fall detection
     private boolean isFall(){
         for(int j = 0; j < samples; j++) {
-            double acc = Math.sqrt(xBuffer[j] * xBuffer[j] + yBuffer[j] * yBuffer[j]
-                    + zBuffer[j] * zBuffer[j]);
+            double acc = Math.sqrt(xBuffer.readOne(j) * xBuffer.readOne(j)
+                    + yBuffer.readOne(j) * yBuffer.readOne(j)
+                    + zBuffer.readOne(j) * zBuffer.readOne(j));
             if (acc > 20.0 || acc < 3.0)
                 return true;
         }
@@ -91,41 +93,28 @@ public class DataAcquisitionUnit implements SensorEventListener {
         mSensorManager.unregisterListener(this);
     }
 
-    int[] getSurroundingSecond(int index){
-        return getSurroundingSecondIndex(timeBuffer[index]);
+    long[] getSurroundingSecond(long index){
+        long nanosecond = timeBuffer.readOne(index);
+        long j = index;
+        for(; timeBuffer.readOne(index) > (nanosecond - 500000000); j--);
+        long begin = j;
+
+        j = index;
+        for(; timeBuffer.readOne(index) < (nanosecond + 500000000); j++);
+        long end = j;
+        return new long[]{begin,end};
     }
 
-    // for effiency reasons we could implement a binary search.
-    // the second in question must be part of the buffer.
-    int[] getSurroundingSecondIndex(long nanosecond){
-        int j;
-        for(j = 0; timeBuffer[j] < (nanosecond - 500000000); j++);
-        int begin = j;
-        for(; timeBuffer[j] < (nanoseconnd + 500000000); j++){
-            j = j % samples;
-        }
-        int end = j;
-        return new int[]{begin,end};
+    long[] getSurroundingSecondIndex(long nanosecond){
+        return getSurroundingSecondIndex(timeBuffer.getPosition(nanosecond));
     }
 
     private Fall constructFallObject(int index){
-        int[] interval = getSurroundingSecond(index);
-        long [] timeArr;
-        float[] xArr;
-        float[] yArr;
-        float[] zArr;
-        if (interval[0] < interval[1]){
-            timeArr = Arrays.copyOfRange(timeBuffer,interval[0],interval[1]);
-            xArr = Arrays.copyOfRange(xBuffer,interval[0],interval[1]);
-            yArr = Arrays.copyOfRange(yBuffer,interval[0],interval[1]);
-            zArr = Arrays.copyOfRange(zBuffer,interval[0],interval[1]);
-        }
-        else {
-            int sampleCount = interval[1] + samples - interval [0];
-            timeArr = new long[sampleCount];
-            timeArr = Arrays.
-        }
+        long[] interval = getSurroundingSecond(index);
+        float [] xArr = xBuffer.readRange(interval[0],interval[1]);
+        float [] yArr = yBuffer.readRange(interval[0],interval[1]);
+        float [] zArr = zBuffer.readRange(interval[0],interval[1]);
 
-        return new Fall()
+        return new Fall("",new java.util.Date(), null ,xArr,yArr,zArr);
     }
 }
