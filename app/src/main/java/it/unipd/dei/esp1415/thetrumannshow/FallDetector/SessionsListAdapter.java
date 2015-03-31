@@ -9,12 +9,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapter.MyViewHolder> {
     private ArrayList<Session> mDataset;
-    private Date mDate = new Date();
+    private static SimpleDateFormat mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
+            java.util.Locale.getDefault());
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -63,7 +65,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
         viewHolder.mSessionName.setText(mDataset.get(i).getSessionName());
         viewHolder.mNumOfFalls.setText(Integer.toString(mDataset.get(i).getFalls().size()));
-        viewHolder.mStartDateTime.setText(mDataset.get(i).getDate().toString());
+        viewHolder.mStartDateTime.setText(mDateFormatter.format(mDataset.get(i).getDate()));
         viewHolder.mSessionDuration.setText(Long.toString(mDataset.get(i).getDuration()));
     }
 
