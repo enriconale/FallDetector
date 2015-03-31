@@ -1,10 +1,12 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
+        protected RelativeLayout mMainCardLayout;
         protected ImageView mSessionIcon;
         protected TextView mSessionName;
         protected TextView mNumOfFalls;
@@ -24,11 +27,20 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
         public MyViewHolder(View v) {
             super(v);
+            mMainCardLayout = (RelativeLayout)v.findViewById(R.id.main_card_layout);
             mSessionName = (TextView)v.findViewById(R.id.session_name);
             mSessionIcon = (ImageView)v.findViewById(R.id.session_icon);
             mNumOfFalls = (TextView)v.findViewById(R.id.number_of_falls);
             mStartDateTime = (TextView)v.findViewById(R.id.session_start_date_time);
             mSessionDuration = (TextView)v.findViewById(R.id.session_duration);
+
+            mMainCardLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(v.getContext(), SessionDetailsActivity.class);
+                    v.getContext().startActivity(i);
+                }
+            });
         }
     }
 
