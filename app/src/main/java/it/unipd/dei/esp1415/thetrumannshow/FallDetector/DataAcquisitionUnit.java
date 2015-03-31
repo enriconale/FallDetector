@@ -18,7 +18,7 @@ public class DataAcquisitionUnit implements SensorEventListener {
     private Sensor mAccelerometer;
     private Context mContext;
 
-    private final static int samples = 1000;
+    private final static int samples = 60;
 
     private long[] timeBuffer = new long[samples];
     private float[] xBuffer = new float[samples];
@@ -44,8 +44,11 @@ public class DataAcquisitionUnit implements SensorEventListener {
         zBuffer[i % samples] = event.values[2];
 
         i++;
-        
-        if (i == samples){
+
+        if (i % samples == 0){
+            if(isFall()){
+                fall();
+            }
             writeToFile("autoSave"+i/samples+".csv");
         }
     }
@@ -66,6 +69,21 @@ public class DataAcquisitionUnit implements SensorEventListener {
         catch (IOException e){
             System.out.println("Writing to file failed: "+ e);
         }
+    }
+
+    // dummy implementation of fall detection
+    private boolean isFall(){
+        for(int j = 0; j < samples; j++) {
+            double acc = Math.sqrt(xBuffer[j] * xBuffer[j] + yBuffer[j] * yBuffer[j]
+                    + zBuffer[j] * zBuffer[j]);
+            if (acc > 20.0)
+                return true;
+        }
+        return false;
+    }
+
+    private void fall(){
+        Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
     }
 
     void detach(){
