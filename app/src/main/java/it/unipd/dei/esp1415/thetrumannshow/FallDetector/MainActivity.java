@@ -7,11 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends ActionBarActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ArrayList<Session> mSessionsList;
 
     private DataAcquisitionUnit dau;
 
@@ -24,21 +27,20 @@ public class MainActivity extends ActionBarActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mSessionsList = SessionsLab.get(getApplicationContext()).getSessions();
 
-        String[] myDataset = {"Session 1", "Session 2", "Session 3", "Session 4", "Session 5",
-                "Session 6", "Session 7"};
-        mAdapter = new SessionsListAdapter(myDataset);
+        mAdapter = new SessionsListAdapter(mSessionsList);
         mRecyclerView.setAdapter(mAdapter);
 
         // starting data acquisition, for now only till pause
-        dau = new DataAcquisitionUnit(getApplicationContext());
+        //dau = new DataAcquisitionUnit(getApplicationContext());
     }
 
     @Override
     protected void onPause(){
         super.onPause();
-        dau.detach();
-        dau.writeToFile("finalData.csv");
+        //dau.detach();
+        //dau.writeToFile("finalData.csv");
     }
 
     @Override

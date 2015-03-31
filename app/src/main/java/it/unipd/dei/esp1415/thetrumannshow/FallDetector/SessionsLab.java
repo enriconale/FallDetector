@@ -3,7 +3,6 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Enrico Naletto
@@ -15,6 +14,11 @@ public class SessionsLab {
 
     private SessionsLab(Context appContext) {
         mAppContext = appContext;
+        //Creates ten fake sessions to show them in cardview
+        mSessionsList = new ArrayList<Session>();
+        for (int i = 0; i <= 10; i++) {
+            mSessionsList.add(new Session());
+        }
     }
 
     public static SessionsLab get(Context c) {

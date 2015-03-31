@@ -7,8 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapter.MyViewHolder> {
-    private String[] mDataset;
+    private ArrayList<Session> mDataset;
+    private Date mDate = new Date();
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -29,7 +33,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     }
 
     //Create a new SessionsListAdapter
-    public SessionsListAdapter(String[] myDataset) {
+    public SessionsListAdapter(ArrayList<Session> myDataset) {
         mDataset = myDataset;
     }
 
@@ -45,15 +49,15 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     // card
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
-        viewHolder.mSessionName.setText(mDataset[i]);
-        viewHolder.mNumOfFalls.setText("Falls: 10");
-        viewHolder.mStartDateTime.setText("25/03/2015 14:55");
-        viewHolder.mSessionDuration.setText("7 hours");
+        viewHolder.mSessionName.setText(mDataset.get(i).getSessionName());
+        viewHolder.mNumOfFalls.setText(Integer.toString(mDataset.get(i).getFalls().size()));
+        viewHolder.mStartDateTime.setText(mDataset.get(i).getDate().toString());
+        viewHolder.mSessionDuration.setText(Long.toString(mDataset.get(i).getDuration()));
     }
 
     //Numbers of element in the list
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 }
