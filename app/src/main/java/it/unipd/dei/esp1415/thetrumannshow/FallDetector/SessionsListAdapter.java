@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapter.MyViewHolder> {
+    private Context mAppContext;
     private ArrayList<Session> mDataset;
     private static SimpleDateFormat mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
             java.util.Locale.getDefault());
@@ -47,8 +49,9 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     }
 
     //Create a new SessionsListAdapter
-    public SessionsListAdapter(ArrayList<Session> myDataset) {
+    public SessionsListAdapter(ArrayList<Session> myDataset, Context appContext) {
         mDataset = myDataset;
+        mAppContext = appContext;
     }
 
     //Nothing more to do here
@@ -64,9 +67,16 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
         viewHolder.mSessionName.setText(mDataset.get(i).getSessionName());
-        viewHolder.mNumOfFalls.setText(Integer.toString(mDataset.get(i).getFalls().size()));
-        viewHolder.mStartDateTime.setText(mDateFormatter.format(mDataset.get(i).getDate()));
-        viewHolder.mSessionDuration.setText(Long.toString(mDataset.get(i).getDuration()));
+
+        String tmpStrBuilder = mAppContext.getString(R.string.cardview_falls) + " " +
+                mDataset.get(i).getFalls().size();
+        viewHolder.mNumOfFalls.setText(tmpStrBuilder);
+        tmpStrBuilder = mAppContext.getString(R.string.cardview_startdate) + " " +
+                mDateFormatter.format(mDataset.get(i).getDate());
+        viewHolder.mStartDateTime.setText(tmpStrBuilder);
+        tmpStrBuilder = mAppContext.getString(R.string.cardview_duration) + " " +
+                mDataset.get(i).getDuration();
+        viewHolder.mSessionDuration.setText(tmpStrBuilder);
     }
 
     //Numbers of element in the list

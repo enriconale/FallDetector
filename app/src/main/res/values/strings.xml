@@ -2,6 +2,9 @@
     <string name="app_name">Fall Detector</string>
     <string name="action_start_session">Start new session</string>
     <string name="action_settings">Settings</string>
+    <string name="cardview_falls">Falls:</string>
+    <string name="cardview_startdate">Start:</string>
+    <string name="cardview_duration">Duration:</string>
 
     <string name="session_icon">Session icon.</string>
     <string name="title_activity_fall_details">Fall Details</string>

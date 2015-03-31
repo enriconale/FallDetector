@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mSessionsList = SessionsLab.get(getApplicationContext()).getSessions();
 
-        mAdapter = new SessionsListAdapter(mSessionsList);
+        mAdapter = new SessionsListAdapter(mSessionsList, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
 
         // starting data acquisition, for now only till pause
