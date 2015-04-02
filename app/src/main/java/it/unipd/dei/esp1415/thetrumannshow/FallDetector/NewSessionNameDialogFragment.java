@@ -13,7 +13,7 @@ import android.widget.EditText;
 /**
  * @author Enrico Naletto
  * A simple dialog that is shown when a user starts a new session. Basically it asks the user to
- * insert a new name for the new session.
+ * insert a name for the new session.
  */
 public class NewSessionNameDialogFragment extends DialogFragment {
     private String mInsertedSessionName;
@@ -41,6 +41,7 @@ public class NewSessionNameDialogFragment extends DialogFragment {
         });
 
         builder.setTitle(R.string.dialog_title);
+
         builder.setPositiveButton(R.string.dialog_positive_button,
                 new DialogInterface.OnClickListener() {
             @Override
@@ -51,6 +52,7 @@ public class NewSessionNameDialogFragment extends DialogFragment {
                 activity.onReturnValueFromDialog(mInsertedSessionName);
             }
         });
+
         builder.setNegativeButton(R.string.dialog_negative_button,
                 new DialogInterface.OnClickListener() {
             @Override
@@ -58,6 +60,7 @@ public class NewSessionNameDialogFragment extends DialogFragment {
                 getDialog().cancel();
             }
         });
+
         return builder.create();
     }
 }

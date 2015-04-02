@@ -18,9 +18,6 @@ public class SessionsLab {
         mAppContext = appContext;
         //Creates ten fake sessions to show them in cardview
         mSessionsList = new ArrayList<Session>();
-        for (int i = 0; i <= 10; i++) {
-            mSessionsList.add(new Session());
-        }
     }
 
     public static SessionsLab get(Context c) {
