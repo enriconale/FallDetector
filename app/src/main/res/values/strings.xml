@@ -6,6 +6,11 @@
     <string name="cardview_startdate">Start:</string>
     <string name="cardview_duration">Duration:</string>
 
+    <string name="dialog_title">Set a name</string>
+    <string name="dialog_new_session">New session</string>
+    <string name="dialog_positive_button">OK</string>
+    <string name="dialog_negative_button">Cancel</string>
+
     <string name="session_icon">Session icon.</string>
     <string name="title_activity_fall_details">Fall Details</string>
 

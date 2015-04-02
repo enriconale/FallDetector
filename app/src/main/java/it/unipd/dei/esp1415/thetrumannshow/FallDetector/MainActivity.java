@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,9 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements NewSessionNameDialogFragment.NewSessionNameDialogFragmentListener {
+    private static final String DIALOG_ID = "new_session_dialog";
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -56,12 +59,29 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_start_session:
+                DialogFragment dialog = new NewSessionNameDialogFragment();
+                dialog.show(getSupportFragmentManager(), DIALOG_ID);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onReturnValueFromDialog(String sessionName) {
+        Session newSession = new Session();
+            newSession.setSessionName(sessionName);
+        SessionsLab.get(getApplicationContext()).getSessions().add(0, newSession);
+        SessionsLab.get(getApplicationContext()).createNewRunningSession(newSession);
+        mAdapter.notifyDataSetChanged();
     }
 }
