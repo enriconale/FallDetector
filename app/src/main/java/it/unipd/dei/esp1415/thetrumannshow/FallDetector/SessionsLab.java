@@ -16,7 +16,6 @@ public class SessionsLab {
 
     private SessionsLab(Context appContext) {
         mAppContext = appContext;
-        //Creates ten fake sessions to show them in cardview
         mSessionsList = new ArrayList<Session>();
     }
 
@@ -37,6 +36,10 @@ public class SessionsLab {
 
     public Session getRunningSession() {
         return mRunningSession;
+    }
+
+    public void stopCurrentlyRunningSession() {
+        mRunningSession = null;
     }
 
 }

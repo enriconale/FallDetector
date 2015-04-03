@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,8 +12,12 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements NewSessionNameDialogFragment.NewSessionNameDialogFragmentListener {
-    private static final String DIALOG_ID = "new_session_dialog";
+public class MainActivity extends ActionBarActivity implements NewSessionNameDialogFragment
+        .NewSessionNameDialogFragmentListener, SessionAlreadyRunningDialogFragment
+.SessionAlreadyRunningDialogFragmentListener {
+
+    private static final String NEW_SESSION_DIALOG = "new_session_dialog";
+    private static final String SESSION_RUNNING_DIALOG = "session_running_dialog";
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -63,8 +68,13 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
             case R.id.action_settings:
                 return true;
             case R.id.action_start_session:
-                DialogFragment dialog = new NewSessionNameDialogFragment();
-                dialog.show(getSupportFragmentManager(), DIALOG_ID);
+                if (SessionsLab.get(getApplicationContext()).getRunningSession() != null) {
+                    DialogFragment dialog = new SessionAlreadyRunningDialogFragment();
+                    dialog.show(getSupportFragmentManager(), SESSION_RUNNING_DIALOG);
+                } else {
+                    DialogFragment dialog = new NewSessionNameDialogFragment();
+                    dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
+                }
         }
 
         return super.onOptionsItemSelected(item);
@@ -77,11 +87,23 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
     }
 
     @Override
-    public void onReturnValueFromDialog(String sessionName) {
+    public void onReturnValueFromNewSessionNameDialog(String sessionName) {
         Session newSession = new Session();
-            newSession.setSessionName(sessionName);
+        newSession.setSessionName(sessionName);
         SessionsLab.get(getApplicationContext()).getSessions().add(0, newSession);
         SessionsLab.get(getApplicationContext()).createNewRunningSession(newSession);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSessionAlreadyRunningDialogPositiveClick() {
+        SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
+        DialogFragment dialog = new NewSessionNameDialogFragment();
+        dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
+    }
+
+    @Override
+    public void onSessionAlreadyRunningDialogNegativeClick() {
+
     }
 }

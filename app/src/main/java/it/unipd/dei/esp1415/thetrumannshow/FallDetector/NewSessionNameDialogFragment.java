@@ -20,7 +20,7 @@ public class NewSessionNameDialogFragment extends DialogFragment {
     private EditText mSessionNameEditText;
 
     public interface NewSessionNameDialogFragmentListener {
-        public void onReturnValueFromDialog(String foo);
+        public void onReturnValueFromNewSessionNameDialog(String sessionName);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class NewSessionNameDialogFragment extends DialogFragment {
                 NewSessionNameDialogFragmentListener activity =
                         (NewSessionNameDialogFragmentListener) getActivity();
                 mInsertedSessionName = mSessionNameEditText.getText().toString();
-                activity.onReturnValueFromDialog(mInsertedSessionName);
+                activity.onReturnValueFromNewSessionNameDialog(mInsertedSessionName);
             }
         });
 
