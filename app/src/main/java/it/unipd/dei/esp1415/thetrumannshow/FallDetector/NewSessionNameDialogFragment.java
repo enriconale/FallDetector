@@ -40,9 +40,9 @@ public class NewSessionNameDialogFragment extends DialogFragment {
             }
         });
 
-        builder.setTitle(R.string.dialog_title);
+        builder.setTitle(R.string.new_session_name_dialog_title);
 
-        builder.setPositiveButton(R.string.dialog_positive_button,
+        builder.setPositiveButton(R.string.new_session_name_dialog_positive_button,
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -53,7 +53,7 @@ public class NewSessionNameDialogFragment extends DialogFragment {
             }
         });
 
-        builder.setNegativeButton(R.string.dialog_negative_button,
+        builder.setNegativeButton(R.string.new_session_name_dialog_negative_button,
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

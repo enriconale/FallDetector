@@ -6,10 +6,16 @@
     <string name="cardview_startdate">Start:</string>
     <string name="cardview_duration">Duration:</string>
 
-    <string name="dialog_title">Set a name</string>
-    <string name="dialog_new_session">New session</string>
-    <string name="dialog_positive_button">OK</string>
-    <string name="dialog_negative_button">Cancel</string>
+    <string name="new_session_name_dialog_title">Set a name</string>
+    <string name="new_session_name_dialog_new_session">New session</string>
+    <string name="new_session_name_dialog_positive_button">OK</string>
+    <string name="new_session_name_dialog_negative_button">Cancel</string>
+
+    <string name="session_running_dialog_title">Warning</string>
+    <string name="session_running_dialog_message">There is already a running session. Do
+        you want to stop it and start a new one?</string>
+    <string name="session_running_dialog_positive_button">Yes</string>
+    <string name="session_running_dialog_negative_button">No</string>
 
     <string name="session_icon">Session icon.</string>
     <string name="title_activity_fall_details">Fall Details</string>

@@ -19,10 +19,10 @@ public class SessionAlreadyRunningDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Warning");
-        builder.setMessage("Session already running. Stop it?");
-        AlertDialog dialog = builder.create();
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.session_running_dialog_title);
+        builder.setMessage(R.string.session_running_dialog_message);
+        builder.setPositiveButton(R.string.session_running_dialog_positive_button,
+                new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SessionAlreadyRunningDialogFragmentListener activity =
@@ -30,7 +30,8 @@ public class SessionAlreadyRunningDialogFragment extends DialogFragment {
                 activity.onSessionAlreadyRunningDialogPositiveClick();
             }
         });
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.session_running_dialog_negative_button,
+                new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SessionAlreadyRunningDialogFragmentListener activity =
