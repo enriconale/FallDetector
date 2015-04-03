@@ -1,6 +1,5 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
-import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -100,10 +99,5 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
         SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
-    }
-
-    @Override
-    public void onSessionAlreadyRunningDialogNegativeClick() {
-
     }
 }

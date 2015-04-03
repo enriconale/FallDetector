@@ -13,7 +13,6 @@ public class SessionAlreadyRunningDialogFragment extends DialogFragment {
 
     public interface SessionAlreadyRunningDialogFragmentListener {
         public void onSessionAlreadyRunningDialogPositiveClick();
-        public void onSessionAlreadyRunningDialogNegativeClick();
     }
 
     @Override
@@ -34,9 +33,7 @@ public class SessionAlreadyRunningDialogFragment extends DialogFragment {
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SessionAlreadyRunningDialogFragmentListener activity =
-                        (SessionAlreadyRunningDialogFragmentListener) getActivity();
-                activity.onSessionAlreadyRunningDialogNegativeClick();
+                getDialog().cancel();
             }
         });
 
