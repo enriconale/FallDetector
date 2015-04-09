@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,14 +42,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             mStartDateTime = (TextView)v.findViewById(R.id.session_start_date_time);
             mSessionDuration = (TextView)v.findViewById(R.id.session_duration);
 
-            mMainCardLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(v.getContext(), SessionDetailsActivity.class);
-                    i.putExtra(SESSION_DETAILS, mPosition);
-                    v.getContext().startActivity(i);
-                }
-            });
+
         }
     }
 
@@ -70,6 +64,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     // card
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
+        final int x = i;
         Session tmpSession = mDataset.get(i);
         viewHolder.mSessionName.setText(tmpSession.getSessionName());
 
@@ -82,6 +77,26 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         tmpStrBuilder = mAppContext.getString(R.string.cardview_duration) + " " +
                 tmpSession.getDuration();
         viewHolder.mSessionDuration.setText(tmpStrBuilder);
+
+        if (i == 0 && SessionsLab.get(mAppContext).getRunningSession() != null) {
+            viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
+            viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mAppContext, "Running session", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            viewHolder.mSessionIcon.setImageResource(R.mipmap.temporary_placeholder);
+            viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), SessionDetailsActivity.class);
+                    intent.putExtra(SESSION_DETAILS, x);
+                    v.getContext().startActivity(intent);
+                }
+            });
+        }
 
         viewHolder.mPosition = i;
         viewHolder.mSessionVisualized = tmpSession;
