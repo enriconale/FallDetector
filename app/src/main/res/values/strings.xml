@@ -22,4 +22,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_session_details">Session Details</string>
+    <string name="action_delete_session">Delete session</string>
 </resources>

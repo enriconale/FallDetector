@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:id="@+id/session_icon"
         android:src="@mipmap/temporary_placeholder" />
 
@@ -28,6 +29,8 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/session_icon"
         android:layout_toEndOf="@id/session_icon"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:text="Session Name" />
 
     </RelativeLayout>
@@ -61,7 +64,7 @@
         android:text="Falls list:"/>
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/falls_header"
         android:layout_marginTop="16dp"
