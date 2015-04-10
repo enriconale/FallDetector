@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:textSize="32sp"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:layout_toRightOf="@id/session_icon"
         android:layout_toEndOf="@id/session_icon"
         android:text="Session Name"
@@ -38,6 +39,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@id/layout1"
+        android:layout_marginTop="24dp"
         android:textSize="24sp"
         android:text="Date and Hour"
         android:id="@+id/date_time" />
@@ -48,15 +50,16 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/date_time"
         android:textSize="24sp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:text="Duration"
         android:id="@+id/session_duration" />
+
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/session_duration"
         android:layout_marginTop="32dp"
-        android:id="@+id/listView" />
+        android:id="@+id/fall_list" />
 
 </RelativeLayout>
