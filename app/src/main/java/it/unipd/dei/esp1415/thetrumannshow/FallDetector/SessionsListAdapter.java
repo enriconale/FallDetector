@@ -9,18 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapter.MyViewHolder> {
     public static final String SESSION_DETAILS = "session_details";
+    public static final String RUNNING_SESSION = "running_session";
 
     private Context mAppContext;
     private ArrayList<Session> mDataset;
-    private static SimpleDateFormat mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-            java.util.Locale.getDefault());
+    private static SimpleDateFormat mDateFormatter;
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -46,6 +45,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     public SessionsListAdapter(ArrayList<Session> myDataset, Context appContext) {
         mDataset = myDataset;
         mAppContext = appContext;
+        mDateFormatter = SessionsLab.get(appContext).getDateFormat();
     }
 
     //Nothing more to do here
@@ -79,7 +79,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mAppContext, "Running session", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(v.getContext(), RunningSessionActivity.class);
+                    v.getContext().startActivity(intent);
                 }
             });
         } else {

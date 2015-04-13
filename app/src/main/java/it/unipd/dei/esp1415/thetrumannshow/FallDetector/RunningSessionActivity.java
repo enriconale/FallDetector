@@ -4,14 +4,37 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 
 
 public class RunningSessionActivity extends ActionBarActivity {
+    private static SimpleDateFormat mDateFormatter;
+
+    private Session mSession;
+    private TextView mSessionName;
+    private TextView mSessionCreationDate;
+    private TextView mSessionDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running_session);
+
+        mSession = SessionsLab.get(getApplicationContext()).getRunningSession();
+        mDateFormatter = SessionsLab.get(getApplicationContext()).getDateFormat();
+
+        mSessionName = (TextView)findViewById(R.id.session_name);
+        mSessionCreationDate = (TextView)findViewById(R.id.date_time);
+        mSessionDuration = (TextView)findViewById(R.id.session_duration);
+
+        mSessionName.setText(mSession.getSessionName());
+        mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
+        mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
+                + " " + mSession.getDuration());
     }
 
 

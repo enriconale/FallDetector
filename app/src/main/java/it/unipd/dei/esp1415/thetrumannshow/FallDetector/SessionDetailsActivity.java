@@ -11,8 +11,7 @@ import java.text.SimpleDateFormat;
 
 
 public class SessionDetailsActivity extends ActionBarActivity {
-    private static SimpleDateFormat mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-            java.util.Locale.getDefault());
+    private static SimpleDateFormat mDateFormatter;
 
     private Session mSession;
     private TextView mSessionName;
@@ -25,6 +24,8 @@ public class SessionDetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_details);
 
+        mDateFormatter = SessionsLab.get(getApplicationContext()).getDateFormat();
+
         mPositionInList = getIntent().getExtras().getInt(SessionsListAdapter.SESSION_DETAILS);
         mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mPositionInList);
 
@@ -34,7 +35,8 @@ public class SessionDetailsActivity extends ActionBarActivity {
 
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
-        mSessionDuration.setText("Duration: " + mSession.getDuration());
+        mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
+                + " " + mSession.getDuration());
 
     }
 
