@@ -16,7 +16,8 @@ public class SessionDetailsActivity extends ActionBarActivity {
 
     private Session mSession;
     private TextView mSessionName;
-    private TextView mCreationDate;
+    private TextView mSessionCreationDate;
+    private TextView mSessionDuration;
     private int mPositionInList;
 
     @Override
@@ -28,10 +29,12 @@ public class SessionDetailsActivity extends ActionBarActivity {
         mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mPositionInList);
 
         mSessionName = (TextView)findViewById(R.id.session_name);
-        mCreationDate = (TextView)findViewById(R.id.date_time);
+        mSessionCreationDate = (TextView)findViewById(R.id.date_time);
+        mSessionDuration = (TextView)findViewById(R.id.session_duration);
 
         mSessionName.setText(mSession.getSessionName());
-        mCreationDate.setText(mDateFormatter.format(mSession.getDate()));
+        mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
+        mSessionDuration.setText("Duration: " + mSession.getDuration());
 
     }
 

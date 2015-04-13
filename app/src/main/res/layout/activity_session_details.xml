@@ -30,8 +30,7 @@
         android:layout_toRightOf="@id/session_icon"
         android:layout_toEndOf="@id/session_icon"
         android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:text="Session Name" />
+        android:layout_marginStart="16dp" />
 
     </RelativeLayout>
 
@@ -42,8 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/main_layout"
         android:textSize="24sp"
-        android:layout_marginTop="24dp"
-        android:text="Date and Hour" />
+        android:layout_marginTop="24dp" />
 
     <TextView
         android:id="@+id/session_duration"
@@ -51,8 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/date_time"
         android:textSize="24sp"
-        android:layout_marginTop="24dp"
-        android:text="Duration" />
+        android:layout_marginTop="24dp" />
 
     <TextView
         android:id="@+id/falls_header"
@@ -61,7 +58,7 @@
         android:layout_below="@+id/session_duration"
         android:layout_marginTop="24dp"
         android:textSize="24sp"
-        android:text="Falls list:"/>
+        android:text="@string/falls_list"/>
 
     <ListView
         android:layout_width="match_parent"

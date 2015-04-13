@@ -24,8 +24,6 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        protected Session mSessionVisualized;
-        protected int mPosition;
         protected RelativeLayout mMainCardLayout;
         protected ImageView mSessionIcon;
         protected TextView mSessionName;
@@ -41,8 +39,6 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             mNumOfFalls = (TextView)v.findViewById(R.id.number_of_falls);
             mStartDateTime = (TextView)v.findViewById(R.id.session_start_date_time);
             mSessionDuration = (TextView)v.findViewById(R.id.session_duration);
-
-
         }
     }
 
@@ -65,7 +61,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
         final int x = i;
-        Session tmpSession = mDataset.get(i);
+        Session tmpSession = mDataset.get(x);
         viewHolder.mSessionName.setText(tmpSession.getSessionName());
 
         String tmpStrBuilder = mAppContext.getString(R.string.cardview_falls) + " " +
@@ -78,7 +74,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 tmpSession.getDuration();
         viewHolder.mSessionDuration.setText(tmpStrBuilder);
 
-        if (i == 0 && SessionsLab.get(mAppContext).getRunningSession() != null) {
+        if (x == 0 && SessionsLab.get(mAppContext).getRunningSession() != null) {
             viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,9 +93,6 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 }
             });
         }
-
-        viewHolder.mPosition = i;
-        viewHolder.mSessionVisualized = tmpSession;
     }
 
     //Numbers of element in the list
