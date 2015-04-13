@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapter.MyViewHolder> {
     public static final String SESSION_DETAILS = "session_details";
-    public static final String RUNNING_SESSION = "running_session";
 
     private Context mAppContext;
     private ArrayList<Session> mDataset;
