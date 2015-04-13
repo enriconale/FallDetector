@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Session> mSessionsList;
+    private TextView mEmptyListMessage;
 
     private DataAcquisitionUnit dau;
 
@@ -30,7 +33,8 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mEmptyListMessage = (TextView)findViewById(R.id.empty_list_message);
+        mRecyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -38,6 +42,10 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
 
         mAdapter = new SessionsListAdapter(mSessionsList, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
+
+        if (mAdapter.getItemCount() == 0) {
+            mEmptyListMessage.setVisibility(View.VISIBLE);
+        }
 
         // starting data acquisition, for now only till pause
         dau = new DataAcquisitionUnit(getApplicationContext());
@@ -87,6 +95,7 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
 
     @Override
     public void onReturnValueFromNewSessionNameDialog(String sessionName) {
+        mEmptyListMessage.setVisibility(View.GONE);
         Session newSession = new Session();
         newSession.setSessionName(sessionName);
         SessionsLab.get(getApplicationContext()).getSessions().add(0, newSession);

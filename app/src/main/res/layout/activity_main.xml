@@ -10,4 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/empty_list_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/empty_list_message"/>
+
 </RelativeLayout>

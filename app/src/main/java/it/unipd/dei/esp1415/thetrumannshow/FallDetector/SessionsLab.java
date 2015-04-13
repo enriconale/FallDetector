@@ -19,7 +19,8 @@ public class SessionsLab {
     private SessionsLab(Context appContext) {
         mAppContext = appContext;
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-                java.util.Locale.getDefault());
+                java.util.Locale.getDefault()
+        );
         mSessionsList = new ArrayList<Session>();
     }
 

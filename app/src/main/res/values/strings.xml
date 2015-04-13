@@ -5,6 +5,7 @@
     <string name="cardview_falls">Falls:</string>
     <string name="cardview_startdate">Start:</string>
     <string name="cardview_duration">Duration:</string>
+    <string name="empty_list_message">Press the \"+\" button to start a new session.</string>
 
     <string name="new_session_name_dialog_title">Set a name</string>
     <string name="new_session_name_dialog_new_session">New session</string>
