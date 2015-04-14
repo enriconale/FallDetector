@@ -5,7 +5,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -15,8 +19,10 @@ import java.util.Arrays;
  * Created by Eike Trumann on 29.03.15.
  * all rights reserved
  */
-public class DataAcquisitionUnit implements SensorEventListener {
+public class DataAcquisitionUnit implements SensorEventListener, LocationListener {
     private static SensorManager mSensorManager;
+    private static LocationManager mLocationManager;
+    private String mLocationProvider;
     private Sensor mAccelerometer;
     private Context mContext;
 
@@ -33,6 +39,13 @@ public class DataAcquisitionUnit implements SensorEventListener {
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        mLocationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        java.util.List<String> locationProviders
+                = mLocationManager.getProviders(criteria, false);
+        mLocationProvider = locationProviders.get(0);
+        mLocationManager.requestLocationUpdates(mLocationProvider, 0, 0, this);
         mContext = c;
     }
 
@@ -53,6 +66,22 @@ public class DataAcquisitionUnit implements SensorEventListener {
             }
             // writeToFile("autoSave"+i/samples+".csv");
         }
+    }
+
+    public void onStatusChanged(String provider,int status, Bundle extras){
+
+    }
+
+    public void onProviderEnabled(String provider){
+
+    }
+
+    public void onProviderDisabled(String provider){
+
+    }
+
+    public void onLocationChanged(Location l){
+
     }
 
     void writeToFile(String filename){
@@ -86,11 +115,16 @@ public class DataAcquisitionUnit implements SensorEventListener {
     }
 
     private void fall(){
-        Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
+        Location loc = getPosition();
+        if (loc != null)
+            Toast.makeText(mContext, "REGISTERED FALL EVENT at "+ loc.toString(), Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
     }
 
     void detach(){
         mSensorManager.unregisterListener(this);
+        mLocationManager.removeUpdates(this);
     }
 
     long[] getSurroundingSecond(long index){
@@ -117,4 +151,9 @@ public class DataAcquisitionUnit implements SensorEventListener {
 
         return new Fall("",new java.util.Date(), null ,xArr,yArr,zArr);
     }
+
+    private Location getPosition(){
+        return mLocationManager.getLastKnownLocation(mLocationProvider);
+    }
+
 }
