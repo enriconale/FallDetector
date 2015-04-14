@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -100,6 +101,8 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
         newSession.setSessionName(sessionName);
         SessionsLab.get(getApplicationContext()).getSessions().add(0, newSession);
         SessionsLab.get(getApplicationContext()).createNewRunningSession(newSession);
+        Intent intent = new Intent(this, RunningSessionService.class);
+        startService(intent);
         mAdapter.notifyDataSetChanged();
     }
 
