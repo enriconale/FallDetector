@@ -47,7 +47,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="32dp"
         android:layout_below="@id/main_layout"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:text="Session Name"
         android:id="@+id/session_name" />
 
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_below="@id/session_name"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:text="Data Time"
         android:id="@+id/data_time" />
 
@@ -64,9 +64,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:textSize="20sp"
-        android:text="GPS Data"
+        android:textSize="24sp"
+        android:text="Latitude Data"
         android:layout_below="@id/data_time"
-        android:id="@+id/gps_data" />
+        android:id="@+id/latitude" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="24sp"
+        android:text="Longitude Data"
+        android:layout_below="@id/latitude"
+        android:id="@+id/longitude" />
+
 
 </RelativeLayout>
