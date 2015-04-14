@@ -5,6 +5,7 @@
     <string name="cardview_falls">Falls:</string>
     <string name="cardview_startdate">Start:</string>
     <string name="cardview_duration">Duration:</string>
+    <string name="empty_list_message">Press the \"+\" button to start a new session.</string>
 
     <string name="new_session_name_dialog_title">Set a name</string>
     <string name="new_session_name_dialog_new_session">New session</string>
@@ -20,6 +21,9 @@
     <string name="session_icon">Session icon.</string>
     <string name="title_activity_fall_details">Fall Details</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_session_details">Session Details</string>
+    <string name="action_delete_session">Delete session</string>
+    <string name="falls_list">Falls list:</string>
+
+    <string name="title_activity_running_session">Running Session</string>
 </resources>

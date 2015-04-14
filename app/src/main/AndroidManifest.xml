@@ -28,6 +28,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.unipd.dei.esp1415.thetrumannshow.FallDetector.MainActivity" />
         </activity>
+        <activity
+            android:name=".RunningSessionActivity"
+            android:label="@string/title_activity_running_session"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.unipd.dei.esp1415.thetrumannshow.FallDetector.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/layout1" >
+        android:id="@+id/main_layout" >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -46,8 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="32dp"
-        android:layout_below="@id/layout1"
-        android:textSize="24sp"
+        android:layout_below="@id/main_layout"
+        android:textSize="20sp"
         android:text="Session Name"
         android:id="@+id/session_name" />
 
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_below="@id/session_name"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:text="Data Time"
         android:id="@+id/data_time" />
 
@@ -64,18 +64,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:textSize="24sp"
-        android:text="Latitude Data"
+        android:textSize="20sp"
+        android:text="GPS Data"
         android:layout_below="@id/data_time"
-        android:id="@+id/longitude_data" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="24sp"
-        android:text="Longitude Data"
-        android:layout_below="@id/longitude_data"
-        android:id="@+id/latitude_data" />
+        android:id="@+id/gps_data" />
 
 </RelativeLayout>

@@ -18,13 +18,10 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     private Context mAppContext;
     private ArrayList<Session> mDataset;
-    private static SimpleDateFormat mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-            java.util.Locale.getDefault());
+    private static SimpleDateFormat mDateFormatter;
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        protected Session mSessionVisualized;
-        protected int mPosition;
         protected RelativeLayout mMainCardLayout;
         protected ImageView mSessionIcon;
         protected TextView mSessionName;
@@ -40,15 +37,6 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             mNumOfFalls = (TextView)v.findViewById(R.id.number_of_falls);
             mStartDateTime = (TextView)v.findViewById(R.id.session_start_date_time);
             mSessionDuration = (TextView)v.findViewById(R.id.session_duration);
-
-            mMainCardLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(v.getContext(), SessionDetailsActivity.class);
-                    i.putExtra(SESSION_DETAILS, mPosition);
-                    v.getContext().startActivity(i);
-                }
-            });
         }
     }
 
@@ -56,6 +44,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     public SessionsListAdapter(ArrayList<Session> myDataset, Context appContext) {
         mDataset = myDataset;
         mAppContext = appContext;
+        mDateFormatter = SessionsLab.get(appContext).getDateFormat();
     }
 
     //Nothing more to do here
@@ -70,7 +59,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     // card
     @Override
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
-        Session tmpSession = mDataset.get(i);
+        final int x = i;
+        Session tmpSession = mDataset.get(x);
         viewHolder.mSessionName.setText(tmpSession.getSessionName());
 
         String tmpStrBuilder = mAppContext.getString(R.string.cardview_falls) + " " +
@@ -83,8 +73,26 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 tmpSession.getDuration();
         viewHolder.mSessionDuration.setText(tmpStrBuilder);
 
-        viewHolder.mPosition = i;
-        viewHolder.mSessionVisualized = tmpSession;
+        if (x == 0 && SessionsLab.get(mAppContext).getRunningSession() != null) {
+            viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
+            viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), RunningSessionActivity.class);
+                    v.getContext().startActivity(intent);
+                }
+            });
+        } else {
+            viewHolder.mSessionIcon.setImageResource(R.mipmap.temporary_placeholder);
+            viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), SessionDetailsActivity.class);
+                    intent.putExtra(SESSION_DETAILS, x);
+                    v.getContext().startActivity(intent);
+                }
+            });
+        }
     }
 
     //Numbers of element in the list

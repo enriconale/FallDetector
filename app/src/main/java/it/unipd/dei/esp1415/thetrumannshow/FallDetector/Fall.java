@@ -14,6 +14,7 @@ public class Fall {
     private final float[] mXAcceleration;
     private final float[] mYAcceleration;
     private final float[] mZAcceleration;
+    private boolean mIsEmailSent;
 
     public Fall(String name, Date date, Location location, float[] xAcc, float[] yAcc, float[] zAcc) {
         mFallName = name;
@@ -46,5 +47,9 @@ public class Fall {
 
     public float[] getZAcceleration() {
         return mZAcceleration;
+    }
+
+    public void setIsEmailSent(boolean isEmailSent) {
+        mIsEmailSent = isEmailSent;
     }
 }
