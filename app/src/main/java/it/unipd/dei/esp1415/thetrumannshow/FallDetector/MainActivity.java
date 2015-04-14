@@ -1,6 +1,9 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -112,8 +115,20 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
 
     @Override
     public void onSessionAlreadyRunningDialogPositiveClick() {
-        Intent intent = new Intent(STOP_RUNNING_SERVICE);
-        sendBroadcast(intent);
+        Intent intent = new Intent(this, RunningSessionService.class);
+        ServiceConnection conn = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+        bindService(intent, conn, 0);
+        unbindService(conn);
         SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);

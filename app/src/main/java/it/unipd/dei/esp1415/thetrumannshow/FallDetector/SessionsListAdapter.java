@@ -73,7 +73,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 tmpSession.getDuration();
         viewHolder.mSessionDuration.setText(tmpStrBuilder);
 
-        if (x == 0 && SessionsLab.get(mAppContext).getRunningSession() != null) {
+        if (SessionsLab.get(mAppContext).hasRunningSession() && x == 0) {
             viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,10 +1,8 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -14,15 +12,8 @@ import android.util.Log;
 public class RunningSessionService extends IntentService {
 
     private Session mRunningSession;
-    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if(action.equals(MainActivity.STOP_RUNNING_SERVICE)){
-                stopSelf();
-            }
-        }
-    };
+    IBinder mBinder;      // interface for clients that bind
+    boolean mAllowRebind;
 
     public RunningSessionService() {
         super("RunningSessionService");
@@ -32,20 +23,31 @@ public class RunningSessionService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.d("Service started", "Service started");
         mRunningSession = SessionsLab.get(getApplicationContext()).getRunningSession();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(MainActivity.STOP_RUNNING_SERVICE);
-        registerReceiver(receiver, filter);
 
         while (true) {
-            Log.d("Service going on", mRunningSession.getSessionName());
+            if (SessionsLab.get(getApplicationContext()).hasRunningSession())
+                Log.d("Service going on", mRunningSession.getSessionName());
+            else
+                break;
             SystemClock.sleep(1000);
         }
 
     }
 
     @Override
+    public IBinder onBind(Intent intent) {
+        // A client is binding to the service with bindService()
+        return mBinder;
+    }
+    @Override
+    public boolean onUnbind(Intent intent) {
+        // All clients have unbound with unbindService()
+        stopSelf();
+        return mAllowRebind;
+    }
+
+    @Override
     public void onDestroy() {
         Log.d("destroyed", "destroyed");
-        unregisterReceiver(receiver);
     }
 }
