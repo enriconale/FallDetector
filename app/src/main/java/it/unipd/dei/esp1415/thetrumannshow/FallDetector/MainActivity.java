@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +19,11 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
         .NewSessionNameDialogFragmentListener, SessionAlreadyRunningDialogFragment
 .SessionAlreadyRunningDialogFragmentListener {
 
+    public static final String STOP_RUNNING_SERVICE = "stop_running_service";
+
     private static final String NEW_SESSION_DIALOG = "new_session_dialog";
     private static final String SESSION_RUNNING_DIALOG = "session_running_dialog";
+
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -108,6 +112,8 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
 
     @Override
     public void onSessionAlreadyRunningDialogPositiveClick() {
+        Intent intent = new Intent(STOP_RUNNING_SERVICE);
+        sendBroadcast(intent);
         SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
