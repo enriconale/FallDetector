@@ -1,0 +1,237 @@
+Accessing the Location Manager
+String serviceString = Context.LOCATION_SERVICE;
+LocationManager locationManager;
+locationManager = (LocationManager)getSystemService(serviceString);
+
+<uses-permission android:name=”android.permission.ACCESS_FINE_LOCATION”/>
+<uses-permission android:name=”android.permission.ACCESS_COARSE_LOCATION”/>
+
+Enabling the GPS provider on the Emulator
+locationManager.requestLocationUpdates(
+LocationManager.GPS_PROVIDER, 0, 0,
+new LocationListener() {
+public void onLocationChanged(Location location) {}
+public void onProviderDisabled(String provider) {}
+public void onProviderEnabled(String provider) {}
+public void onStatusChanged(String provider, int status,
+Bundle extras) {}
+}
+);
+
+LocationManager.GPS_PROVIDER
+
+//vedere la classe criteria
+Specifying Location Provider
+Criteria criteria = new Criteria();
+criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+criteria.setPowerRequirement(Criteria.POWER_LOW);
+criteria.setAltitudeRequired(false);
+criteria.setBearingRequired(false);
+criteria.setSpeedRequired(false);
+criteria.setCostAllowed(true);
+criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH); //100m
+criteria.setVerticalAccuracy(Criteria.ACCURACY_MEDIUM); //100-500m
+criteria.setBearingAccuracy(Criteria.ACCURACY_LOW); //+500m
+criteria.setSpeedAccuracy(Criteria.ACCURACY_LOW); //no medium for speed
+String bestProvider = locationManager.getBestProvider(criteria, true);
+
+//current location
+String provider = LocationManager.GPS_PROVIDER;
+Location location = locationManager.getLastKnownLocation(provider);
+
+
+//example
+1.
+Create a new Where Am I project with a WhereAmI Activity. This example uses the GPS
+provider, so you need to include the uses-permission tag for ACCESS_FINE_LOCATION in
+your application manifest.
+
+<?xml version=”1.0” encoding=”utf-8”?>
+<manifest xmlns:android=”http://schemas.android.com/apk/res/android”
+package=“com.paad.whereami“
+android:versionCode=“1“
+android:versionName=“1.0“ >
+<uses-sdk android:minSdkVersion=“4“ />
+<uses-permission
+android:name=”android.permission.ACCESS_FINE_LOCATION”
+/>
+<application
+android:icon=”@drawable/ic_launcher”
+android:label=”@string/app_name” >
+<activity
+android:name=”.WhereAmI”
+android:label=”@string/app_name” >
+<intent-filter>
+<action android:name=”android.intent.action.MAIN” />
+<category android:name=”android.intent.category.LAUNCHER” />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+
+2.
+Modify the main.xml layout resource to include an android:ID attribute for the TextView
+control so that you can access it from within the Activity.
+
+<?xml version=”1.0” encoding=”utf-8”?>
+<LinearLayout xmlns:android=”http://schemas.android.com/apk/res/android”
+android:orientation=”vertical”
+android:layout_width=”match_parent”
+android:layout_height=”match_parent”>
+<TextView
+www.it-ebooks.infoFinding Your Current Location
+x 521
+android:id=”@+id/myLocationText”
+android:layout_width=”match_parent”
+android:layout_height=”wrap_content”
+android:text=”@string/hello”
+/>
+</LinearLayout>
+
+3.
+Override the onCreate method of the WhereAmI Activity to get a reference to the Location
+Manager. Call getLastKnownLocation to get the last known location, and pass it in to an
+updateWithNewLocation method stub.
+
+@Override
+public void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.main);
+LocationManager locationManager;
+String svcName = Context.LOCATION_SERVICE;
+locationManager = (LocationManager)getSystemService(svcName);
+String provider = LocationManager.GPS_PROVIDER;
+Location l = locationManager.getLastKnownLocation(provider);
+updateWithNewLocation(l);
+}
+private void updateWithNewLocation(Location location) {}
+
+4.
+Complete the updateWithNewLocation method to show the passed-in Location in the Text
+View by extracting the latitude and longitude values.
+
+private void updateWithNewLocation(Location location) {
+TextView myLocationText;
+myLocationText = (TextView)findViewById(R.id.myLocationText);
+String latLongString = “No location found”;
+if (location != null) {
+double lat = location.getLatitude();
+double lng = location.getLongitude();
+latLongString = “Lat:” + lat + “\nLong:” + lng;
+}
+myLocationText.setText(“Your Current Position is:\n” +
+latLongString);
+}
+
+
+USING THE GEOCODER
+<uses-library android:name=”com.google.android.maps”/>
+<uses-permission android:name=”android.permission.INTERNET”/>
+
+Geocoder geocoder = new Geocoder(getApplicationContext(),Locale.getDefault());
+
+bool geocoderExists = Geocoder.isPresent(); //determinare se il dispositvo hs il geocoder
+
+//from latitude and longitude to address
+Reverse-geocoding a given location
+private void reverseGeocode(Location location) {
+double latitude = location.getLatitude();
+double longitude = location.getLongitude();
+List<Address> addresses = null;
+Geocoder gc = new Geocoder(this, Locale.getDefault());
+try {
+addresses = gc.getFromLocation(latitude, longitude, 10);
+} catch (IOException e) {
+Log.e(TAG, “IO Exception”, e);
+}
+}
+
+//example
+private void updateWithNewLocation(Location location) {
+TextView myLocationText;
+myLocationText = (TextView)findViewById(R.id.myLocationText);
+String latLongString = “No location found”;
+String addressString = “No address found”;
+if (location != null) {
+double lat = location.getLatitude();
+double lng = location.getLongitude();
+latLongString = “Lat:” + lat + “\nLong:” + lng;
+double latitude = location.getLatitude();
+double longitude = location.getLongitude();
+
+Geocoder gc = new Geocoder(this, Locale.getDefault());
+try {
+List<Address> addresses = gc.getFromLocation(latitude, longitude, 1);
+StringBuilder sb = new StringBuilder();
+if (addresses.size() > 0) {
+Address address = addresses.get(0);
+for (int i = 0; i < address.getMaxAddressLineIndex(); i++)
+sb.append(address.getAddressLine(i)).append(“\n”);
+sb.append(address.getLocality()).append(“\n”);
+sb.append(address.getPostalCode()).append(“\n”);
+sb.append(address.getCountryName());
+}
+addressString = sb.toString();
+} catch (IOException e) {}
+}
+myLocationText.setText(“Your Current Position is:\n” +
+latLongString + “\n\n” + addressString);
+}
+
+Creating a Map-Based Activity
+//per disegnare la mappa bisogna scaricarsi le API a http://code.google.com/android/maps-api-signup.html
+
+//MD5 fingerprint?? page 538
+
+//example
+
+A skeleton map Activity
+import
+import
+import
+import
+com.google.android.maps.MapActivity;
+com.google.android.maps.MapController;
+com.google.android.maps.MapView;
+android.os.Bundle;
+public class MyMapActivity extends MapActivity {
+private MapView mapView;
+private MapController mapController;
+@Override
+public void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.map_layout);
+mapView = (MapView)findViewById(R.id.map_view);
+}
+@Override
+protected boolean isRouteDisplayed() {
+// IMPORTANT: This method must return true if your Activity
+// is displaying driving directions. Otherwise return false.
+return false;
+}
+}
+
+A map Activity layout resource
+<?xml version=”1.0” encoding=”utf-8”?>
+<LinearLayout
+xmlns:android=”http://schemas.android.com/apk/res/android”
+android:orientation=”vertical”
+android:layout_width=”fill_parent”
+android:layout_height=”fill_parent”>
+<com.google.android.maps.MapView
+android:id=”@+id/map_view”
+android:layout_width=”fill_parent”
+android:layout_height=”fill_parent”
+android:enabled=”true”
+android:clickable=”true”
+android:apiKey=”mymapapikey”
+/>
+</LinearLayout>
+<uses-library android:name=”com.google.android.maps”/>
+
+Configuring and Using Map Views page 541
+
+<uses-permission android:name=“android.permission.ACCESS_FINE_LOCATION“ />
+
+//my location overlay?? page 553/554
+
