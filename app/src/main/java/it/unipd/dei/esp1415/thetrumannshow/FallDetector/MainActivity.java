@@ -110,6 +110,7 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
     @Override
     public void onSessionAlreadyRunningDialogPositiveClick() {
         SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
+        mAdapter.notifyDataSetChanged();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
     }

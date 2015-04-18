@@ -70,7 +70,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 mDateFormatter.format(tmpSession.getDate());
         viewHolder.mStartDateTime.setText(tmpStrBuilder);
         tmpStrBuilder = mAppContext.getString(R.string.cardview_duration) + " " +
-                tmpSession.getDuration();
+                tmpSession.getFormattedDuration();
         viewHolder.mSessionDuration.setText(tmpStrBuilder);
 
         if (SessionsLab.get(mAppContext).hasRunningSession() && x == 0) {

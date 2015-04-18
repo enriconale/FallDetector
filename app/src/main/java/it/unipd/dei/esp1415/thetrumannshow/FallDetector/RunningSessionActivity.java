@@ -6,8 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 
 
@@ -34,7 +32,7 @@ public class RunningSessionActivity extends ActionBarActivity {
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
         mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
-                + " " + mSession.getDuration());
+                + " " + mSession.getFormattedDuration());
     }
 
 
