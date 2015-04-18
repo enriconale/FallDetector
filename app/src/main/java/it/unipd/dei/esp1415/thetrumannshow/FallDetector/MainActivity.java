@@ -1,15 +1,11 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +17,6 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity implements NewSessionNameDialogFragment
         .NewSessionNameDialogFragmentListener, SessionAlreadyRunningDialogFragment
 .SessionAlreadyRunningDialogFragmentListener {
-
-    public static final String STOP_RUNNING_SERVICE = "stop_running_service";
 
     private static final String NEW_SESSION_DIALOG = "new_session_dialog";
     private static final String SESSION_RUNNING_DIALOG = "session_running_dialog";
@@ -115,20 +109,6 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
 
     @Override
     public void onSessionAlreadyRunningDialogPositiveClick() {
-        Intent intent = new Intent(this, RunningSessionService.class);
-        ServiceConnection conn = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-
-            }
-        };
-        bindService(intent, conn, 0);
-        unbindService(conn);
         SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);

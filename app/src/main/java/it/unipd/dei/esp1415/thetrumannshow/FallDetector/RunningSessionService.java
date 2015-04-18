@@ -11,10 +11,6 @@ import android.util.Log;
  */
 public class RunningSessionService extends IntentService {
 
-    private Session mRunningSession;
-    IBinder mBinder;      // interface for clients that bind
-    boolean mAllowRebind;
-
     public RunningSessionService() {
         super("RunningSessionService");
     }
@@ -22,28 +18,18 @@ public class RunningSessionService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d("Service started", "Service started");
-        mRunningSession = SessionsLab.get(getApplicationContext()).getRunningSession();
+        Session mRunningSession = SessionsLab.get(getApplicationContext()).getRunningSession();
 
         while (true) {
             if (SessionsLab.get(getApplicationContext()).hasRunningSession())
                 Log.d("Service going on", mRunningSession.getSessionName());
-            else
+            else {
+                stopSelf();
                 break;
+            }
             SystemClock.sleep(1000);
         }
 
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // A client is binding to the service with bindService()
-        return mBinder;
-    }
-    @Override
-    public boolean onUnbind(Intent intent) {
-        // All clients have unbound with unbindService()
-        stopSelf();
-        return mAllowRebind;
     }
 
     @Override
