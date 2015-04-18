@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +17,16 @@ public class RunningSessionActivity extends ActionBarActivity {
     private TextView mSessionName;
     private TextView mSessionCreationDate;
     private TextView mSessionDuration;
+    private Handler mHandler = new Handler();
+    private Runnable mUpdateTimeTask = new Runnable() {
+        public void run() {
+            mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
+                    + " " + mSession.getFormattedDuration());
+            mHandler.postDelayed(mUpdateTimeTask, 100);
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +36,16 @@ public class RunningSessionActivity extends ActionBarActivity {
         mSession = SessionsLab.get(getApplicationContext()).getRunningSession();
         mDateFormatter = SessionsLab.get(getApplicationContext()).getDateFormat();
 
+
         mSessionName = (TextView)findViewById(R.id.session_name);
         mSessionCreationDate = (TextView)findViewById(R.id.date_time);
         mSessionDuration = (TextView)findViewById(R.id.session_duration);
 
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
-        mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
-                + " " + mSession.getFormattedDuration());
+
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        mHandler.postDelayed(mUpdateTimeTask, 0);
     }
 
 
@@ -56,5 +69,11 @@ public class RunningSessionActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacks(mUpdateTimeTask);
     }
 }

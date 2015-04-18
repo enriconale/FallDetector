@@ -2,6 +2,7 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +23,24 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
+        protected Context appContext;
+        protected Session session;
         protected RelativeLayout mMainCardLayout;
         protected ImageView mSessionIcon;
         protected TextView mSessionName;
         protected TextView mNumOfFalls;
         protected TextView mStartDateTime;
         protected TextView mSessionDuration;
+
+        protected Handler mHandler = new Handler();
+        protected Runnable mUpdateTimeTask = new Runnable() {
+            public void run() {
+                mSessionDuration.setText(appContext.getString(R.string.cardview_duration)
+                        + " " + session.getFormattedDuration());
+                mHandler.postDelayed(mUpdateTimeTask, 100);
+
+            }
+        };
 
         public MyViewHolder(View v) {
             super(v);
@@ -61,6 +74,9 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     public void onBindViewHolder(MyViewHolder viewHolder, int i) {
         final int x = i;
         Session tmpSession = mDataset.get(x);
+        viewHolder.session = tmpSession;
+        viewHolder.appContext = mAppContext;
+
         viewHolder.mSessionName.setText(tmpSession.getSessionName());
 
         String tmpStrBuilder = mAppContext.getString(R.string.cardview_falls) + " " +
@@ -75,6 +91,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
         if (SessionsLab.get(mAppContext).hasRunningSession() && x == 0) {
             viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
+            viewHolder.mHandler.postDelayed(viewHolder.mUpdateTimeTask, 0);
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -93,6 +110,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 }
             });
         }
+
     }
 
     //Numbers of element in the list

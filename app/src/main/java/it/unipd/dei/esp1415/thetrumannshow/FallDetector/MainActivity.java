@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
             case R.id.action_settings:
                 return true;
             case R.id.action_start_session:
-                if (SessionsLab.get(getApplicationContext()).getRunningSession() != null) {
+                if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {
                     DialogFragment dialog = new SessionAlreadyRunningDialogFragment();
                     dialog.show(getSupportFragmentManager(), SESSION_RUNNING_DIALOG);
                 } else {
