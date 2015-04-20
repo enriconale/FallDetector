@@ -72,8 +72,8 @@ public class RunningSessionActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
         mHandler.removeCallbacks(mUpdateTimeTask);
     }
 }

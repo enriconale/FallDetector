@@ -71,13 +71,19 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     //Take data from i-th element of the list (sessions list) and passes them to the views of the
     // card
     @Override
-    public void onBindViewHolder(MyViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final MyViewHolder viewHolder, int i) {
         final int x = i;
         Session tmpSession = mDataset.get(x);
         viewHolder.session = tmpSession;
         viewHolder.appContext = mAppContext;
 
-        viewHolder.mSessionName.setText(tmpSession.getSessionName());
+        String sessionName = tmpSession.getSessionName();
+        if (sessionName.length() > 12) {
+            viewHolder.mSessionName.setText(tmpSession.getSessionName().substring(0, 12) + "...");
+        } else {
+            viewHolder.mSessionName.setText(tmpSession.getSessionName());
+        }
+
 
         String tmpStrBuilder = mAppContext.getString(R.string.cardview_falls) + " " +
                 tmpSession.getFalls().size();
@@ -95,6 +101,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    MyViewHolder vh = viewHolder;
+                    vh.mHandler.removeCallbacks(vh.mUpdateTimeTask);
                     Intent intent = new Intent(v.getContext(), RunningSessionActivity.class);
                     v.getContext().startActivity(intent);
                 }
