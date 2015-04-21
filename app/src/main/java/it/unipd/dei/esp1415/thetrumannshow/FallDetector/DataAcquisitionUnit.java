@@ -5,12 +5,18 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,10 +25,13 @@ import java.util.Arrays;
  * Created by Eike Trumann on 29.03.15.
  * all rights reserved
  */
-public class DataAcquisitionUnit implements SensorEventListener, LocationListener {
+public class DataAcquisitionUnit
+        implements SensorEventListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
+
     private static SensorManager mSensorManager;
-    private static LocationManager mLocationManager;
-    private String mLocationProvider;
+    private GoogleApiClient mGoogleApiClient;
     private Sensor mAccelerometer;
     private Context mContext;
 
@@ -39,13 +48,11 @@ public class DataAcquisitionUnit implements SensorEventListener, LocationListene
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
-        mLocationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        java.util.List<String> locationProviders
-                = mLocationManager.getProviders(criteria, false);
-        mLocationProvider = locationProviders.get(0);
-        mLocationManager.requestLocationUpdates(mLocationProvider, 0, 0, this);
+
+        //Location
+        buildGoogleApiClient(c);
+        mGoogleApiClient.connect();
+
         mContext = c;
     }
 
@@ -66,22 +73,6 @@ public class DataAcquisitionUnit implements SensorEventListener, LocationListene
             }
             // writeToFile("autoSave"+i/samples+".csv");
         }
-    }
-
-    public void onStatusChanged(String provider,int status, Bundle extras){
-
-    }
-
-    public void onProviderEnabled(String provider){
-
-    }
-
-    public void onProviderDisabled(String provider){
-
-    }
-
-    public void onLocationChanged(Location l){
-
     }
 
     void writeToFile(String filename){
@@ -115,7 +106,7 @@ public class DataAcquisitionUnit implements SensorEventListener, LocationListene
     }
 
     private void fall(){
-        Location loc = getPosition();
+        Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (loc != null)
             Toast.makeText(mContext, "REGISTERED FALL EVENT at "+ loc.toString(), Toast.LENGTH_LONG).show();
         else
@@ -124,7 +115,6 @@ public class DataAcquisitionUnit implements SensorEventListener, LocationListene
 
     void detach(){
         mSensorManager.unregisterListener(this);
-        mLocationManager.removeUpdates(this);
     }
 
     long[] getSurroundingSecond(long index){
@@ -152,8 +142,31 @@ public class DataAcquisitionUnit implements SensorEventListener, LocationListene
         return new Fall("",new java.util.Date(), null ,xArr,yArr,zArr);
     }
 
-    private Location getPosition(){
-        return mLocationManager.getLastKnownLocation(mLocationProvider);
+    // connection to proprietary Google Play Services
+
+    protected synchronized void buildGoogleApiClient(Context c) {
+        mGoogleApiClient = new GoogleApiClient.Builder(c)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
     }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    protected void startLocationUpdates() {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
 
 }
