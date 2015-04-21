@@ -53,6 +53,13 @@ public class RunningSessionActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_running_session, menu);
+        if (SessionsLab.get(getApplicationContext()).isRunningSessionPlaying()) {
+            menu.getItem(0).setIcon(getResources()
+                    .getDrawable(R.mipmap.action_pause_circle_outline));
+        } else {
+            menu.getItem(0).setIcon(getResources()
+                    .getDrawable(R.mipmap.action_play_circle_outline));
+        }
         return true;
     }
 
@@ -63,11 +70,17 @@ public class RunningSessionActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_pause_resume_session:
+                if (SessionsLab.get(getApplicationContext()).isRunningSessionPlaying()) {
+                    item.setIcon(getResources().getDrawable(R.mipmap.action_play_circle_outline));
+                    SessionsLab.get(getApplicationContext()).pauseCurrentlyRunningSession();
+                } else {
+                    item.setIcon(getResources().getDrawable(R.mipmap.action_pause_circle_outline));
+                    SessionsLab.get(getApplicationContext()).resumeCurrentlyRunningSession();
+                }
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

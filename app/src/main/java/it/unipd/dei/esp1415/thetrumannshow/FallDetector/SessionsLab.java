@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 public class SessionsLab {
     private static boolean mHasRunningSession = false;
+    private static boolean mIsRunningSessionPlaying = false;
     private static SimpleDateFormat mDateFormatter;
     private static SessionsLab sSessionsLab;
     private Context mAppContext;
@@ -35,6 +36,7 @@ public class SessionsLab {
     public void createNewRunningSession(Session session) {
         mRunningSession = session;
         mHasRunningSession = true;
+        mIsRunningSessionPlaying = true;
     }
 
     public ArrayList<Session> getSessions() {
@@ -49,13 +51,26 @@ public class SessionsLab {
         return mDateFormatter;
     }
 
+    public void resumeCurrentlyRunningSession() {
+        mIsRunningSessionPlaying = true;
+    }
+
+    public void pauseCurrentlyRunningSession() {
+        mIsRunningSessionPlaying = false;
+    }
+
     public void stopCurrentlyRunningSession() {
+        mIsRunningSessionPlaying = false;
         mHasRunningSession = false;
         mRunningSession = null;
     }
 
     public boolean hasRunningSession() {
         return mHasRunningSession;
+    }
+
+    public boolean isRunningSessionPlaying() {
+        return mIsRunningSessionPlaying;
     }
 
 }

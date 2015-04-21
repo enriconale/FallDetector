@@ -13,6 +13,7 @@ import java.util.TimerTask;
 public class RunningSessionService extends IntentService {
     private Timer mTimer;
     private long mExecutionTime = 0;
+    private SessionsLab mSessionsLab;
 
     public RunningSessionService() {
         super("RunningSessionService");
@@ -21,15 +22,18 @@ public class RunningSessionService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d("Service started", "Service started");
-        final Session mRunningSession = SessionsLab.get(getApplicationContext()).getRunningSession();
+        mSessionsLab = SessionsLab.get(getApplicationContext());
+        final Session mRunningSession = mSessionsLab.getRunningSession();
         mTimer = new Timer();
         mTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {
+                if (mSessionsLab.hasRunningSession()) {
                     Log.d("Service going on:", mRunningSession.getSessionName());
-                    mExecutionTime += 1000;
-                    mRunningSession.setDuration(mExecutionTime);
+                    if (mSessionsLab.isRunningSessionPlaying()) {
+                        mExecutionTime += 1000;
+                        mRunningSession.setDuration(mExecutionTime);
+                    }
                 } else {
                     mTimer.cancel();
                 }

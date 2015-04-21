@@ -26,4 +26,5 @@
     <string name="falls_list">Falls list:</string>
 
     <string name="title_activity_running_session">Running Session</string>
+    <string name="action_pause_resume_session">Pause or resume the session</string>
 </resources>
