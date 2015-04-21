@@ -76,4 +76,11 @@ public class RunningSessionActivity extends ActionBarActivity {
         super.onPause();
         mHandler.removeCallbacks(mUpdateTimeTask);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        mHandler.postDelayed(mUpdateTimeTask, 0);
+    }
 }

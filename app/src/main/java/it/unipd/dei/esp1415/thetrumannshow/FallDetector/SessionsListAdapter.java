@@ -78,8 +78,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         viewHolder.appContext = mAppContext;
 
         String sessionName = tmpSession.getSessionName();
-        if (sessionName.length() > 12) {
-            viewHolder.mSessionName.setText(tmpSession.getSessionName().substring(0, 12) + "...");
+        if (sessionName.length() > 15) {
+            viewHolder.mSessionName.setText(tmpSession.getSessionName().substring(0, 15) + "...");
         } else {
             viewHolder.mSessionName.setText(tmpSession.getSessionName());
         }
