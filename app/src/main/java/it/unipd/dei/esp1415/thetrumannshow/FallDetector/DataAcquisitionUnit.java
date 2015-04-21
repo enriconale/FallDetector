@@ -6,7 +6,17 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -15,8 +25,13 @@ import java.util.Arrays;
  * Created by Eike Trumann on 29.03.15.
  * all rights reserved
  */
-public class DataAcquisitionUnit implements SensorEventListener {
+public class DataAcquisitionUnit
+        implements SensorEventListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
+
     private static SensorManager mSensorManager;
+    private GoogleApiClient mGoogleApiClient;
     private Sensor mAccelerometer;
     private Context mContext;
 
@@ -33,6 +48,11 @@ public class DataAcquisitionUnit implements SensorEventListener {
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+
+        //Location
+        buildGoogleApiClient(c);
+        mGoogleApiClient.connect();
+
         mContext = c;
     }
 
@@ -86,7 +106,11 @@ public class DataAcquisitionUnit implements SensorEventListener {
     }
 
     private void fall(){
-        Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
+        Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (loc != null)
+            Toast.makeText(mContext, "REGISTERED FALL EVENT at "+ loc.toString(), Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
     }
 
     void detach(){
@@ -117,4 +141,32 @@ public class DataAcquisitionUnit implements SensorEventListener {
 
         return new Fall("",new java.util.Date(), null ,xArr,yArr,zArr);
     }
+
+    // connection to proprietary Google Play Services
+
+    protected synchronized void buildGoogleApiClient(Context c) {
+        mGoogleApiClient = new GoogleApiClient.Builder(c)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    protected void startLocationUpdates() {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+
 }
