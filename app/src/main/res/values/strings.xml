@@ -27,4 +27,5 @@
 
     <string name="title_activity_running_session">Running Session</string>
     <string name="action_pause_resume_session">Pause or resume the session</string>
+    <string name="action_stop_session">Stop the session</string>
 </resources>

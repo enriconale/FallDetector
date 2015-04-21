@@ -1,6 +1,7 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -79,6 +80,10 @@ public class RunningSessionActivity extends ActionBarActivity {
                     item.setIcon(getResources().getDrawable(R.mipmap.action_pause_circle_outline));
                     SessionsLab.get(getApplicationContext()).resumeCurrentlyRunningSession();
                 }
+                break;
+            case R.id.action_stop_session:
+                SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
+                NavUtils.navigateUpFromSameTask(this);
                 break;
         }
         return super.onOptionsItemSelected(item);
