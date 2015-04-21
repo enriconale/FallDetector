@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Singleton class to manage the list of sessions and the currently active session.
  */
 public class SessionsLab {
+    private static boolean mHasRunningSession = false;
     private static SimpleDateFormat mDateFormatter;
     private static SessionsLab sSessionsLab;
     private Context mAppContext;
@@ -33,6 +34,7 @@ public class SessionsLab {
 
     public void createNewRunningSession(Session session) {
         mRunningSession = session;
+        mHasRunningSession = true;
     }
 
     public ArrayList<Session> getSessions() {
@@ -48,7 +50,12 @@ public class SessionsLab {
     }
 
     public void stopCurrentlyRunningSession() {
+        mHasRunningSession = false;
         mRunningSession = null;
+    }
+
+    public boolean hasRunningSession() {
+        return mHasRunningSession;
     }
 
 }

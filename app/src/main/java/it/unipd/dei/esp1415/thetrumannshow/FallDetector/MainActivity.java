@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
 
     private static final String NEW_SESSION_DIALOG = "new_session_dialog";
     private static final String SESSION_RUNNING_DIALOG = "session_running_dialog";
+
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -75,7 +77,7 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
             case R.id.action_settings:
                 return true;
             case R.id.action_start_session:
-                if (SessionsLab.get(getApplicationContext()).getRunningSession() != null) {
+                if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {
                     DialogFragment dialog = new SessionAlreadyRunningDialogFragment();
                     dialog.show(getSupportFragmentManager(), SESSION_RUNNING_DIALOG);
                 } else {
@@ -100,12 +102,15 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
         newSession.setSessionName(sessionName);
         SessionsLab.get(getApplicationContext()).getSessions().add(0, newSession);
         SessionsLab.get(getApplicationContext()).createNewRunningSession(newSession);
+        Intent intent = new Intent(this, RunningSessionService.class);
+        startService(intent);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onSessionAlreadyRunningDialogPositiveClick() {
         SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
+        mAdapter.notifyDataSetChanged();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
     }

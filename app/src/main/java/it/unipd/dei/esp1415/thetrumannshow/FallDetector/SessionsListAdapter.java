@@ -2,6 +2,7 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +23,24 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     //Initialize and control all the views of a single card
     public static class MyViewHolder extends RecyclerView.ViewHolder {
+        protected Context appContext;
+        protected Session session;
         protected RelativeLayout mMainCardLayout;
         protected ImageView mSessionIcon;
         protected TextView mSessionName;
         protected TextView mNumOfFalls;
         protected TextView mStartDateTime;
         protected TextView mSessionDuration;
+
+        protected Handler mHandler = new Handler();
+        protected Runnable mUpdateTimeTask = new Runnable() {
+            public void run() {
+                mSessionDuration.setText(appContext.getString(R.string.cardview_duration)
+                        + " " + session.getFormattedDuration());
+                mHandler.postDelayed(mUpdateTimeTask, 100);
+
+            }
+        };
 
         public MyViewHolder(View v) {
             super(v);
@@ -58,10 +71,19 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     //Take data from i-th element of the list (sessions list) and passes them to the views of the
     // card
     @Override
-    public void onBindViewHolder(MyViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final MyViewHolder viewHolder, int i) {
         final int x = i;
         Session tmpSession = mDataset.get(x);
-        viewHolder.mSessionName.setText(tmpSession.getSessionName());
+        viewHolder.session = tmpSession;
+        viewHolder.appContext = mAppContext;
+
+        String sessionName = tmpSession.getSessionName();
+        if (sessionName.length() > 15) {
+            viewHolder.mSessionName.setText(tmpSession.getSessionName().substring(0, 15) + "...");
+        } else {
+            viewHolder.mSessionName.setText(tmpSession.getSessionName());
+        }
+
 
         String tmpStrBuilder = mAppContext.getString(R.string.cardview_falls) + " " +
                 tmpSession.getFalls().size();
@@ -70,14 +92,17 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 mDateFormatter.format(tmpSession.getDate());
         viewHolder.mStartDateTime.setText(tmpStrBuilder);
         tmpStrBuilder = mAppContext.getString(R.string.cardview_duration) + " " +
-                tmpSession.getDuration();
+                tmpSession.getFormattedDuration();
         viewHolder.mSessionDuration.setText(tmpStrBuilder);
 
-        if (x == 0 && SessionsLab.get(mAppContext).getRunningSession() != null) {
+        if (SessionsLab.get(mAppContext).hasRunningSession() && x == 0) {
             viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
+            viewHolder.mHandler.postDelayed(viewHolder.mUpdateTimeTask, 0);
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    MyViewHolder vh = viewHolder;
+                    vh.mHandler.removeCallbacks(vh.mUpdateTimeTask);
                     Intent intent = new Intent(v.getContext(), RunningSessionActivity.class);
                     v.getContext().startActivity(intent);
                 }
@@ -93,6 +118,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 }
             });
         }
+
     }
 
     //Numbers of element in the list

@@ -36,7 +36,7 @@ public class SessionDetailsActivity extends ActionBarActivity {
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
         mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
-                + " " + mSession.getDuration());
+                + " " + mSession.getFormattedDuration());
 
     }
 
