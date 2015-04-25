@@ -6,6 +6,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -37,13 +40,28 @@ public class RunningSessionActivity extends ActionBarActivity {
         mSession = SessionsLab.get(getApplicationContext()).getRunningSession();
         mDateFormatter = SessionsLab.get(getApplicationContext()).getDateFormat();
 
-
         mSessionName = (TextView)findViewById(R.id.session_name);
         mSessionCreationDate = (TextView)findViewById(R.id.date_time);
         mSessionDuration = (TextView)findViewById(R.id.session_duration);
 
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
+
+        RelativeLayout myLayout = (RelativeLayout)findViewById(R.id.falls_list_container);
+        LinearLayout lL = new LinearLayout(getApplicationContext());
+        lL.setOrientation(LinearLayout.VERTICAL);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        for (int i = 0; i < 10; i++) {
+
+            View injecterLayout = getLayoutInflater().inflate(R.layout.single_fall_list_item, lL,
+                    false);
+            injecterLayout.setId(i);
+            if (i != 0)
+                lp.addRule(RelativeLayout.BELOW, i-1);
+            lL.addView(injecterLayout);
+        }
+        myLayout.addView(lL);
 
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.postDelayed(mUpdateTimeTask, 0);
