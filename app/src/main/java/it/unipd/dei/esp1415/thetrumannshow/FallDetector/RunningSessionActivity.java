@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 
@@ -47,21 +49,28 @@ public class RunningSessionActivity extends ActionBarActivity {
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
 
-        RelativeLayout myLayout = (RelativeLayout)findViewById(R.id.falls_list_container);
-        LinearLayout lL = new LinearLayout(getApplicationContext());
-        lL.setOrientation(LinearLayout.VERTICAL);
+        RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id.falls_list_container);
+        LinearLayout itemsWrapper = new LinearLayout(getApplicationContext());
+        itemsWrapper.setOrientation(LinearLayout.VERTICAL);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         for (int i = 0; i < 10; i++) {
-
-            View injecterLayout = getLayoutInflater().inflate(R.layout.single_fall_list_item, lL,
-                    false);
-            injecterLayout.setId(i);
-            if (i != 0)
-                lp.addRule(RelativeLayout.BELOW, i-1);
-            lL.addView(injecterLayout);
+            final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,
+                    itemsWrapper, false);
+            singleFallListItem.setId(i);
+            singleFallListItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), FallDetailsActivity.class);
+                    startActivity(intent);
+                }
+            });
+            if (i != 0) {
+                lp.addRule(RelativeLayout.BELOW, i - 1);
+            }
+            itemsWrapper.addView(singleFallListItem);
         }
-        myLayout.addView(lL);
+        fallsListContainer.addView(itemsWrapper);
 
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.postDelayed(mUpdateTimeTask, 0);
