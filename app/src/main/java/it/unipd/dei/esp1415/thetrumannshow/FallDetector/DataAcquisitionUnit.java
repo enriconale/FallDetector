@@ -35,7 +35,7 @@ public class DataAcquisitionUnit
     private Sensor mAccelerometer;
     private Context mContext;
 
-    private final static int samples = 1000;
+    private final static int samples = 10000;
 
     private LongRingBuffer timeBuffer = new LongRingBuffer(samples);
     private FloatRingBuffer xBuffer = new FloatRingBuffer(samples);
@@ -43,6 +43,7 @@ public class DataAcquisitionUnit
     private FloatRingBuffer zBuffer = new FloatRingBuffer(samples);
 
     private long i = 0;
+    private int mLastFallIndex = -1;
 
     DataAcquisitionUnit(Context c){
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
@@ -67,7 +68,7 @@ public class DataAcquisitionUnit
 
         i++;
 
-        if (i % samples == 0){
+        if (i % (samples / 100) == 0){
             if(isFall()){
                 fall();
             }
@@ -99,8 +100,10 @@ public class DataAcquisitionUnit
             double acc = Math.sqrt(xBuffer.readOne(j) * xBuffer.readOne(j)
                     + yBuffer.readOne(j) * yBuffer.readOne(j)
                     + zBuffer.readOne(j) * zBuffer.readOne(j));
-            if (acc > 20.0 || acc < 3.0)
+            if (acc > 18.0) {
+                mLastFallIndex = j;
                 return true;
+            }
         }
         return false;
     }
@@ -111,6 +114,8 @@ public class DataAcquisitionUnit
             Toast.makeText(mContext, "REGISTERED FALL EVENT at "+ loc.toString(), Toast.LENGTH_LONG).show();
         else
             Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
+        try{Thread.sleep(600);} catch (Exception e) {}
+        constructFallObject(mLastFallIndex);
     }
 
     void detach(){
@@ -120,17 +125,17 @@ public class DataAcquisitionUnit
     long[] getSurroundingSecond(long index){
         long nanosecond = timeBuffer.readOne(index);
         long j = index;
-        for(; timeBuffer.readOne(index) > (nanosecond - 500000000); j--);
+        for(; timeBuffer.readOne(j) > (nanosecond - 500000000); j--);
         long begin = j;
 
         j = index;
-        for(; timeBuffer.readOne(index) < (nanosecond + 500000000); j++);
+        for(; timeBuffer.readOne(j) < (nanosecond + 500000000); j++);
         long end = j;
         return new long[]{begin,end};
     }
 
     long[] getSurroundingSecondIndex(long nanosecond){
-        return getSurroundingSecondIndex(timeBuffer.getPosition(nanosecond));
+        return getSurroundingSecond(timeBuffer.getPosition(nanosecond));
     }
 
     private Fall constructFallObject(int index){
