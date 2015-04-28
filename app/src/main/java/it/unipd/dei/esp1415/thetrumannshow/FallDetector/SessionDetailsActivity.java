@@ -1,17 +1,20 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Random;
 
 
 public class SessionDetailsActivity extends ActionBarActivity {
@@ -21,6 +24,7 @@ public class SessionDetailsActivity extends ActionBarActivity {
     private TextView mSessionName;
     private TextView mSessionCreationDate;
     private TextView mSessionDuration;
+    private ImageView mSessionIcon;
     private int mPositionInList;
 
     @Override
@@ -36,11 +40,15 @@ public class SessionDetailsActivity extends ActionBarActivity {
         mSessionName = (TextView)findViewById(R.id.session_name);
         mSessionCreationDate = (TextView)findViewById(R.id.date_time);
         mSessionDuration = (TextView)findViewById(R.id.session_duration);
+        mSessionIcon = (ImageView)findViewById(R.id.session_icon);
+
 
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
         mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
                 + " " + mSession.getFormattedDuration());
+        mSessionIcon.setImageResource(R.mipmap.recording_icon);
+        mSessionIcon.setColorFilter(Color.rgb(mSession.getColor1(),mSession.getColor2(),mSession.getColor3()));
 
         RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id.falls_list_container);
         LinearLayout itemsWrapper = new LinearLayout(getApplicationContext());

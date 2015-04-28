@@ -19,13 +19,13 @@
         android:id="@+id/main_layout">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:id="@+id/session_icon"
-        android:src="@mipmap/temporary_placeholder" />
+         />
 
     <TextView
         android:id="@+id/session_name"

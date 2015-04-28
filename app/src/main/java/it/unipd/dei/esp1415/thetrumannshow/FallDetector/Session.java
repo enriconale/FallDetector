@@ -2,6 +2,7 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -13,6 +14,9 @@ public class Session {
     private Date mStartDate;
     private long mDuration;
     private LinkedList<Fall> mFalls;
+    private int mColor1;
+    private int mColor2;
+    private int mColor3;
 
     public Session() {
         mUUID = UUID.randomUUID();
@@ -20,6 +24,10 @@ public class Session {
         mStartDate = new Date();
         mDuration = 0;
         mFalls = new LinkedList<Fall>();
+        mColor1 = (int)(Math.random() *256);
+        mColor2 = (int)(Math.random() *256);
+        mColor3 = (int)(Math.random() *256);
+
     }
 
     public Session(UUID uuid, String sessionName, Date date, long duration) {
@@ -28,6 +36,9 @@ public class Session {
         mStartDate = date;
         mDuration = duration;
         mFalls = new LinkedList<Fall>();
+        mColor1 = (int)(Math.random() *256);
+        mColor2 = (int)(Math.random() *256);
+        mColor3 = (int)(Math.random() *256);
     }
 
     public UUID getUUID() {
@@ -45,6 +56,12 @@ public class Session {
     public long getDuration() {
         return mDuration;
     }
+
+    public int getColor1() {return mColor1;}
+
+    public int getColor2() {return mColor2;}
+
+    public int getColor3() {return mColor3;}
 
     public String getFormattedDuration() {
         int seconds = (int) (mDuration / 1000) % 60;
