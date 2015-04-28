@@ -37,6 +37,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             public void run() {
                 mSessionDuration.setText(appContext.getString(R.string.cardview_duration)
                         + " " + session.getFormattedDuration());
+                mNumOfFalls.setText(appContext.getString(R.string.cardview_falls)+" " + session.getFalls().size());
+
                 mHandler.postDelayed(mUpdateTimeTask, 100);
 
             }

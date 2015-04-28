@@ -69,7 +69,7 @@ public class DataAcquisitionUnit
         i++;
 
         if (i % (samples / 100) == 0){
-            if(isFall()){
+            if(isFall(((int)(i - (samples / 100)) % samples), ((int) i % samples))){
                 fall();
             }
             // writeToFile("autoSave"+i/samples+".csv");
@@ -95,8 +95,8 @@ public class DataAcquisitionUnit
     }
 
     // dummy implementation of fall detection
-    private boolean isFall(){
-        for(int j = 0; j < samples; j++) {
+    private boolean isFall(int start, int end){
+        for(int j = start; j < end; j++) {
             double acc = Math.sqrt(xBuffer.readOne(j) * xBuffer.readOne(j)
                     + yBuffer.readOne(j) * yBuffer.readOne(j)
                     + zBuffer.readOne(j) * zBuffer.readOne(j));
@@ -115,7 +115,9 @@ public class DataAcquisitionUnit
         else
             Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
         try{Thread.sleep(600);} catch (Exception e) {}
-        constructFallObject(mLastFallIndex);
+        Fall fall = constructFallObject(mLastFallIndex);
+        SessionsLab lab = SessionsLab.get(mContext);
+        lab.getRunningSession().addFall(fall);
     }
 
     void detach(){
