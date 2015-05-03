@@ -24,21 +24,21 @@ public class Session {
         mStartDate = new Date();
         mDuration = 0;
         mFalls = new LinkedList<Fall>();
-        mColor1 = (int)(Math.random() *256);
-        mColor2 = (int)(Math.random() *256);
-        mColor3 = (int)(Math.random() *256);
-
+        mColor1 = (int)(Math.random() * 256);
+        mColor2 = (int)(Math.random() * 256);
+        mColor3 = (int)(Math.random() * 256);
     }
 
-    public Session(UUID uuid, String sessionName, Date date, long duration) {
+    public Session(UUID uuid, String sessionName, Date date, long duration, int color1,
+                   int color2, int color3) {
         mUUID = uuid;
         mSessionName = sessionName;
         mStartDate = date;
         mDuration = duration;
         mFalls = new LinkedList<Fall>();
-        mColor1 = (int)(Math.random() *256);
-        mColor2 = (int)(Math.random() *256);
-        mColor3 = (int)(Math.random() *256);
+        mColor1 = color1;
+        mColor2 = color2;
+        mColor3 = color3;
     }
 
     public UUID getUUID() {

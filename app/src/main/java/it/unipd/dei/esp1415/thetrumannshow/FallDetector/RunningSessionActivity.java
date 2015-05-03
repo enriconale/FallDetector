@@ -49,7 +49,8 @@ public class RunningSessionActivity extends ActionBarActivity {
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
 
-        RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id.falls_list_container);
+        RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id
+                .falls_list_container);
         LinearLayout itemsWrapper = new LinearLayout(getApplicationContext());
         itemsWrapper.setOrientation(LinearLayout.VERTICAL);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
