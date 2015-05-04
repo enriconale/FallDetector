@@ -17,25 +17,28 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:id="@+id/session_icon"
-            android:src="@mipmap/temporary_placeholder"/>
+            android:layout_centerVertical="true"
+            android:id="@+id/session_icon"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/session_icon"
-            android:layout_centerVertical="true"
             android:layout_toEndOf="@id/session_icon"
-            android:textSize="35sp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_centerVertical="true"
+            android:textSize="32sp"
             android:text="Fall Name"
             android:id="@+id/fall_name" />
 
 
         <ImageView
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:id="@+id/email_is_sent"
             android:src="@mipmap/temporary_placeholder"/>
 
