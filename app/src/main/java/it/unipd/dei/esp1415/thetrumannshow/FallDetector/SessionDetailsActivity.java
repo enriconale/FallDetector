@@ -2,6 +2,7 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,8 +17,10 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 
 
-public class SessionDetailsActivity extends ActionBarActivity {
+public class SessionDetailsActivity extends ActionBarActivity implements DeleteSessionDialog
+        .DeleteSessionDialogListener {
     public static final String FALL_DETAILS = "fall_details";
+    public static final String SESSION_DELETE = "session_delete";
     private static SimpleDateFormat mDateFormatter;
 
     private Session mSession;
@@ -94,11 +97,17 @@ public class SessionDetailsActivity extends ActionBarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_delete_session:
-                SessionsLab.get(getApplicationContext()).getSessions().remove(mSessionPositionInList);
-                NavUtils.navigateUpFromSameTask(this);
+                DialogFragment dialog = new DeleteSessionDialog();
+                dialog.show(getSupportFragmentManager(), SESSION_DELETE);
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDeleteSessionDialogPositiveClick() {
+        SessionsLab.get(getApplicationContext()).getSessions().remove(mSessionPositionInList);
+        NavUtils.navigateUpFromSameTask(this);
     }
 }

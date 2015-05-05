@@ -24,8 +24,12 @@
     <string name="title_activity_session_details">Session Details</string>
     <string name="action_delete_session">Delete session</string>
     <string name="falls_list">Falls list:</string>
+    <string name="delete_session_dialog_message">Do you really want to delete this session and
+        all its falls?</string>
 
     <string name="title_activity_running_session">Running Session</string>
     <string name="action_pause_resume_session">Pause or resume the session</string>
     <string name="action_stop_session">Stop the session</string>
+
+
 </resources>
