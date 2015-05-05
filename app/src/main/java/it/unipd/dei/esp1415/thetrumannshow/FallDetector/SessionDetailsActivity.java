@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 
 
-public class SessionDetailsActivity extends ActionBarActivity implements DeleteSessionDialog
+public class SessionDetailsActivity extends AppCompatActivity implements DeleteSessionDialog
         .DeleteSessionDialogListener {
     public static final String FALL_DETAILS = "fall_details";
     public static final String SESSION_DELETE = "session_delete";

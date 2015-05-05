@@ -3,20 +3,19 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 
 
-public class RunningSessionActivity extends ActionBarActivity {
+public class RunningSessionActivity extends AppCompatActivity {
     private static SimpleDateFormat mDateFormatter;
 
     private Session mSession;
