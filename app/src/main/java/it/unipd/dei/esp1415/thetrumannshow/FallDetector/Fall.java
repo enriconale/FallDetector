@@ -17,7 +17,6 @@ public class Fall extends ActionBarActivity{
     private final float[] mXAcceleration;
     private final float[] mYAcceleration;
     private final float[] mZAcceleration;
-
     private boolean mIsEmailSent;
 
     public Fall(String name, Date date, Location location, float[] xAcc, float[] yAcc, float[] zAcc) {
