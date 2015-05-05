@@ -69,7 +69,8 @@ public class DataAcquisitionUnit
         i++;
 
         if (i % (samples / 100) == 0){
-            if(isFall(((int)(i - (samples / 100)) % samples), ((int) i % samples))){
+            //if(isFall(((int)(i - (samples / 100)) % samples), ((int) i % samples))){
+            if(isFall(0,(int) (i >= samples ? samples - 1 : i))){
                 fall();
             }
             // writeToFile("autoSave"+i/samples+".csv");
