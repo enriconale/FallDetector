@@ -15,8 +15,6 @@ public class RunningSessionService extends IntentService {
     private long mExecutionTime = 0;
     private SessionsLab mSessionsLab;
 
-    private DataAcquisitionUnit dau;
-
     public RunningSessionService() {
         super("RunningSessionService");
     }
@@ -41,15 +39,10 @@ public class RunningSessionService extends IntentService {
                 }
             }
         }, 0, 1000);
-
-
-        // starting data acquisition, for now only till pause
-        dau = new DataAcquisitionUnit(getApplicationContext());
     }
 
     @Override
     public void onDestroy() {
-        dau.detach();
         Log.d("destroyed", "destroyed");
     }
 }

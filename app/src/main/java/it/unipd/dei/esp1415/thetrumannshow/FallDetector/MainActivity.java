@@ -28,6 +28,8 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
     private ArrayList<Session> mSessionsList;
     private TextView mEmptyListMessage;
 
+    private DataAcquisitionUnit dau;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,16 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
         if (mAdapter.getItemCount() == 0) {
             mEmptyListMessage.setVisibility(View.VISIBLE);
         }
+
+        // starting data acquisition, for now only till pause
+        dau = new DataAcquisitionUnit(getApplicationContext());
     }
 
     @Override
     protected void onPause(){
         super.onPause();
+        dau.detach();
+        dau.writeToFile("finalData.csv");
     }
 
     @Override
