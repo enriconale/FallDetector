@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by alessandro on 05/05/15.
  */
-public class FallDB extends SQLiteOpenHelper{
+public class CreateDatabase extends SQLiteOpenHelper{
 
     private static final String db_name="Fall Database.db";
     private static final int db_version=3;
@@ -32,20 +32,21 @@ public class FallDB extends SQLiteOpenHelper{
     public static final String email_sent_fall="Email Sent?";
 
 
-    public FallDB(Context context) {
+    public CreateDatabase(Context context) {
         super(context, db_name, null, db_version);
     }
 
         @Override
         public void onCreate(SQLiteDatabase db){
-            String sql1= "Create table " + session_table +" ( " +  id_session + " integer primary key, " + name_session + " text not null, " + date_session + " text not null, " + duration_session + " integer not null, " + color1_icon_session + " integer not null, " + color2_icon_session + " integer ot null," + color3_icon_session +" integer not null" + email_sent_fall + " integer not null);";
-            String sql2="Create table " + fall_table + " ( " + name_fall + " text primary key, " + date_fall + " text not null, " + location_fall + " text not null, " + x_acceleration + " integer not null, " + y_acceleration + " integer not null, " + z_acceleration + "integer not null);";
+            String sql1= "Create table " + session_table +" ( " +  id_session + " integer primary key, " + name_session + " text not null, " + date_session + " text not null, " + duration_session + " integer not null, " + color1_icon_session + " integer not null, " + color2_icon_session + " integer ot null," + color3_icon_session +" integer not null);";
+            String sql2="Create table " + fall_table + " ( " + name_fall + " text primary key, " + date_fall + " text not null, " + location_fall + " text not null, " + x_acceleration + " integer not null, " + y_acceleration + " integer not null, " + z_acceleration + "integer not null, "  + email_sent_fall + " integer not null);";
             db.execSQL(sql1);
             db.execSQL(sql2);
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int OldVersion, int NewVersion){
+        public void onUpgrade(SQLiteDatabase db, int OldVersion, int NewVersion) {
             String sql = null;
+            db.execSQL(sql);
         }
 }
