@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_daily_notification"
+        android:title="Daily notification"
+        android:summary="Let the app notify you to start a new session every day"
+        android:defaultValue="true" />
+
+    <ListPreference
+        android:key="pref_accelerometer_rate"
+        android:title="Accelerometer update rate"
+        android:summary="Set an appropriate update rate of the accelerometer"
+        android:entries="@array/rates"
+        android:entryValues="@array/rate_values" />
+
+    <EditTextPreference
+        android:key="pref_email_address"
+        android:title="Email address"
+        android:summary="choose an email address to which send the notice of fall"/>
+</PreferenceScreen>

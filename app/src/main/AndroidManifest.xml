@@ -30,7 +30,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="it.unipd.dei.esp1415.thetrumannshow.FallDetector.MainActivity" />
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".RunningSessionActivity"
@@ -38,7 +38,15 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="it.unipd.dei.esp1415.thetrumannshow.FallDetector.MainActivity" />
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".MainActivity" >
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value=".MainActivity" />
         </activity>
     </application>
 
