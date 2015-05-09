@@ -2,19 +2,19 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
         android:key="pref_daily_notification"
-        android:title="Daily notification"
-        android:summary="Let the app notify you to start a new session every day"
+        android:title="@string/pref_daily_notification_title"
+        android:summary="@string/pref_daily_notification_summary"
         android:defaultValue="true" />
 
     <ListPreference
         android:key="pref_accelerometer_rate"
-        android:title="Accelerometer update rate"
-        android:summary="Set an appropriate update rate of the accelerometer"
+        android:title="@string/pref_accelerometer_rate_title"
+        android:summary="@string/pref_accelerometer_rate_summary"
         android:entries="@array/rates"
         android:entryValues="@array/rate_values" />
 
     <EditTextPreference
         android:key="pref_email_address"
-        android:title="Email address"
-        android:summary="choose an email address to which send the notice of fall"/>
+        android:title="@string/pref_email_address_title"
+        android:summary="@string/pref_email_address_summary" />
 </PreferenceScreen>
