@@ -6,6 +6,14 @@
         android:summary="@string/pref_daily_notification_summary"
         android:defaultValue="true" />
 
+    <EditTextPreference
+        android:key="pref_session_duration"
+        android:title="@string/pref_session_duration_title"
+        android:summary="@string/pref_session_duration_summary"
+        android:numeric="integer"
+        android:defaultValue="12"
+        android:selectAllOnFocus="true" />
+
     <ListPreference
         android:key="pref_accelerometer_rate"
         android:title="@string/pref_accelerometer_rate_title"

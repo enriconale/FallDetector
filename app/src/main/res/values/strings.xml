@@ -34,6 +34,9 @@
     <string name="pref_daily_notification_title">Daily notification</string>
     <string name="pref_daily_notification_summary">Let the app notify you to start a new session
         every day.</string>
+    <string name="pref_session_duration_title">Maximum session duration</string>
+    <string name="pref_session_duration_summary">Set a default maximum limit in hours for a session
+        duration.</string>
     <string name="pref_accelerometer_rate_title">Accelerometer update rate</string>
     <string name="pref_accelerometer_rate_summary">Set an appropriate update rate of the
         accelerometer.</string>
