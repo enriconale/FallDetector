@@ -23,7 +23,6 @@ public class DelayedLocationProvider implements LocationListener{
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
                 this);
-
     }
 
     @Override

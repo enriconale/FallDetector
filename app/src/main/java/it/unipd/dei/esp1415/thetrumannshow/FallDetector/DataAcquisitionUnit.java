@@ -19,7 +19,7 @@ import com.google.android.gms.location.LocationServices;
 public class DataAcquisitionUnit
         implements SensorEventListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static SensorManager mSensorManager;
     private GoogleApiClient mGoogleApiClient;
@@ -63,26 +63,7 @@ public class DataAcquisitionUnit
             if(isFall(((int)(i - (samples / 100)) % samples), ((int) i % samples))){
                 fall();
             }
-            // writeToFile("autoSave"+i/samples+".csv");
         }
-    }
-
-    void writeToFile(String filename){
-        /*try {
-            java.io.FileOutputStream fOut = mContext.openFileOutput(filename,
-                    Context.MODE_WORLD_READABLE);
-            java.io.OutputStreamWriter osw = new java.io.OutputStreamWriter(fOut);
-
-            for(int j = 0; j < samples; j++)
-            {
-                osw.write(timeBuffer[j]+"; "+xBuffer[j]+"; "+yBuffer[j]+"; "+zBuffer[j]+";\n");
-            }
-
-            osw.close();
-        }
-        catch (IOException e){
-            System.out.println("Writing to file failed: "+ e);
-        } */
     }
 
     // dummy implementation of fall detection
@@ -101,40 +82,14 @@ public class DataAcquisitionUnit
 
     private void fall(){
         Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
-        try{Thread.sleep(600);} catch (Exception e) {}
-        Fall fall = constructFallObject(mLastFallIndex);
-        new DelayedLocationProvider(fall, mGoogleApiClient);
-        SessionsLab lab = SessionsLab.get(mContext);
-        lab.getRunningSession().addFall(fall);
+        FallObjectCreator foc = new FallObjectCreator(timeBuffer, xBuffer, yBuffer, zBuffer,
+                mContext, mGoogleApiClient, mLastFallIndex);
+        Thread focThread = new Thread(foc);
+        focThread.run();
     }
 
     void detach(){
         mSensorManager.unregisterListener(this);
-    }
-
-    long[] getSurroundingSecond(long index){
-        long nanosecond = timeBuffer.readOne(index);
-        long j = index;
-        for(; timeBuffer.readOne(j) > (nanosecond - 500000000); j--);
-        long begin = j;
-
-        j = index;
-        for(; timeBuffer.readOne(j) < (nanosecond + 500000000); j++);
-        long end = j;
-        return new long[]{begin,end};
-    }
-
-    long[] getSurroundingSecondIndex(long nanosecond){
-        return getSurroundingSecond(timeBuffer.getPosition(nanosecond));
-    }
-
-    private Fall constructFallObject(int index){
-        long[] interval = getSurroundingSecond(index);
-        float [] xArr = xBuffer.readRange(interval[0],interval[1]);
-        float [] yArr = yBuffer.readRange(interval[0],interval[1]);
-        float [] zArr = zBuffer.readRange(interval[0],interval[1]);
-
-        return new Fall("",new java.util.Date(), null ,xArr,yArr,zArr);
     }
 
     // connection to proprietary Google Play Services
@@ -149,10 +104,6 @@ public class DataAcquisitionUnit
 
     @Override
     public void onConnected(Bundle bundle) {
-
-    }
-
-    protected void startLocationUpdates() {
     }
 
     @Override
@@ -162,6 +113,4 @@ public class DataAcquisitionUnit
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
-
-
 }

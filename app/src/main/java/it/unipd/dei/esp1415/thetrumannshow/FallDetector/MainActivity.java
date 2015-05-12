@@ -57,7 +57,6 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
     protected void onPause(){
         super.onPause();
         dau.detach();
-        dau.writeToFile("finalData.csv");
     }
 
     @Override
