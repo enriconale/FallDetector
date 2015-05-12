@@ -35,14 +35,14 @@
             <ImageView
                 android:contentDescription="@string/session_icon"
                 android:id="@+id/session_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
-                android:src="@mipmap/temporary_placeholder"/>
+                />
 
             <TextView
                 android:id="@+id/session_name"

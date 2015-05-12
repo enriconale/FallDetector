@@ -2,6 +2,7 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -96,6 +97,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         tmpStrBuilder = mAppContext.getString(R.string.cardview_duration) + " " +
                 tmpSession.getFormattedDuration();
         viewHolder.mSessionDuration.setText(tmpStrBuilder);
+        viewHolder.mSessionIcon.clearColorFilter();
 
         if (SessionsLab.get(mAppContext).hasRunningSession() && x == 0) {
             viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
@@ -110,7 +112,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 }
             });
         } else {
-            viewHolder.mSessionIcon.setImageResource(R.mipmap.temporary_placeholder);
+            viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
+            viewHolder.mSessionIcon.setColorFilter(Color.rgb(tmpSession.getColor1(),tmpSession.getColor2(),tmpSession.getColor3()));
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -1,19 +1,42 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
-import android.support.v4.app.NavUtils;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 
 public class FallDetailsActivity extends ActionBarActivity {
+    private ImageView mSessionIcon;
+    private Session mSession;
+    private Fall mFall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_fall_details);
+
+        int mSessionPositionInList = getIntent().getExtras().getInt(
+                SessionsListAdapter.SESSION_DETAILS);
+        mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mSessionPositionInList);
+        int mFallPostitionInList = getIntent().getExtras().getInt(SessionDetailsActivity
+                .FALL_DETAILS);
+        //mFall = mSession.getFalls().get(mFallPostitionInList);
+        mSessionIcon = (ImageView)findViewById(R.id.session_icon);
+        mSessionIcon.setImageResource(R.mipmap.recording_icon);
+        if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {
+            if (mSessionPositionInList != 0) {
+                mSessionIcon.setColorFilter(Color.rgb(mSession.getColor1(), mSession.getColor2(),
+                        mSession.getColor3()));
+            }
+        } else {
+            mSessionIcon.setColorFilter(Color.rgb(mSession.getColor1(), mSession.getColor2(),
+                    mSession.getColor3()));
+        }
+
     }
 
 

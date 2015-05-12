@@ -1,12 +1,14 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,13 +17,15 @@ import java.text.SimpleDateFormat;
 
 
 public class SessionDetailsActivity extends ActionBarActivity {
+    public static final String FALL_DETAILS = "fall_details";
     private static SimpleDateFormat mDateFormatter;
 
     private Session mSession;
     private TextView mSessionName;
     private TextView mSessionCreationDate;
     private TextView mSessionDuration;
-    private int mPositionInList;
+    private ImageView mSessionIcon;
+    private int mSessionPositionInList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +34,22 @@ public class SessionDetailsActivity extends ActionBarActivity {
 
         mDateFormatter = SessionsLab.get(getApplicationContext()).getDateFormat();
 
-        mPositionInList = getIntent().getExtras().getInt(SessionsListAdapter.SESSION_DETAILS);
-        mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mPositionInList);
+        mSessionPositionInList = getIntent().getExtras().getInt(SessionsListAdapter.SESSION_DETAILS);
+        mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mSessionPositionInList);
 
         mSessionName = (TextView)findViewById(R.id.session_name);
         mSessionCreationDate = (TextView)findViewById(R.id.date_time);
         mSessionDuration = (TextView)findViewById(R.id.session_duration);
+        mSessionIcon = (ImageView)findViewById(R.id.session_icon);
+
 
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
         mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
                 + " " + mSession.getFormattedDuration());
+        mSessionIcon.setImageResource(R.mipmap.recording_icon);
+        mSessionIcon.setColorFilter(Color.rgb(mSession.getColor1(), mSession.getColor2(),
+                mSession.getColor3()));
 
         RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id.falls_list_container);
         LinearLayout itemsWrapper = new LinearLayout(getApplicationContext());
@@ -48,6 +57,7 @@ public class SessionDetailsActivity extends ActionBarActivity {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         for (int i = 0; i < 10; i++) {
+            final int fallPositionInList = i;
             final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,
                     itemsWrapper, false);
             singleFallListItem.setId(i);
@@ -55,6 +65,8 @@ public class SessionDetailsActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), FallDetailsActivity.class);
+                    intent.putExtra(SessionsListAdapter.SESSION_DETAILS, mSessionPositionInList);
+                    intent.putExtra(FALL_DETAILS, fallPositionInList);
                     startActivity(intent);
                 }
             });
@@ -82,7 +94,7 @@ public class SessionDetailsActivity extends ActionBarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_delete_session:
-                SessionsLab.get(getApplicationContext()).getSessions().remove(mPositionInList);
+                SessionsLab.get(getApplicationContext()).getSessions().remove(mSessionPositionInList);
                 NavUtils.navigateUpFromSameTask(this);
                 break;
         }

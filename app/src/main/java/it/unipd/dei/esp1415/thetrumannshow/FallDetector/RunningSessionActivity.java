@@ -49,12 +49,14 @@ public class RunningSessionActivity extends ActionBarActivity {
         mSessionName.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
 
-        RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id.falls_list_container);
+        RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id
+                .falls_list_container);
         LinearLayout itemsWrapper = new LinearLayout(getApplicationContext());
         itemsWrapper.setOrientation(LinearLayout.VERTICAL);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         for (int i = 0; i < 10; i++) {
+            final int fallPositionInList = i;
             final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,
                     itemsWrapper, false);
             singleFallListItem.setId(i);
@@ -62,6 +64,8 @@ public class RunningSessionActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), FallDetailsActivity.class);
+                    intent.putExtra(SessionsListAdapter.SESSION_DETAILS, 0);
+                    intent.putExtra(SessionDetailsActivity.FALL_DETAILS, fallPositionInList);
                     startActivity(intent);
                 }
             });

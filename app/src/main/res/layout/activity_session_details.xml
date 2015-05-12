@@ -25,7 +25,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:id="@+id/session_icon"
-        android:src="@mipmap/temporary_placeholder" />
+         />
 
     <TextView
         android:id="@+id/session_name"
