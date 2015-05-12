@@ -40,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:id="@+id/email_is_sent"
-            android:src="@mipmap/temporary_placeholder"/>
+            android:src="@mipmap/email_sent"/>
 
     </RelativeLayout>
 

@@ -1,13 +1,17 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,11 +20,13 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 
 
-public class RunningSessionActivity extends ActionBarActivity {
+public class RunningSessionActivity extends AppCompatActivity {
     private static SimpleDateFormat mDateFormatter;
 
     private Session mSession;
+    private ImageView mEditSessionNameImageView;
     private TextView mSessionName;
+    private EditText mEditSessionNameEditText;
     private TextView mSessionCreationDate;
     private TextView mSessionDuration;
     private Handler mHandler = new Handler();
@@ -33,6 +39,8 @@ public class RunningSessionActivity extends ActionBarActivity {
         }
     };
 
+    private boolean mEditingName = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +51,37 @@ public class RunningSessionActivity extends ActionBarActivity {
         mDateFormatter = SessionsLab.get(getApplicationContext()).getDateFormat();
 
         mSessionName = (TextView)findViewById(R.id.session_name);
+        mEditSessionNameEditText = (EditText)findViewById(R.id.edit_session_name);
         mSessionCreationDate = (TextView)findViewById(R.id.date_time);
         mSessionDuration = (TextView)findViewById(R.id.session_duration);
+        mEditSessionNameImageView = (ImageView)findViewById(R.id.modify_session_name);
 
         mSessionName.setText(mSession.getSessionName());
+        mEditSessionNameEditText.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
+
+        mEditSessionNameImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mEditingName) {
+                    showVirtualKeyboard();
+                    mEditSessionNameImageView.setImageResource(R.mipmap.action_done);
+                    mSessionName.setVisibility(View.GONE);
+                    mEditSessionNameEditText.setVisibility(View.VISIBLE);
+                    mEditingName = true;
+                } else {
+                    hideVirtualKeyboard();
+                    mEditSessionNameImageView.setImageResource(R.mipmap.action_edit);
+                    mSessionName.setVisibility(View.VISIBLE);
+                    mEditSessionNameEditText.setVisibility(View.GONE);
+                    String newName = mEditSessionNameEditText.getText().toString();
+                    mSession.setSessionName(newName);
+                    mSessionName.setText(newName);
+                    mEditSessionNameEditText.setText(newName);
+                    mEditingName = false;
+                }
+            }
+        });
 
         RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id
                 .falls_list_container);
@@ -131,5 +165,19 @@ public class RunningSessionActivity extends ActionBarActivity {
         super.onResume();
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.postDelayed(mUpdateTimeTask, 0);
+    }
+
+    private void hideVirtualKeyboard(){
+        if(getCurrentFocus() != null && getCurrentFocus() instanceof EditText){
+            InputMethodManager imm =
+                    (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    private void showVirtualKeyboard() {
+            InputMethodManager imm =
+                    (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(mEditSessionNameEditText, InputMethodManager.SHOW_FORCED);
     }
 }

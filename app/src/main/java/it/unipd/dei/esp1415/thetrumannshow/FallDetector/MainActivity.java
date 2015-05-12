@@ -1,9 +1,11 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -14,7 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements NewSessionNameDialogFragment
+public class MainActivity extends AppCompatActivity implements NewSessionNameDialogFragment
         .NewSessionNameDialogFragmentListener, SessionAlreadyRunningDialogFragment
 .SessionAlreadyRunningDialogFragmentListener {
 
@@ -35,6 +37,7 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mEmptyListMessage = (TextView)findViewById(R.id.empty_list_message);
         mRecyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -74,7 +77,9 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
         int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
-                return true;
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+                break;
             case R.id.action_start_session:
                 if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {
                     DialogFragment dialog = new SessionAlreadyRunningDialogFragment();
@@ -83,6 +88,7 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
                     DialogFragment dialog = new NewSessionNameDialogFragment();
                     dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
                 }
+                break;
         }
 
         return super.onOptionsItemSelected(item);

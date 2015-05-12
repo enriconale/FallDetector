@@ -24,8 +24,24 @@
     <string name="title_activity_session_details">Session Details</string>
     <string name="action_delete_session">Delete session</string>
     <string name="falls_list">Falls list:</string>
+    <string name="delete_session_dialog_message">Do you really want to delete this session and
+        all its falls?</string>
 
     <string name="title_activity_running_session">Running Session</string>
     <string name="action_pause_resume_session">Pause or resume the session</string>
     <string name="action_stop_session">Stop the session</string>
+
+    <string name="pref_daily_notification_title">Daily notification</string>
+    <string name="pref_daily_notification_summary">Let the app notify you to start a new session
+        every day.</string>
+    <string name="pref_session_duration_title">Maximum session duration</string>
+    <string name="pref_session_duration_summary">Set a default maximum limit in hours for a session
+        duration.</string>
+    <string name="pref_accelerometer_rate_title">Accelerometer update rate</string>
+    <string name="pref_accelerometer_rate_summary">Set an appropriate update rate of the
+        accelerometer.</string>
+    <string name="pref_email_address_title">Email address</string>
+    <string name="pref_email_address_summary">Choose an email address to which send the notice of a
+        fall.</string>
+
 </resources>

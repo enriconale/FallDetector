@@ -29,7 +29,7 @@ public class RunningSessionService extends IntentService {
             @Override
             public void run() {
                 if (mSessionsLab.hasRunningSession()) {
-                    Log.d("Service going on:", mRunningSession.getSessionName());
+                    Log.d("Service going on", mRunningSession.getSessionName());
                     if (mSessionsLab.isRunningSessionPlaying()) {
                         mExecutionTime += 1000;
                         mRunningSession.setDuration(mExecutionTime);
