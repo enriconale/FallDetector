@@ -28,8 +28,7 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
     private ArrayList<Session> mSessionsList;
     private TextView mEmptyListMessage;
 
-    private static DataAcquisitionUnit dau;
-
+    private DataAcquisitionUnit dau;
 
 
     @Override
@@ -50,12 +49,14 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
             mEmptyListMessage.setVisibility(View.VISIBLE);
         }
 
+        // starting data acquisition, for now only till pause
         dau = new DataAcquisitionUnit(getApplicationContext());
     }
 
     @Override
     protected void onPause(){
         super.onPause();
+        dau.detach();
     }
 
     @Override
@@ -111,13 +112,5 @@ public class MainActivity extends ActionBarActivity implements NewSessionNameDia
         mAdapter.notifyDataSetChanged();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
-    }
-
-    public static DataAcquisitionUnit getDataAcquisitionUnit(){
-        return dau;
-    }
-
-    public static void removeDataAcquisitionUnit(){
-        dau.detach();
     }
 }
