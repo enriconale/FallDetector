@@ -58,9 +58,10 @@ public class DataAcquisitionUnit
         zBuffer.insert(event.values[2]);
 
         i++;
+        System.currentTimeMillis();
 
         if (i % (samples / 100) == 0){
-            if(isFall(((int)(i - (samples / 100)) % samples), ((int) i % samples))){
+            if(isFall((((int)(i - (samples / 100)) % samples) - 100), ((int) (i % samples) - 100 ))){
                 fall();
             }
         }
