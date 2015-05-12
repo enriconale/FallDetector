@@ -10,7 +10,7 @@ import java.util.Date;
 public class Fall {
     private final String mFallName;
     private final Date mDate;
-    private final Location mLocation;
+    private Location mLocation;
     private final float[] mXAcceleration;
     private final float[] mYAcceleration;
     private final float[] mZAcceleration;
@@ -52,4 +52,6 @@ public class Fall {
     public void setIsEmailSent(boolean isEmailSent) {
         mIsEmailSent = isEmailSent;
     }
+
+    public void setLocation(Location loc){ mLocation = loc; };
 }

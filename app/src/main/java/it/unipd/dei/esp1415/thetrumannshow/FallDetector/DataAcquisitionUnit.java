@@ -5,21 +5,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Created by Eike Trumann on 29.03.15.
@@ -109,13 +100,10 @@ public class DataAcquisitionUnit
     }
 
     private void fall(){
-        Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (loc != null)
-            Toast.makeText(mContext, "REGISTERED FALL EVENT at "+ loc.toString(), Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
         try{Thread.sleep(600);} catch (Exception e) {}
         Fall fall = constructFallObject(mLastFallIndex);
+        new DelayedLocationProvider(fall, mGoogleApiClient);
         SessionsLab lab = SessionsLab.get(mContext);
         lab.getRunningSession().addFall(fall);
     }
