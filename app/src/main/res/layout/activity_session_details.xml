@@ -63,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/session_duration"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
         android:textSize="24sp"
         android:text="@string/falls_list"/>
 
