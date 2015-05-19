@@ -2,6 +2,7 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;

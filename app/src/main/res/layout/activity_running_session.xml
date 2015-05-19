@@ -101,7 +101,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/falls_header">
 
-            </RelativeLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 
