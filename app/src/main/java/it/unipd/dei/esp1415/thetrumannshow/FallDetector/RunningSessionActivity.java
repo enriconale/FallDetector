@@ -1,7 +1,12 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
@@ -17,18 +22,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 
 
-public class RunningSessionActivity extends AppCompatActivity {
+public class RunningSessionActivity extends AppCompatActivity implements SensorEventListener {
     private static SimpleDateFormat mDateFormatter;
 
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
     private Session mSession;
     private ImageView mEditSessionNameImageView;
     private TextView mSessionName;
     private EditText mEditSessionNameEditText;
     private TextView mSessionCreationDate;
     private TextView mSessionDuration;
+    private TextView mAccXAxis;
+    private TextView mAccYAxis;
+    private TextView mAccZAxis;
     private Handler mHandler = new Handler();
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
@@ -59,6 +71,13 @@ public class RunningSessionActivity extends AppCompatActivity {
         mSessionName.setText(mSession.getSessionName());
         mEditSessionNameEditText.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
+
+        mAccXAxis = (TextView)findViewById(R.id.acc_x_axis);
+        mAccYAxis = (TextView)findViewById(R.id.acc_y_axis);
+        mAccZAxis = (TextView)findViewById(R.id.acc_z_axis);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         mEditSessionNameImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,14 +176,29 @@ public class RunningSessionActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+        mSensorManager.unregisterListener(this);
         mHandler.removeCallbacks(mUpdateTimeTask);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.postDelayed(mUpdateTimeTask, 0);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        mAccXAxis.setText(Float.toString(event.values[0]));
+        mAccYAxis.setText(Float.toString(event.values[1]));
+        mAccZAxis.setText(Float.toString(event.values[2]));
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Do nothing here.
     }
 
     private void hideVirtualKeyboard(){
