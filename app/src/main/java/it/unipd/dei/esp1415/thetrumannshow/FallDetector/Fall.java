@@ -1,6 +1,7 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Intent;
+import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +15,7 @@ public class Fall extends ActionBarActivity{
     private final String mFallName;
     private final Date mDate;
     private Location mLocation;
+    private Address mAddress;
     private final float[] mXAcceleration;
     private final float[] mYAcceleration;
     private final float[] mZAcceleration;
@@ -63,4 +65,6 @@ public class Fall extends ActionBarActivity{
     }
 
     public void setLocation(Location loc){ mLocation = loc; };
+
+    public void setAddress(Address addr){ mAddress = addr; };
 }

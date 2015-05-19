@@ -18,6 +18,8 @@ public class FallObjectCreator implements Runnable{
     private FloatRingBuffer yBuffer;
     private FloatRingBuffer zBuffer;
 
+    private Fall mLastFall;
+
     private final int mLastFallIndex;
 
     public FallObjectCreator(LongRingBuffer timeBuffer, FloatRingBuffer xBuffer,
@@ -42,10 +44,9 @@ public class FallObjectCreator implements Runnable{
         yBuffer = yBuffer.copy();
         zBuffer = zBuffer.copy();
 
-        Fall fall = constructFallObject(mLastFallIndex);
-        new DelayedLocationProvider(fall, mGoogleApiClient);
+        mLastFall = constructFallObject(mLastFallIndex);
         SessionsLab lab = SessionsLab.get(mContext);
-        lab.getRunningSession().addFall(fall);
+        lab.getRunningSession().addFall(mLastFall);
     }
 
     long[] getSurroundingSecond(long index){
@@ -73,7 +74,11 @@ public class FallObjectCreator implements Runnable{
         float [] xArr = xBuffer.readRange(interval[0],interval[1]);
         float [] yArr = yBuffer.readRange(interval[0],interval[1]);
         float [] zArr = zBuffer.readRange(interval[0],interval[1]);
-
+ =
         return new Fall("",new java.util.Date(), null ,xArr,yArr,zArr);
+    }
+
+    void locationFixed(){
+        new DelayedReverseGeocoder(mLastFall, mGoogleApiClient, mContext);
     }
 }

@@ -90,6 +90,7 @@ public class DataAcquisitionUnit
 
     void detach(){
         mSensorManager.unregisterListener(this);
+        mGoogleApiClient.disconnect();
     }
 
     // connection to proprietary Google Play Services

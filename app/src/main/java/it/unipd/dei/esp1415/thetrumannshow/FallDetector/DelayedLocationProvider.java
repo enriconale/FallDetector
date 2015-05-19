@@ -15,9 +15,12 @@ import com.google.android.gms.location.LocationServices;
 public class DelayedLocationProvider implements LocationListener{
     private final Fall mFall;
     private final GoogleApiClient mGoogleApiClient;
-    public DelayedLocationProvider(Fall f, GoogleApiClient apiClient){
+    private final FallObjectCreator mFallObjectCreator;
+
+    public DelayedLocationProvider(Fall f, GoogleApiClient apiClient, FallObjectCreator foc){
         mFall = f;
         mGoogleApiClient = apiClient;
+        mFallObjectCreator = foc;
 
         LocationRequest mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -29,6 +32,8 @@ public class DelayedLocationProvider implements LocationListener{
     public void onLocationChanged(Location location) {
         mFall.setLocation(location);
         unregisterListener();
+
+        mFallObjectCreator.locationFixed();
     }
 
     private void unregisterListener(){
