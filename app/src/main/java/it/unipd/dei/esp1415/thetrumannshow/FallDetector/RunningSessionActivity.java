@@ -68,7 +68,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         mSessionDuration = (TextView)findViewById(R.id.session_duration);
         mEditSessionNameImageView = (ImageView)findViewById(R.id.modify_session_name);
 
-        mSessionName.setText(mSession.getSessionName());
+        mSessionName.setText(getFormattedSessionName(mSession.getSessionName()));
         mEditSessionNameEditText.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
 
@@ -95,7 +95,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
                     mEditSessionNameEditText.setVisibility(View.GONE);
                     String newName = mEditSessionNameEditText.getText().toString();
                     mSession.setSessionName(newName);
-                    mSessionName.setText(newName);
+                    mSessionName.setText(getFormattedSessionName(newName));
                     mEditSessionNameEditText.setText(newName);
                     mEditingName = false;
                 }
@@ -219,5 +219,13 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
             InputMethodManager imm =
                     (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.showSoftInput(mEditSessionNameEditText, InputMethodManager.SHOW_FORCED);
+    }
+
+    private String getFormattedSessionName(String name) {
+        if (name.length() > 15) {
+            return name.substring(0, 15) + "...";
+        } else {
+            return name;
+        }
     }
 }

@@ -89,6 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/live_data_header"
+            android:textStyle="bold"
             android:textSize="24sp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"
@@ -106,19 +107,22 @@
                 android:id="@+id/acc_x_axis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/x_axis"/>
+                android:text="@string/x_axis"
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/acc_y_axis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/y_axis"/>
+                android:text="@string/y_axis"
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/acc_z_axis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/z_axis"/>
+                android:text="@string/z_axis"
+                android:textSize="16sp"/>
 
         </LinearLayout>
 
@@ -127,10 +131,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/live_data_container"
-            android:layout_marginTop="24dp"
             android:layout_marginBottom="16dp"
             android:textSize="24sp"
-            android:text="@string/falls_list"/>
+            android:text="@string/falls_list"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/falls_list_container"
