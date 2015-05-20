@@ -31,6 +31,9 @@
     <string name="action_pause_resume_session">Pause or resume the session</string>
     <string name="action_stop_session">Stop the session</string>
     <string name="live_data_header">Live data from accelerometer:</string>
+    <string name="x_axis">x-Axis: </string>
+    <string name="y_axis">y-Axis: </string>
+    <string name="z_axis">z-Axis: </string>
 
     <string name="pref_daily_notification_title">Daily notification</string>
     <string name="pref_daily_notification_summary">Let the app notify you to start a new session

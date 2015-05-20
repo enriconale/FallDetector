@@ -105,17 +105,20 @@
             <TextView
                 android:id="@+id/acc_x_axis"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="@string/x_axis"/>
 
             <TextView
                 android:id="@+id/acc_y_axis"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="@string/y_axis"/>
 
             <TextView
                 android:id="@+id/acc_z_axis"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="@string/z_axis"/>
 
         </LinearLayout>
 

@@ -190,9 +190,15 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        mAccXAxis.setText(Float.toString(event.values[0]));
-        mAccYAxis.setText(Float.toString(event.values[1]));
-        mAccZAxis.setText(Float.toString(event.values[2]));
+        float xAxisValue = event.values[0];
+        float yAxisValue = event.values[1];
+        float zAxisValue = event.values[2];
+        mAccXAxis.setText(getApplicationContext().getString(R.string.x_axis) +
+                String.format("  %.2f", xAxisValue));
+        mAccYAxis.setText(getApplicationContext().getString(R.string.y_axis) +
+                String.format("  %.2f", yAxisValue));
+        mAccZAxis.setText(getApplicationContext().getString(R.string.z_axis) +
+                String.format("  %.2f", zAxisValue));
 
     }
 
