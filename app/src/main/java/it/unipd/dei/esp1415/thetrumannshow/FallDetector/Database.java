@@ -3,9 +3,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
-
-import java.sql.SQLDataException;
 
 /**
  * Created by alessandro on 05/05/15.
@@ -22,39 +19,41 @@ public class Database{
         SQLiteDatabase db= helper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put(CreateDatabase.id_session, id);
-        cv.put(CreateDatabase.name_session, name);
-        cv.put(CreateDatabase.date_session, date);
-        cv.put(CreateDatabase.duration_session, duration);
-        cv.put(CreateDatabase.color1_icon_session, color1);
-        cv.put(CreateDatabase.color2_icon_session, color2);
-        cv.put(CreateDatabase.color3_icon_session, color3);
+        cv.put(CreateDatabase.SESSION_ID, id);
+        cv.put(CreateDatabase.SESSION_NAME, name);
+        cv.put(CreateDatabase.SESSION_DATE, date);
+        cv.put(CreateDatabase.SESSION_DURATION, duration);
+        cv.put(CreateDatabase.SESSION_ICON_COLOR_1, color1);
+        cv.put(CreateDatabase.SESSION_ICON_COLOR_2, color2);
+        cv.put(CreateDatabase.SESSION_ICON_COLOR_3, color3);
 
         try{
-            db.insert(CreateDatabase.session_table, null, cv);
+            db.insert(CreateDatabase.SESSION_TABLE, null, cv);
         }
         catch(SQLiteException sqle){
 
         }
+        cv.clear();
     }
 
     public void saveFall(String name, String date, String location, int xacc, int yacc, int zacc, int sent){
         SQLiteDatabase db = helper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put(CreateDatabase.name_fall, name);
-        cv.put(CreateDatabase.date_fall, date);
-        cv.put(CreateDatabase.location_fall, location);
-        cv.put(CreateDatabase.x_acceleration, xacc);
-        cv.put(CreateDatabase.y_acceleration, yacc);
-        cv.put(CreateDatabase.z_acceleration, zacc);
-        cv.put(CreateDatabase.email_sent_fall, sent);
+        cv.put(CreateDatabase.FALL_NAME, name);
+        cv.put(CreateDatabase.FALL_DATE, date);
+        cv.put(CreateDatabase.FALL_LOCATION, location);
+        cv.put(CreateDatabase.X_ACCELERATION, xacc);
+        cv.put(CreateDatabase.Y_ACCELERATION, yacc);
+        cv.put(CreateDatabase.Z_ACCELERATION, zacc);
+        cv.put(CreateDatabase.EMAIL_SENT, sent);
 
         try{
-            db.insert(CreateDatabase.fall_table, null, cv);
+            db.insert(CreateDatabase.FALL_TABLE, null, cv);
         }
         catch(SQLiteException sqle){
 
         }
+        cv.clear();
     }
 }

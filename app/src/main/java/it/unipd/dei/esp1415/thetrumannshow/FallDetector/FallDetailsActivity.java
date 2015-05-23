@@ -115,20 +115,6 @@ public class FallDetailsActivity extends AppCompatActivity {
                 endOfPrecedentLine = screenHeight/8 - (int)startY + offset;
                 precedentStopY = stopY;
             }
-
-            /*double startY = getHeight() - testar[1];
-            double stopY = getHeight()- testar[2];
-            double difference = stopY - startY;
-            int pixelOffset = (int)Math.round(difference/0.01);
-            canvas.drawLine(0,(int)startY,50,(int)startY + pixelOffset,
-                    paint);
-            int startYOnScreen2 = (int)startY + pixelOffset;
-            double startY2 = stopY;
-            double stopY2 = getHeight() - testar[3];
-            difference = stopY2 - startY2;
-            pixelOffset = (int)Math.round(difference/0.01);
-            canvas.drawLine(50, startYOnScreen2, 100, (int)startY2+pixelOffset,
-                    paint);*/
         }
     }
 
