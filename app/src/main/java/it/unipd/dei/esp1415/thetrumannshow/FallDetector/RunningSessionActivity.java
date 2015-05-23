@@ -166,6 +166,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
                 }
                 break;
             case R.id.action_stop_session:
+                SessionsLab.get(getApplicationContext()).saveSessionInDatabase(mSession);
                 SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
                 NavUtils.navigateUpFromSameTask(this);
                 break;

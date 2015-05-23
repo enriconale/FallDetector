@@ -10,8 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class CreateDatabase extends SQLiteOpenHelper{
 
-    private static final String db_name = "Fall Database.db";
-    private static final int db_version = 1;
+    private static final String DB_NAME = "Database.db";
+    private static final int DB_VERSION = 1;
 
     public static final String SESSION_TABLE = "Session";
     public static final String SESSION_ID = "id";
@@ -62,21 +62,30 @@ public class CreateDatabase extends SQLiteOpenHelper{
             + OWNER_SESSION + ", "
             + FALL_NAME + "));";
 
+    private static CreateDatabase mDBHelper;
 
-    public CreateDatabase(Context context) {
-        super(context, db_name, null, db_version);
+    public static CreateDatabase getInstance(Context ctx) {
+
+        if (mDBHelper == null) { //this will ensure no multiple instances out there.
+            mDBHelper = new CreateDatabase(ctx.getApplicationContext());
+        }
+        return mDBHelper;
     }
 
-        @Override
-        public void onCreate(SQLiteDatabase db){
-            db.execSQL(SESSION_TABLE_CREATE);
-            db.execSQL(FALL_TABLE_CREATE);
-        }
+    private CreateDatabase(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
+    }
 
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int OldVersion, int NewVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + FALL_TABLE + ";");
-            db.execSQL("DROP TABLE IF EXISTS " + SESSION_TABLE + ";");
-            onCreate(db);
-        }
+    @Override
+    public void onCreate(SQLiteDatabase db){
+        db.execSQL(SESSION_TABLE_CREATE);
+        db.execSQL(FALL_TABLE_CREATE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int OldVersion, int NewVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + FALL_TABLE + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + SESSION_TABLE + ";");
+        onCreate(db);
+    }
 }
