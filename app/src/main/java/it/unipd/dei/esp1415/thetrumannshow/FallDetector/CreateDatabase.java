@@ -25,7 +25,8 @@ public class CreateDatabase extends SQLiteOpenHelper{
     public static final String FALL_TABLE = "Fall";
     public static final String FALL_NAME = "name";
     public static final String FALL_DATE = "date";
-    public static final String FALL_LOCATION = "location";
+    public static final String FALL_LATITUDE = "latitude";
+    public static final String FALL_LONGITUDE = "longitude";
     public static final String X_ACCELERATION = "x_acceleration";
     public static final String Y_ACCELERATION = "y_acceleration";
     public static final String Z_ACCELERATION = "z_acceleration";
@@ -46,7 +47,8 @@ public class CreateDatabase extends SQLiteOpenHelper{
             + FALL_TABLE + " ("
             + FALL_NAME + " text, "
             + FALL_DATE + " text, "
-            + FALL_LOCATION + " text, "
+            + FALL_LATITUDE + " real, "
+            + FALL_LONGITUDE + " real, "
             + X_ACCELERATION + " text, "
             + Y_ACCELERATION + " text, "
             + Z_ACCELERATION + " text, "
@@ -73,7 +75,8 @@ public class CreateDatabase extends SQLiteOpenHelper{
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int OldVersion, int NewVersion) {
-            String sql = null;
-            db.execSQL(sql);
+            db.execSQL("DROP TABLE IF EXISTS " + FALL_TABLE + ";");
+            db.execSQL("DROP TABLE IF EXISTS " + SESSION_TABLE + ";");
+            onCreate(db);
         }
 }

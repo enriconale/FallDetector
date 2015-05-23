@@ -13,7 +13,8 @@ import java.util.Date;
 public class Fall extends ActionBarActivity{
     private final String mFallName;
     private final Date mDate;
-    private final Location mLocation;
+    private double mLatitude;
+    private double mLongitude;
     private final float[] mXAcceleration;
     private final float[] mYAcceleration;
     private final float[] mZAcceleration;
@@ -22,17 +23,19 @@ public class Fall extends ActionBarActivity{
     public Fall(String name, Date date, Location location, float[] xAcc, float[] yAcc, float[] zAcc) {
         mFallName = name;
         mDate = date;
-        mLocation = location;
+        mLatitude = location.getLatitude();
+        mLongitude = location.getLongitude();
         mXAcceleration = xAcc;
         mYAcceleration = yAcc;
         mZAcceleration = zAcc;
+    }
 
-    Intent emailintent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "alessandrofsr@gmail.com", null));
+    /*Intent emailintent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "alessandrofsr@gmail.com", null));
         emailintent.putExtra(emailintent.EXTRA_SUBJECT, "Caduta Tizio");
         emailintent.putExtra(emailintent.EXTRA_TEXT, "Sono caduto, vieni a prendermi a " + mLocation.toString());
         emailintent.setType("message/rfc822");
         startActivity(Intent.createChooser(emailintent, "Send email..."));
-    }
+    }*/
 
     public String getName() {
         return mFallName;
@@ -42,8 +45,12 @@ public class Fall extends ActionBarActivity{
         return mDate;
     }
 
-    public Location getLocation() {
-        return mLocation;
+    public double getLatitude() {
+        return mLatitude;
+    }
+
+    public double getLongitude() {
+        return mLongitude;
     }
 
     public float[] getXAcceleration() {
@@ -60,5 +67,9 @@ public class Fall extends ActionBarActivity{
 
     public void setIsEmailSent(boolean isEmailSent) {
         mIsEmailSent = isEmailSent;
+    }
+
+    public boolean isEmailSent() {
+        return mIsEmailSent;
     }
 }
