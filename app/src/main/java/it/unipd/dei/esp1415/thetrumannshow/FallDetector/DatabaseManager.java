@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.widget.Toast;
+
+import com.google.android.gms.drive.internal.CreateContentsRequest;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,17 +39,6 @@ public class DatabaseManager {
         mContentValues = new ContentValues();
         mDbHelper = CreateDatabase.getInstance(ctx);
         //mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    private synchronized void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    /**
-     * This method close the database.
-     */
-    private synchronized void close() {
-        mDatabase.close();
     }
 
     public void saveSession(Session session) {
@@ -119,6 +111,22 @@ public class DatabaseManager {
         return sessions;
     }
 
+    public void deleteSession(Session session) {
+        open();
+
+        String[] sessionId = new String[] {session.getUUID().toString()};
+
+        try {
+            mDatabase.delete(CreateDatabase.SESSION_TABLE, CreateDatabase.SESSION_ID + " LIKE ?",
+                    sessionId);
+        } catch (SQLiteException e) {
+            Toast.makeText(mAppContext, "An error occurred while deleting the session", Toast
+                    .LENGTH_SHORT).show();
+        } finally {
+            close();
+        }
+    }
+
     private Session getSessionFromCursor(Cursor cursor) {
         UUID sessionUUID = UUID.fromString(cursor.getString(cursor.getColumnIndex(CreateDatabase
                 .SESSION_ID)));
@@ -153,5 +161,13 @@ public class DatabaseManager {
         }
         builder.append(data[data.length - 1]);
         return builder.toString();
+    }
+
+    private synchronized void open() throws SQLException {
+        mDatabase = mDbHelper.getWritableDatabase();
+    }
+
+    private synchronized void close() {
+        mDatabase.close();
     }
 }

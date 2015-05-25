@@ -83,4 +83,8 @@ public class SessionsLab {
         mDatabaseManager.saveFall(fall);
     }
 
+    public void deleteSessionFromDatabase(Session session) {
+        mDatabaseManager.deleteSession(session);
+    }
+
 }
