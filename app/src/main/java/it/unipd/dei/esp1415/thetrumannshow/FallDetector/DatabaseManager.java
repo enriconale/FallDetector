@@ -232,6 +232,7 @@ public class DatabaseManager {
         for (int i = 0; i < data.length(); i++) {
             if (Character.toString(data.charAt(i)).equals("-")) {
                 lst.add(Float.parseFloat(number));
+                number = "";
             } else {
                 number += data.charAt(i);
             }
