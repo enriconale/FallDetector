@@ -29,10 +29,9 @@ public class Fall extends ActionBarActivity{
         mXAcceleration = xAcc;
         mYAcceleration = yAcc;
         mZAcceleration = zAcc;
-    }
+
 
     Intent send = new Intent(Intent.ACTION_SENDTO);
-    {
         String uriText = "mailto:" + Uri.encode("email@gmail.com") +
                 "?subject=" + Uri.encode("Sono Caduto") +
                 "&body=" + Uri.encode("Vieni a prendermi a " + mLatitude + mLongitude);
