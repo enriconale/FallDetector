@@ -1,10 +1,12 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -86,6 +88,15 @@ public class DataAcquisitionUnit
                 mContext, mGoogleApiClient, mLastFallIndex);
         Thread focThread = new Thread(foc);
         focThread.run();
+
+        Intent send = new Intent(Intent.ACTION_SENDTO);
+        String uriText = "mailto:" + Uri.encode("softwaretest@eiketrumann.de") +
+                "?subject=" + Uri.encode("Sono Caduto") +
+                "&body=" + Uri.encode("Vieni a prendermi a ");
+        Uri uri = Uri.parse(uriText);
+        send.setData(uri);
+        send.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(send);
     }
 
     void detach(){
