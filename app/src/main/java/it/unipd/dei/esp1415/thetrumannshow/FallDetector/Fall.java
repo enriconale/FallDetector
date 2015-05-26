@@ -14,8 +14,8 @@ public class Fall{
     private final String mFallName;
     private final Date mDate;
 
-    private double mLatitude;
-    private double mLongitude;
+    private Double mLatitude;
+    private Double mLongitude;
 
     private Address mAddress;
 
@@ -24,13 +24,12 @@ public class Fall{
     private final float[] mZAcceleration;
     private boolean mIsEmailSent;
 
-    public Fall(String name, Date date, Location location, float[] xAcc, float[] yAcc, float[] zAcc) {
+    public Fall(String name, Date date, Double latitude, Double longitude, float[] xAcc, float[]
+            yAcc, float[] zAcc) {
         mFallName = name;
         mDate = date;
-        if (location != null){
-            mLatitude = location.getLatitude();
-            mLongitude = location.getLongitude();
-        }
+        mLatitude = latitude;
+        mLongitude = longitude;
         mXAcceleration = xAcc;
         mYAcceleration = yAcc;
         mZAcceleration = zAcc;
