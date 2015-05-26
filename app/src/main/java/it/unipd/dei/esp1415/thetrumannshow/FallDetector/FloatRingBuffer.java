@@ -59,4 +59,12 @@ public class FloatRingBuffer{
         }
         return ret;
     }
+
+    public FloatRingBuffer copy() {
+        FloatRingBuffer ret = new FloatRingBuffer(capacity);
+        for (float f : dataStore){
+            ret.insert(f);
+        }
+        return ret;
+    }
 }

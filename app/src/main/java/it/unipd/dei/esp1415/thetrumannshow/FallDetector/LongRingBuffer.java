@@ -59,4 +59,12 @@ public class LongRingBuffer{
         }
         return ret;
     }
+
+    public LongRingBuffer copy() {
+        LongRingBuffer ret = new LongRingBuffer(capacity);
+        for (long l : dataStore){
+            ret.insert(l);
+        }
+        return ret;
+    }
 }

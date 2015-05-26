@@ -59,8 +59,12 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
     @Override
     protected void onPause(){
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
         dau.detach();
-        dau.writeToFile("finalData.csv");
     }
 
     @Override

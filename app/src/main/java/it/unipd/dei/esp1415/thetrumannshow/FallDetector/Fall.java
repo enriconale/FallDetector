@@ -1,26 +1,30 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Intent;
+import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 
 import java.util.Date;
 
 /**
  * @author Enrico Naletto
  */
-public class Fall extends ActionBarActivity{
+public class Fall{
     private final String mFallName;
     private final Date mDate;
-    private double mLatitude;
-    private double mLongitude;
+
+    private Double mLatitude;
+    private Double mLongitude;
+
+    private Address mAddress;
+
     private final float[] mXAcceleration;
     private final float[] mYAcceleration;
     private final float[] mZAcceleration;
     private boolean mIsEmailSent;
 
-    public Fall(String name, Date date, double latitude, double longitude, float[] xAcc, float[]
+    public Fall(String name, Date date, Double latitude, Double longitude, float[] xAcc, float[]
             yAcc, float[] zAcc) {
         mFallName = name;
         mDate = date;
@@ -50,11 +54,11 @@ public class Fall extends ActionBarActivity{
         return mDate;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return mLatitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return mLongitude;
     }
 
@@ -72,6 +76,15 @@ public class Fall extends ActionBarActivity{
 
     public void setIsEmailSent(boolean isEmailSent) {
         mIsEmailSent = isEmailSent;
+    }
+
+    public void setLocation(Location loc){
+        mLatitude = loc.getLatitude();
+        mLongitude = loc.getLongitude();
+    }
+
+    public void setAddress(Address addr){
+        mAddress = addr;
     }
 
     public boolean isEmailSent() {
