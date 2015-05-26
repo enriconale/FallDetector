@@ -110,6 +110,8 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         itemsWrapper.setOrientation(LinearLayout.VERTICAL);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        SimpleDateFormat fallItemDateFormatter = new SimpleDateFormat("HH:mm",
+                java.util.Locale.getDefault());
         for (int i = 0; i < mSession.getFalls().size(); i++) {
             final int fallPositionInList = i;
             final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,
@@ -119,7 +121,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
             TextView fallNameTextView = (TextView)singleFallListItem.findViewById(R.id.fall_id);
             TextView fallHourTextView = (TextView)singleFallListItem.findViewById(R.id.fall_hour);
             fallNameTextView.setText(mSession.getFalls().get(i).getName());
-            fallHourTextView.setText(mDateFormatter.format(mSession.getFalls().get(i).getDate()));
+            fallHourTextView.setText(fallItemDateFormatter.format(mSession.getFalls().get(i).getDate()));
             singleFallListItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

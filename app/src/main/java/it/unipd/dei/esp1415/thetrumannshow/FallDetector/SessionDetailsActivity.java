@@ -41,11 +41,8 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         mSessionPositionInList = getIntent().getExtras().getInt(SessionsListAdapter.SESSION_DETAILS);
         mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mSessionPositionInList);
 
-        LinkedList<Fall> listOfFalls = mSession.getFalls();
-        listOfFalls = SessionsLab.get
-                (getApplicationContext())
-                .getFallsOfSession
-                (mSession);
+        LinkedList<Fall> listOfFalls = SessionsLab.get(getApplicationContext()).getFallsOfSession(mSession);
+        mSession.setListOfFalls(listOfFalls);
 
         mSessionName = (TextView)findViewById(R.id.session_name);
         mSessionCreationDate = (TextView)findViewById(R.id.date_time);
@@ -66,6 +63,8 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         itemsWrapper.setOrientation(LinearLayout.VERTICAL);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        SimpleDateFormat fallItemDateFormatter = new SimpleDateFormat("HH:mm",
+                java.util.Locale.getDefault());
         for (int i = 0; i < listOfFalls.size(); i++) {
             final int fallPositionInList = i;
             final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,
@@ -75,7 +74,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
             TextView fallNameTextView = (TextView)singleFallListItem.findViewById(R.id.fall_id);
             TextView fallHourTextView = (TextView)singleFallListItem.findViewById(R.id.fall_hour);
             fallNameTextView.setText(listOfFalls.get(i).getName());
-            fallHourTextView.setText(mDateFormatter.format(listOfFalls.get(i).getDate()));
+            fallHourTextView.setText(fallItemDateFormatter.format(listOfFalls.get(i).getDate()));
             singleFallListItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

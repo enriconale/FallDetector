@@ -27,8 +27,7 @@ public class SessionsLab {
         mAppContext = appContext;
         mDatabaseManager = new DatabaseManager(appContext);
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-                java.util.Locale.getDefault()
-        );
+                java.util.Locale.getDefault());
         mSessionsList = mDatabaseManager.getAllSessionsFromDatabase();
     }
 

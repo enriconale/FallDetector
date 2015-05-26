@@ -90,6 +90,10 @@ public class Session {
         mNumberOfFalls++;
     }
 
+    public void setListOfFalls(LinkedList<Fall> list) {
+        mFalls = list;
+    }
+
     public void setDuration(long duration) {
         mDuration = duration;
     }
