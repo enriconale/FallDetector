@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.widget.Toast;
 
-import com.google.android.gms.drive.internal.CreateContentsRequest;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,6 +54,11 @@ public class DatabaseManager {
 
     public void saveFall(Fall fall) {
         open();
+        if (SessionsLab.get(mAppContext).getRunningSession().getFalls().size() == 1) {
+            saveSession(SessionsLab.get(mAppContext).getRunningSession());
+        } else {
+            updateRunningSessionInDatabase();
+        }
         mContentValues.put(CreateDatabase.FALL_NAME, fall.getName());
         mContentValues.put(CreateDatabase.FALL_DATE, SessionsLab.get(mAppContext).getDateFormat().format(fall
                 .getDate()));
@@ -233,6 +236,27 @@ public class DatabaseManager {
         resultFall.setIsEmailSent(isEmailSent);
 
         return resultFall;
+    }
+
+    private void updateRunningSessionInDatabase() {
+        Session runningSession = SessionsLab.get(mAppContext).getRunningSession();
+        String[] idString = new String[] {runningSession.getUUID().toString()};
+
+        open();
+        mContentValues.put(CreateDatabase.SESSION_NAME, runningSession.getSessionName());
+        mContentValues.put(CreateDatabase.SESSION_DURATION, runningSession.getDuration());
+
+        // Save Values into database
+        try {
+            mDatabase.update(CreateDatabase.SESSION_TABLE, mContentValues, CreateDatabase.SESSION_ID +
+                            " LIKE ?", idString );
+        } catch (SQLiteException sqle) {
+            Toast.makeText(mAppContext, "Error updating database",
+                    Toast.LENGTH_SHORT).show();
+        } finally {
+            mContentValues.clear();
+            close();
+        }
     }
 
     private String formatFloatArray(float[] data) {
