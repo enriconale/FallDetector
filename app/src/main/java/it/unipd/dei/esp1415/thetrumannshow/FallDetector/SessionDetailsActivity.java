@@ -107,7 +107,9 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
 
     @Override
     public void onDeleteSessionDialogPositiveClick() {
-        SessionsLab.get(getApplicationContext()).getSessions().remove(mSessionPositionInList);
+        SessionsLab tmp = SessionsLab.get(getApplicationContext());
+        tmp.getSessions().remove(mSessionPositionInList);
+        tmp.deleteSessionFromDatabase(mSession);
         NavUtils.navigateUpFromSameTask(this);
     }
 }

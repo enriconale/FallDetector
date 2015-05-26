@@ -1,7 +1,12 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
@@ -17,18 +22,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 
 
-public class RunningSessionActivity extends AppCompatActivity {
+public class RunningSessionActivity extends AppCompatActivity implements SensorEventListener {
     private static SimpleDateFormat mDateFormatter;
 
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
     private Session mSession;
     private ImageView mEditSessionNameImageView;
     private TextView mSessionName;
     private EditText mEditSessionNameEditText;
     private TextView mSessionCreationDate;
     private TextView mSessionDuration;
+    private TextView mAccXAxis;
+    private TextView mAccYAxis;
+    private TextView mAccZAxis;
     private Handler mHandler = new Handler();
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
@@ -56,9 +68,16 @@ public class RunningSessionActivity extends AppCompatActivity {
         mSessionDuration = (TextView)findViewById(R.id.session_duration);
         mEditSessionNameImageView = (ImageView)findViewById(R.id.modify_session_name);
 
-        mSessionName.setText(mSession.getSessionName());
+        mSessionName.setText(getFormattedSessionName(mSession.getSessionName()));
         mEditSessionNameEditText.setText(mSession.getSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
+
+        mAccXAxis = (TextView)findViewById(R.id.acc_x_axis);
+        mAccYAxis = (TextView)findViewById(R.id.acc_y_axis);
+        mAccZAxis = (TextView)findViewById(R.id.acc_z_axis);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         mEditSessionNameImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +95,7 @@ public class RunningSessionActivity extends AppCompatActivity {
                     mEditSessionNameEditText.setVisibility(View.GONE);
                     String newName = mEditSessionNameEditText.getText().toString();
                     mSession.setSessionName(newName);
-                    mSessionName.setText(newName);
+                    mSessionName.setText(getFormattedSessionName(newName));
                     mEditSessionNameEditText.setText(newName);
                     mEditingName = false;
                 }
@@ -147,6 +166,7 @@ public class RunningSessionActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.action_stop_session:
+                SessionsLab.get(getApplicationContext()).saveSessionInDatabase(mSession);
                 SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
                 NavUtils.navigateUpFromSameTask(this);
                 break;
@@ -157,14 +177,35 @@ public class RunningSessionActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+        mSensorManager.unregisterListener(this);
         mHandler.removeCallbacks(mUpdateTimeTask);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.postDelayed(mUpdateTimeTask, 0);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float xAxisValue = event.values[0];
+        float yAxisValue = event.values[1];
+        float zAxisValue = event.values[2];
+        mAccXAxis.setText(getApplicationContext().getString(R.string.x_axis) +
+                String.format("  %.2f", xAxisValue));
+        mAccYAxis.setText(getApplicationContext().getString(R.string.y_axis) +
+                String.format("  %.2f", yAxisValue));
+        mAccZAxis.setText(getApplicationContext().getString(R.string.z_axis) +
+                String.format("  %.2f", zAxisValue));
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Do nothing here.
     }
 
     private void hideVirtualKeyboard(){
@@ -179,5 +220,13 @@ public class RunningSessionActivity extends AppCompatActivity {
             InputMethodManager imm =
                     (InputMethodManager)this.getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.showSoftInput(mEditSessionNameEditText, InputMethodManager.SHOW_FORCED);
+    }
+
+    private String getFormattedSessionName(String name) {
+        if (name.length() > 15) {
+            return name.substring(0, 15) + "...";
+        } else {
+            return name;
+        }
     }
 }

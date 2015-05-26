@@ -74,7 +74,6 @@ public class FallObjectCreator implements Runnable{
         float [] xArr = xBuffer.readRange(interval[0],interval[1]);
         float [] yArr = yBuffer.readRange(interval[0],interval[1]);
         float [] zArr = zBuffer.readRange(interval[0],interval[1]);
- =
         return new Fall("",new java.util.Date(), null ,xArr,yArr,zArr);
     }
 

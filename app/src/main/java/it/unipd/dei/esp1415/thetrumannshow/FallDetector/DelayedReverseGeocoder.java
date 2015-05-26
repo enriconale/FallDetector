@@ -40,8 +40,8 @@ public class DelayedReverseGeocoder implements Runnable{
     @Override
     public void run() {
         try {
-            mAddresses = mGeocoder.getFromLocation(mFall.getLocation().getLatitude(),
-                    mFall.getLocation().getLatitude(), 1);
+            mAddresses = mGeocoder.getFromLocation(mFall.getLatitude(),
+                    mFall.getLongitude(), 1);
         } catch (java.io.IOException e) {
             return;
         }

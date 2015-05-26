@@ -14,16 +14,18 @@ public class SessionsLab {
     private static boolean mIsRunningSessionPlaying = false;
     private static SimpleDateFormat mDateFormatter;
     private static SessionsLab sSessionsLab;
+    private static DatabaseManager mDatabaseManager;
     private Context mAppContext;
     private ArrayList<Session> mSessionsList;
     private Session mRunningSession;
 
     private SessionsLab(Context appContext) {
         mAppContext = appContext;
+        mDatabaseManager = new DatabaseManager(appContext);
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
                 java.util.Locale.getDefault()
         );
-        mSessionsList = new ArrayList<Session>();
+        mSessionsList = mDatabaseManager.getAllSessionsFromDatabase();
     }
 
     public static SessionsLab get(Context c) {
@@ -71,6 +73,18 @@ public class SessionsLab {
 
     public boolean isRunningSessionPlaying() {
         return mIsRunningSessionPlaying;
+    }
+
+    public void saveSessionInDatabase(Session session) {
+        mDatabaseManager.saveSession(session);
+    }
+
+    public void saveFallInDatabase(Fall fall) {
+        mDatabaseManager.saveFall(fall);
+    }
+
+    public void deleteSessionFromDatabase(Session session) {
+        mDatabaseManager.deleteSession(session);
     }
 
 }
