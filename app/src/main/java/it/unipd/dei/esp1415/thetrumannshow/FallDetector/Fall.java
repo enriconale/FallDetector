@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
+import android.support.v7.app.ActionBarActivity;
 
 import java.util.Date;
 
 /**
  * @author Enrico Naletto
  */
-public class Fall{
+public class Fall extends ActionBarActivity{
     private final String mFallName;
     private final Date mDate;
 
@@ -33,17 +34,15 @@ public class Fall{
         mXAcceleration = xAcc;
         mYAcceleration = yAcc;
         mZAcceleration = zAcc;
-    }
 
-    Intent send = new Intent(Intent.ACTION_SENDTO);
-    {
+        /*Intent send = new Intent(Intent.ACTION_SENDTO);
         String uriText = "mailto:" + Uri.encode("email@gmail.com") +
                 "?subject=" + Uri.encode("Sono Caduto") +
                 "&body=" + Uri.encode("Vieni a prendermi a " + mLatitude + mLongitude);
         Uri uri = Uri.parse(uriText);
 
         send.setData(uri);
-        startActivity(Intent.createChooser(send, "Send mail..."));
+        startActivity(Intent.createChooser(send, "Send mail..."));*/
     }
 
     public String getName() {
