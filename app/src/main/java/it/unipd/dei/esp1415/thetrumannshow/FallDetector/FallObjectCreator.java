@@ -88,7 +88,7 @@ public class FallObjectCreator implements Runnable{
         Intent send = new Intent(Intent.ACTION_SENDTO);
         String uriText = "mailto:" + Uri.encode("softwaretest@eiketrumann.de") +
                 "?subject=" + Uri.encode("Sono Caduto") +
-                "&body=" + Uri.encode("Vieni a prendermi a "+ mLastFall.getLongitude() + " " + mLastFall.getLatitude());
+                "&body=" + Uri.encode("Vieni a prendermi a "+ mLastFall.getLatitude() + " " + mLastFall.getLongitude());
         Uri uri = Uri.parse(uriText);
         send.setData(uri);
         send.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
