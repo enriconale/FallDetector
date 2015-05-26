@@ -59,8 +59,20 @@ public class DatabaseManager {
         mContentValues.put(CreateDatabase.FALL_NAME, fall.getName());
         mContentValues.put(CreateDatabase.FALL_DATE, SessionsLab.get(mAppContext).getDateFormat().format(fall
                 .getDate()));
-        mContentValues.put(CreateDatabase.FALL_LATITUDE, fall.getLatitude());
-        mContentValues.put(CreateDatabase.FALL_LONGITUDE, fall.getLongitude());
+
+        if (fall.getLatitude() != null) {
+            mContentValues.put(CreateDatabase.FALL_LATITUDE, fall.getLatitude());
+        } else {
+            mContentValues.put(CreateDatabase.FALL_LATITUDE, 0);
+        }
+
+        if (fall.getLongitude() != null) {
+            mContentValues.put(CreateDatabase.FALL_LONGITUDE, fall.getLongitude());
+        } else {
+            mContentValues.put(CreateDatabase.FALL_LONGITUDE, 0);
+        }
+
+
         mContentValues.put(CreateDatabase.X_ACCELERATION, formatFloatArray(fall.getXAcceleration()));
         mContentValues.put(CreateDatabase.Y_ACCELERATION, formatFloatArray(fall.getYAcceleration()));
         mContentValues.put(CreateDatabase.Z_ACCELERATION, formatFloatArray(fall.getZAcceleration()));
@@ -209,8 +221,14 @@ public class DatabaseManager {
                 break;
         }
 
-        Fall resultFall = new Fall(fallName, fallDate, fallLatitude, fallLongitude, xAccelerationData,
-                yAccelerationData, zAccelerationData);
+        Fall resultFall;
+        if (fallLatitude == 0) {
+            resultFall = new Fall(fallName, fallDate, null, null, xAccelerationData,
+                    yAccelerationData, zAccelerationData);
+        } else {
+            resultFall = new Fall(fallName, fallDate, fallLatitude, fallLongitude, xAccelerationData,
+                    yAccelerationData, zAccelerationData);
+        }
 
         resultFall.setIsEmailSent(isEmailSent);
 
