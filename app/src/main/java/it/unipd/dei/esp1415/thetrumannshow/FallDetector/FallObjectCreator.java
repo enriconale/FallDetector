@@ -1,6 +1,8 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;

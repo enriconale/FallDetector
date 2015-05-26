@@ -2,6 +2,7 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -123,5 +124,15 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         mAdapter.notifyDataSetChanged();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
+    }
+
+    public void sendMail(){
+        Intent send = new Intent(Intent.ACTION_SENDTO);
+        String uriText = "mailto:" + Uri.encode("softwaretest@eiketrumann.de") +
+                "?subject=" + Uri.encode("Sono Caduto") +
+                "&body=" + Uri.encode("Vieni a prendermi");
+        Uri uri = Uri.parse(uriText);
+        send.setData(uri);
+        startActivity(Intent.createChooser(send, "Send mail..."));
     }
 }
