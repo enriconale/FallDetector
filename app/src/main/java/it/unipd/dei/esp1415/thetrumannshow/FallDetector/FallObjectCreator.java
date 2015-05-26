@@ -50,6 +50,8 @@ public class FallObjectCreator implements Runnable{
         SessionsLab lab = SessionsLab.get(mContext);
         lab.getRunningSession().addFall(mLastFall);
         lab.saveFallInDatabase(mLastFall);
+
+        new DelayedLocationProvider(mLastFall, mGoogleApiClient, this);
     }
 
     long[] getSurroundingSecond(long index){
@@ -82,5 +84,14 @@ public class FallObjectCreator implements Runnable{
 
     void locationFixed(){
         new DelayedReverseGeocoder(mLastFall, mGoogleApiClient, mContext);
+
+        Intent send = new Intent(Intent.ACTION_SENDTO);
+        String uriText = "mailto:" + Uri.encode("softwaretest@eiketrumann.de") +
+                "?subject=" + Uri.encode("Sono Caduto") +
+                "&body=" + Uri.encode("Vieni a prendermi a "+ mLastFall.getLongitude() + " " + mLastFall.getLatitude());
+        Uri uri = Uri.parse(uriText);
+        send.setData(uri);
+        send.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(send);
     }
 }

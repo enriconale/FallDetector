@@ -88,15 +88,6 @@ public class DataAcquisitionUnit
                 mContext, mGoogleApiClient, mLastFallIndex);
         Thread focThread = new Thread(foc);
         focThread.run();
-
-        Intent send = new Intent(Intent.ACTION_SENDTO);
-        String uriText = "mailto:" + Uri.encode("softwaretest@eiketrumann.de") +
-                "?subject=" + Uri.encode("Sono Caduto") +
-                "&body=" + Uri.encode("Vieni a prendermi a ");
-        Uri uri = Uri.parse(uriText);
-        send.setData(uri);
-        send.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(send);
     }
 
     void detach(){
