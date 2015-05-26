@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 
 
 public class SessionDetailsActivity extends AppCompatActivity implements DeleteSessionDialog
@@ -40,6 +41,12 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         mSessionPositionInList = getIntent().getExtras().getInt(SessionsListAdapter.SESSION_DETAILS);
         mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mSessionPositionInList);
 
+        LinkedList<Fall> listOfFalls = mSession.getFalls();
+        listOfFalls = SessionsLab.get
+                (getApplicationContext())
+                .getFallsOfSession
+                (mSession);
+
         mSessionName = (TextView)findViewById(R.id.session_name);
         mSessionCreationDate = (TextView)findViewById(R.id.date_time);
         mSessionDuration = (TextView)findViewById(R.id.session_duration);
@@ -59,11 +66,16 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         itemsWrapper.setOrientation(LinearLayout.VERTICAL);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < listOfFalls.size(); i++) {
             final int fallPositionInList = i;
             final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,
                     itemsWrapper, false);
             singleFallListItem.setId(i);
+
+            TextView fallNameTextView = (TextView)singleFallListItem.findViewById(R.id.fall_id);
+            TextView fallHourTextView = (TextView)singleFallListItem.findViewById(R.id.fall_hour);
+            fallNameTextView.setText(listOfFalls.get(i).getName());
+            fallHourTextView.setText(mDateFormatter.format(listOfFalls.get(i).getDate()));
             singleFallListItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

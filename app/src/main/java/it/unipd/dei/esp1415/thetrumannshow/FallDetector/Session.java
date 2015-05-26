@@ -17,6 +17,7 @@ public class Session {
     private int mColor1;
     private int mColor2;
     private int mColor3;
+    private int mNumberOfFalls;
 
     public Session() {
         mUUID = UUID.randomUUID();
@@ -27,10 +28,11 @@ public class Session {
         mColor1 = (int)(Math.random() * 256);
         mColor2 = (int)(Math.random() * 256);
         mColor3 = (int)(Math.random() * 256);
+        mNumberOfFalls = 0;
     }
 
     public Session(UUID uuid, String sessionName, Date date, long duration, int color1,
-                   int color2, int color3) {
+                   int color2, int color3, int numberOfFalls) {
         mUUID = uuid;
         mSessionName = sessionName;
         mStartDate = date;
@@ -39,6 +41,7 @@ public class Session {
         mColor1 = color1;
         mColor2 = color2;
         mColor3 = color3;
+        mNumberOfFalls = numberOfFalls;
     }
 
     public UUID getUUID() {
@@ -74,12 +77,17 @@ public class Session {
         return mFalls;
     }
 
+    public int getNumberOfFalls() {
+        return mNumberOfFalls;
+    }
+
     public void setSessionName(String newName) {
         mSessionName = newName;
     }
 
     public void addFall(Fall fall) {
         mFalls.add(fall);
+        mNumberOfFalls++;
     }
 
     public void setDuration(long duration) {

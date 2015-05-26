@@ -89,7 +89,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
 
         String tmpStrBuilder = mAppContext.getString(R.string.cardview_falls) + " " +
-                tmpSession.getFalls().size();
+                tmpSession.getNumberOfFalls();
         viewHolder.mNumOfFalls.setText(tmpStrBuilder);
         tmpStrBuilder = mAppContext.getString(R.string.cardview_startdate) + " " +
                 mDateFormatter.format(tmpSession.getDate());

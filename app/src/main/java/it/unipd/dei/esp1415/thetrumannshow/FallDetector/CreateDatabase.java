@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CreateDatabase extends SQLiteOpenHelper{
 
     private static final String DB_NAME = "Database.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     public static final String SESSION_TABLE = "Session";
     public static final String SESSION_ID = "id";
@@ -21,6 +21,7 @@ public class CreateDatabase extends SQLiteOpenHelper{
     public static final String SESSION_ICON_COLOR_1 = "icon_color_1";
     public static final String SESSION_ICON_COLOR_2 = "icon_color_2";
     public static final String SESSION_ICON_COLOR_3 = "icon_color_3";
+    public static final String SESSION_NUMBER_OF_FALLS = "number_of_falls";
 
     public static final String FALL_TABLE = "Fall";
     public static final String FALL_NAME = "name";
@@ -41,7 +42,8 @@ public class CreateDatabase extends SQLiteOpenHelper{
             + SESSION_DURATION + " integer, "
             + SESSION_ICON_COLOR_1 + " integer, "
             + SESSION_ICON_COLOR_2 + " integer, "
-            + SESSION_ICON_COLOR_3 + " integer);";
+            + SESSION_ICON_COLOR_3 + " integer, "
+            + SESSION_NUMBER_OF_FALLS + " integer);";
 
     private static final String FALL_TABLE_CREATE = "create table "
             + FALL_TABLE + " ("

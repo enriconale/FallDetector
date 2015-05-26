@@ -23,6 +23,7 @@ public class FallObjectCreator implements Runnable{
     private Fall mLastFall;
 
     private final int mLastFallIndex;
+    private static int mFallNameIndex = 0;
 
     public FallObjectCreator(LongRingBuffer timeBuffer, FloatRingBuffer xBuffer,
                              FloatRingBuffer yBuffer, FloatRingBuffer zBuffer,
@@ -34,6 +35,7 @@ public class FallObjectCreator implements Runnable{
         this.mContext = context;
         this.mGoogleApiClient = googleApiClient;
         this.mLastFallIndex = fallIndex;
+        mFallNameIndex++;
     }
 
     public void run(){
@@ -52,6 +54,10 @@ public class FallObjectCreator implements Runnable{
         lab.saveFallInDatabase(mLastFall);
 
         new DelayedLocationProvider(mLastFall, mGoogleApiClient, this);
+    }
+
+    public static void resetFallNameCounter() {
+        mFallNameIndex = 0;
     }
 
     long[] getSurroundingSecond(long index){
@@ -79,7 +85,8 @@ public class FallObjectCreator implements Runnable{
         float [] xArr = xBuffer.readRange(interval[0],interval[1]);
         float [] yArr = yBuffer.readRange(interval[0],interval[1]);
         float [] zArr = zBuffer.readRange(interval[0],interval[1]);
-        return new Fall("",new java.util.Date(), null, null ,xArr,yArr,zArr);
+        return new Fall("Fall #" + mFallNameIndex ,new java.util.Date(), null, null ,xArr,yArr,
+                zArr);
     }
 
     void locationFixed(){

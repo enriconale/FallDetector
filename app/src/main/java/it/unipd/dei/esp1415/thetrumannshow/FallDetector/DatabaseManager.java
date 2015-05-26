@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -42,6 +43,7 @@ public class DatabaseManager {
         mContentValues.put(CreateDatabase.SESSION_ICON_COLOR_1, session.getColor1());
         mContentValues.put(CreateDatabase.SESSION_ICON_COLOR_2, session.getColor2());
         mContentValues.put(CreateDatabase.SESSION_ICON_COLOR_3, session.getColor3());
+        mContentValues.put(CreateDatabase.SESSION_NUMBER_OF_FALLS, session.getNumberOfFalls());
 
         try {
             mDatabase.insert(CreateDatabase.SESSION_TABLE, null, mContentValues);
@@ -53,11 +55,7 @@ public class DatabaseManager {
     }
 
     public void saveFall(Fall fall) {
-        if (SessionsLab.get(mAppContext).getRunningSession().getFalls().size() == 1) {
-            saveSession(SessionsLab.get(mAppContext).getRunningSession());
-        } else {
-            updateRunningSessionInDatabase();
-        }
+        SessionsLab.get(mAppContext).saveRunningSessionInDatabase();
         open();
         mContentValues.put(CreateDatabase.FALL_NAME, fall.getName());
         mContentValues.put(CreateDatabase.FALL_DATE, SessionsLab.get(mAppContext).getDateFormat().format(fall
@@ -184,8 +182,11 @@ public class DatabaseManager {
         int sessionIconColor3 = cursor.getInt(cursor.getColumnIndex(CreateDatabase
                 .SESSION_ICON_COLOR_3));
 
+        int sessionNumberOfFalls = cursor.getInt(cursor.getColumnIndex(CreateDatabase
+                .SESSION_NUMBER_OF_FALLS));
+
         return new Session(sessionUUID, sessionName, sessionDate, sessionDuration,
-                sessionIconColor1, sessionIconColor2, sessionIconColor3);
+                sessionIconColor1, sessionIconColor2, sessionIconColor3, sessionNumberOfFalls);
     }
 
     private Fall getFallFromCursor(Cursor cursor) {
@@ -238,7 +239,7 @@ public class DatabaseManager {
         return resultFall;
     }
 
-    private void updateRunningSessionInDatabase() {
+    public void updateRunningSessionInDatabase() {
         Session runningSession = SessionsLab.get(mAppContext).getRunningSession();
         String[] idString = new String[] {runningSession.getUUID().toString()};
 
@@ -263,31 +264,31 @@ public class DatabaseManager {
         StringBuilder builder = new StringBuilder(500);
         for (float number : data) {
             builder.append(number);
-            builder.append("-");
+            builder.append("&");
         }
         return builder.toString();
     }
 
     private float[] parseAccelerationDataFromString(String data) {
-        StringBuilder builder = new StringBuilder(20);
-        LinkedList<Float> lst = new LinkedList<>();
+            StringBuilder builder = new StringBuilder(20);
+            LinkedList<Float> lst = new LinkedList<>();
 
-        for (int i = 0; i < data.length(); i++) {
-            if (Character.toString(data.charAt(i)).equals("-")) {
-                lst.add(Float.parseFloat(builder.toString()));
-                builder.setLength(0);
-            } else {
-                builder.append(data.charAt(i));
+            for (int i = 0; i < data.length(); i++) {
+                if (Character.toString(data.charAt(i)).equals("&")) {
+                    lst.add(Float.parseFloat(builder.toString()));
+                    builder.setLength(0);
+                } else {
+                    builder.append(data.charAt(i));
+                }
             }
-        }
 
-        float[] result = new float[lst.size()];
-        int k = 0;
-        for (Float d : lst) {
-            result[k++] = d;
-        }
+            float[] result = new float[lst.size()];
+            int k = 0;
+            for (Float d : lst) {
+                result[k++] = d;
+            }
 
-        return result;
+            return result;
     }
 
     private synchronized void open() throws SQLException {

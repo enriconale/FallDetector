@@ -1,9 +1,11 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * @author Enrico Naletto
@@ -12,12 +14,14 @@ import java.util.ArrayList;
 public class SessionsLab {
     private static boolean mHasRunningSession = false;
     private static boolean mIsRunningSessionPlaying = false;
+    private static boolean mIsRunningSessionAlreadySavedInDatabase = false;
     private static SimpleDateFormat mDateFormatter;
     private static SessionsLab sSessionsLab;
     private static DatabaseManager mDatabaseManager;
     private Context mAppContext;
     private ArrayList<Session> mSessionsList;
     private Session mRunningSession;
+    private DataAcquisitionUnit mDataAcquisitionUnit;
 
     private SessionsLab(Context appContext) {
         mAppContext = appContext;
@@ -39,6 +43,7 @@ public class SessionsLab {
         mRunningSession = session;
         mHasRunningSession = true;
         mIsRunningSessionPlaying = true;
+        mDataAcquisitionUnit = new DataAcquisitionUnit(mAppContext);
     }
 
     public ArrayList<Session> getSessions() {
@@ -65,6 +70,7 @@ public class SessionsLab {
         mIsRunningSessionPlaying = false;
         mHasRunningSession = false;
         mRunningSession = null;
+        mDataAcquisitionUnit.detach();
     }
 
     public boolean hasRunningSession() {
@@ -75,8 +81,18 @@ public class SessionsLab {
         return mIsRunningSessionPlaying;
     }
 
-    public void saveSessionInDatabase(Session session) {
-        mDatabaseManager.saveSession(session);
+    public LinkedList<Fall> getFallsOfSession(Session session) {
+        return mDatabaseManager.getFallsFromDatabase(session);
+    }
+
+    public void saveRunningSessionInDatabase() {
+        if (mIsRunningSessionAlreadySavedInDatabase) {
+            mDatabaseManager.updateRunningSessionInDatabase();
+        } else {
+            mDatabaseManager.saveSession(mRunningSession);
+            mIsRunningSessionAlreadySavedInDatabase = true;
+        }
+
     }
 
     public void saveFallInDatabase(Fall fall) {

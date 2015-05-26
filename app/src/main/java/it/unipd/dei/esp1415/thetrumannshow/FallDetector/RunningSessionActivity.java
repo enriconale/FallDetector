@@ -11,9 +11,11 @@ import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -108,11 +110,16 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         itemsWrapper.setOrientation(LinearLayout.VERTICAL);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < mSession.getFalls().size(); i++) {
             final int fallPositionInList = i;
             final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,
                     itemsWrapper, false);
             singleFallListItem.setId(i);
+
+            TextView fallNameTextView = (TextView)singleFallListItem.findViewById(R.id.fall_id);
+            TextView fallHourTextView = (TextView)singleFallListItem.findViewById(R.id.fall_hour);
+            fallNameTextView.setText(mSession.getFalls().get(i).getName());
+            fallHourTextView.setText(mDateFormatter.format(mSession.getFalls().get(i).getDate()));
             singleFallListItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -166,8 +173,9 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
                 }
                 break;
             case R.id.action_stop_session:
-                SessionsLab.get(getApplicationContext()).saveSessionInDatabase(mSession);
+                SessionsLab.get(getApplicationContext()).saveRunningSessionInDatabase();
                 SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
+                FallObjectCreator.resetFallNameCounter();
                 NavUtils.navigateUpFromSameTask(this);
                 break;
         }

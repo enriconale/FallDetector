@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
     private ArrayList<Session> mSessionsList;
     private TextView mEmptyListMessage;
 
-    private DataAcquisitionUnit dau;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         }
 
         // starting data acquisition, for now only till pause
-        dau = new DataAcquisitionUnit(getApplicationContext());
+
     }
 
     @Override
@@ -65,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        dau.detach();
     }
 
     @Override
@@ -115,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         SessionsLab.get(getApplicationContext()).createNewRunningSession(newSession);
         Intent intent = new Intent(this, RunningSessionService.class);
         startService(intent);
+        FallObjectCreator.resetFallNameCounter();
         mAdapter.notifyDataSetChanged();
     }
 
