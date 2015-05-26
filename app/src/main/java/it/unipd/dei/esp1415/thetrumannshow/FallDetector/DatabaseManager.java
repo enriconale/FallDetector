@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.UUID;
 
 /**
@@ -24,15 +25,7 @@ public class DatabaseManager {
     private SQLiteDatabase mDatabase;
     private ContentValues mContentValues;
     private Context mAppContext;
-    private String mSessionTableAllColumns[] = {
-        CreateDatabase.SESSION_ID,
-        CreateDatabase.SESSION_NAME,
-        CreateDatabase.SESSION_DATE,
-        CreateDatabase.SESSION_DURATION,
-        CreateDatabase.SESSION_ICON_COLOR_1,
-        CreateDatabase.SESSION_ICON_COLOR_2,
-        CreateDatabase.SESSION_ICON_COLOR_3,
-    };
+
 
     public DatabaseManager(Context ctx){
         mAppContext = ctx;
@@ -97,7 +90,7 @@ public class DatabaseManager {
         ArrayList<Session> sessions = new ArrayList<Session>();
 
         Cursor cursor = mDatabase.query(CreateDatabase.SESSION_TABLE,
-                mSessionTableAllColumns, null, null, null, null, null);
+                null, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -109,6 +102,27 @@ public class DatabaseManager {
         cursor.close();
         close();
         return sessions;
+    }
+
+    public LinkedList<Fall> getFallsFromDatabase(Session session) {
+        open();
+        UUID sessionUUID = session.getUUID();
+        LinkedList<Fall> fallsList = new LinkedList<>();
+
+        Cursor cursor = mDatabase.query(CreateDatabase.FALL_TABLE, null, CreateDatabase
+                        .OWNER_SESSION + " = '" + sessionUUID.toString() + "' ",
+                null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Fall fall = getFallFromCursor(cursor);
+            fallsList.add(fall);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        close();
+        return fallsList;
     }
 
     public void deleteSession(Session session) {
@@ -130,7 +144,9 @@ public class DatabaseManager {
     private Session getSessionFromCursor(Cursor cursor) {
         UUID sessionUUID = UUID.fromString(cursor.getString(cursor.getColumnIndex(CreateDatabase
                 .SESSION_ID)));
+
         String sessionName = cursor.getString(cursor.getColumnIndex(CreateDatabase.SESSION_NAME));
+
         Date sessionDate = new Date();
         try {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
@@ -140,12 +156,16 @@ public class DatabaseManager {
         } catch (ParseException e) {
             //TODO manage possible exception
         }
+
         long sessionDuration = cursor.getLong(cursor.getColumnIndex(CreateDatabase
                 .SESSION_DURATION));
+
         int sessionIconColor1 = cursor.getInt(cursor.getColumnIndex(CreateDatabase
                 .SESSION_ICON_COLOR_1));
+
         int sessionIconColor2 = cursor.getInt(cursor.getColumnIndex(CreateDatabase
                 .SESSION_ICON_COLOR_2));
+
         int sessionIconColor3 = cursor.getInt(cursor.getColumnIndex(CreateDatabase
                 .SESSION_ICON_COLOR_3));
 
@@ -153,14 +173,77 @@ public class DatabaseManager {
                 sessionIconColor1, sessionIconColor2, sessionIconColor3);
     }
 
+    private Fall getFallFromCursor(Cursor cursor) {
+        String fallName = cursor.getString(cursor.getColumnIndex(CreateDatabase.FALL_NAME));
+
+        Date fallDate = new Date();
+        try {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
+                    java.util.Locale.getDefault());
+            fallDate = dateFormatter.parse(cursor.getString
+                    (cursor.getColumnIndex(CreateDatabase.FALL_DATE)));
+        } catch (ParseException e) {
+            //TODO manage possible exception
+        }
+
+        double fallLatitude = cursor.getDouble(cursor.getColumnIndex(CreateDatabase.FALL_LATITUDE));
+
+        double fallLongitude = cursor.getDouble(cursor.getColumnIndex(CreateDatabase
+                .FALL_LONGITUDE));
+
+        float[] xAccelerationData = parseAccelerationDataFromString(cursor.getString(cursor
+                .getColumnIndex(CreateDatabase.X_ACCELERATION)));
+
+        float[] yAccelerationData = parseAccelerationDataFromString(cursor.getString(cursor
+                .getColumnIndex(CreateDatabase.Y_ACCELERATION)));
+
+        float[] zAccelerationData = parseAccelerationDataFromString(cursor.getString(cursor
+                .getColumnIndex(CreateDatabase.Z_ACCELERATION)));
+
+        boolean isEmailSent = false;
+        switch (cursor.getInt(cursor.getColumnIndex(CreateDatabase.EMAIL_SENT))) {
+            case 0:
+                break;
+            case 1:
+                isEmailSent = true;
+                break;
+        }
+
+        Fall resultFall = new Fall(fallName, fallDate, fallLatitude, fallLongitude, xAccelerationData,
+                yAccelerationData, zAccelerationData);
+
+        resultFall.setIsEmailSent(isEmailSent);
+
+        return resultFall;
+    }
+
     private String formatFloatArray(float[] data) {
         StringBuilder builder = new StringBuilder(500);
-        for (int i = 0; i < data.length - 1; i++) {
-            builder.append(data[i]);
+        for (float number : data) {
+            builder.append(number);
             builder.append("-");
         }
-        builder.append(data[data.length - 1]);
         return builder.toString();
+    }
+
+    private float[] parseAccelerationDataFromString(String data) {
+        String number = "";
+        LinkedList<Float> lst = new LinkedList<>();
+        for (int i = 0; i < data.length(); i++) {
+            if (Character.toString(data.charAt(i)).equals("-")) {
+                lst.add(Float.parseFloat(number));
+            } else {
+                number += data.charAt(i);
+            }
+        }
+
+        float[] result = new float[lst.size()];
+        int k = 0;
+        for (Float d : lst) {
+            result[k++] = d;
+        }
+
+        return result;
     }
 
     private synchronized void open() throws SQLException {
