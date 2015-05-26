@@ -227,14 +227,15 @@ public class DatabaseManager {
     }
 
     private float[] parseAccelerationDataFromString(String data) {
-        String number = "";
+        StringBuilder builder = new StringBuilder(20);
         LinkedList<Float> lst = new LinkedList<>();
+
         for (int i = 0; i < data.length(); i++) {
             if (Character.toString(data.charAt(i)).equals("-")) {
-                lst.add(Float.parseFloat(number));
-                number = "";
+                lst.add(Float.parseFloat(builder.toString()));
+                builder.setLength(0);
             } else {
-                number += data.charAt(i);
+                builder.append(data.charAt(i));
             }
         }
 
