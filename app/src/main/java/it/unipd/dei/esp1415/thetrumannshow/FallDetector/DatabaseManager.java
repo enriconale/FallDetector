@@ -53,12 +53,12 @@ public class DatabaseManager {
     }
 
     public void saveFall(Fall fall) {
-        open();
         if (SessionsLab.get(mAppContext).getRunningSession().getFalls().size() == 1) {
             saveSession(SessionsLab.get(mAppContext).getRunningSession());
         } else {
             updateRunningSessionInDatabase();
         }
+        open();
         mContentValues.put(CreateDatabase.FALL_NAME, fall.getName());
         mContentValues.put(CreateDatabase.FALL_DATE, SessionsLab.get(mAppContext).getDateFormat().format(fall
                 .getDate()));
