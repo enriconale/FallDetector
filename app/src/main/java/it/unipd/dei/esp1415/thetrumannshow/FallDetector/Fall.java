@@ -30,11 +30,15 @@ public class Fall extends ActionBarActivity{
         mZAcceleration = zAcc;
     }
 
-    /*Intent emailintent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "alessandrofsr@gmail.com", null));
-        emailintent.putExtra(emailintent.EXTRA_SUBJECT, "Caduta Tizio");
-        emailintent.putExtra(emailintent.EXTRA_TEXT, "Sono caduto, vieni a prendermi a " + mLocation.toString());
-        emailintent.setType("message/rfc822");
-        startActivity(Intent.createChooser(emailintent, "Send email..."));
+    /*Intent send = new Intent(Intent.ACTION_SENDTO);
+    {
+        String uriText = "mailto:" + Uri.encode("email@gmail.com") +
+                "?subject=" + Uri.encode("Sono Caduto") +
+                "&body=" + Uri.encode("Vieni a prendermi a " + mLatitude + mLongitude);
+        Uri uri = Uri.parse(uriText);
+
+        send.setData(uri);
+        startActivity(Intent.createChooser(send, "Send mail..."));
     }*/
 
     public String getName() {
