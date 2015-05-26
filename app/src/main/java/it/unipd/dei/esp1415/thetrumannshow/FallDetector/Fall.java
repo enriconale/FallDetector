@@ -20,11 +20,12 @@ public class Fall extends ActionBarActivity{
     private final float[] mZAcceleration;
     private boolean mIsEmailSent;
 
-    public Fall(String name, Date date, Location location, float[] xAcc, float[] yAcc, float[] zAcc) {
+    public Fall(String name, Date date, double latitude, double longitude, float[] xAcc, float[]
+            yAcc, float[] zAcc) {
         mFallName = name;
         mDate = date;
-        mLatitude = location.getLatitude();
-        mLongitude = location.getLongitude();
+        mLatitude = latitude;
+        mLongitude = longitude;
         mXAcceleration = xAcc;
         mYAcceleration = yAcc;
         mZAcceleration = zAcc;
