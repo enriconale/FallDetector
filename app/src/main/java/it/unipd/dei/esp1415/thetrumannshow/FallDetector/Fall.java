@@ -30,7 +30,7 @@ public class Fall extends ActionBarActivity{
         mZAcceleration = zAcc;
     }
 
-    /*Intent send = new Intent(Intent.ACTION_SENDTO);
+    Intent send = new Intent(Intent.ACTION_SENDTO);
     {
         String uriText = "mailto:" + Uri.encode("email@gmail.com") +
                 "?subject=" + Uri.encode("Sono Caduto") +
@@ -39,7 +39,7 @@ public class Fall extends ActionBarActivity{
 
         send.setData(uri);
         startActivity(Intent.createChooser(send, "Send mail..."));
-    }*/
+    }
 
     public String getName() {
         return mFallName;
