@@ -47,6 +47,7 @@ public class FallObjectCreator implements Runnable{
         mLastFall = constructFallObject(mLastFallIndex);
         SessionsLab lab = SessionsLab.get(mContext);
         lab.getRunningSession().addFall(mLastFall);
+        lab.saveFallInDatabase(mLastFall);
     }
 
     long[] getSurroundingSecond(long index){
