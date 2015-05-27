@@ -48,4 +48,7 @@
     <string name="pref_email_address_summary">Choose an email address to which send the notice of a
         fall.</string>
 
+    <string name="fall_latitude">Latitude: </string>
+    <string name="fall_longitude">Longitude: </string>
+
 </resources>

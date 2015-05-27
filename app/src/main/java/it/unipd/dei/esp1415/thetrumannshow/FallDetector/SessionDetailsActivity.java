@@ -50,7 +50,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         mSessionIcon = (ImageView)findViewById(R.id.session_icon);
 
 
-        mSessionName.setText(mSession.getSessionName());
+        mSessionName.setText(getFormattedSessionName(mSession.getSessionName()));
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
         mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
                 + " " + mSession.getFormattedDuration());
@@ -122,5 +122,13 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         tmp.getSessions().remove(mSessionPositionInList);
         tmp.deleteSessionFromDatabase(mSession);
         NavUtils.navigateUpFromSameTask(this);
+    }
+
+    private String getFormattedSessionName(String name) {
+        if (name.length() > 15) {
+            return name.substring(0, 15) + "...";
+        } else {
+            return name;
+        }
     }
 }

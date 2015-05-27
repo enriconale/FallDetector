@@ -28,6 +28,8 @@ public class FallDetailsActivity extends AppCompatActivity {
     private TextView mFallNameTextView;
     private TextView mSessionNameTextView;
     private TextView mFallDateTextView;
+    private TextView mFallLatitudeTextView;
+    private TextView mFallLongitudeTextView;
     private ImageView mSessionIcon;
     private RelativeLayout mGraphContainer;
     private Session mSession;
@@ -69,11 +71,23 @@ public class FallDetailsActivity extends AppCompatActivity {
         mFallDateTextView = (TextView)findViewById(R.id.date_time);
         mFallDateTextView.setText(mDateFormatter.format(mFall.getDate()));
 
+        String resultString = getApplicationContext().getString(R.string.fall_latitude) + " " +
+            Double.toString(mFall.getLatitude());
+        mFallLatitudeTextView = (TextView)findViewById(R.id.latitude);
+        mFallLatitudeTextView.setText(resultString);
+
+        resultString = getApplicationContext().getString(R.string.fall_longitude) + " " +
+            Double.toString(mFall.getLongitude());
+        mFallLongitudeTextView = (TextView)findViewById(R.id.longitude);
+        mFallLongitudeTextView.setText(resultString);
+
         mGraphContainer = (RelativeLayout)findViewById(R.id.graph_container);
         ViewGroup.LayoutParams params = mGraphContainer.getLayoutParams();
         int height = getWindowManager().getDefaultDisplay().getHeight();
+        int width = getWindowManager().getDefaultDisplay().getWidth();
         int grapContainerHeight = height / 3;
         params.height = grapContainerHeight;
+        params.width = width;
 
         MyView v = new MyView(getApplicationContext());
         mGraphContainer.addView(v);
@@ -128,18 +142,19 @@ public class FallDetailsActivity extends AppCompatActivity {
                             .getYAcceleration(),
                     mFall.getZAcceleration());
 
-            int endOfPrecedentLine = screenHeight/8;
+            int endOfPrecedentLine = screenHeight/2;
             double precedentStopY = totalAcceleration[0];
             for (int i = 1; i < totalAcceleration.length; i += pixelsPerTimeUnit) {
                 double startY = precedentStopY;
                 double stopY = totalAcceleration[i];
                 int offset = getPixelOffset(startY, stopY, pixelsPerAccUnit);
-                canvas.drawLine(i,endOfPrecedentLine,i+pixelsPerTimeUnit,screenHeight/8 - (int)
+                canvas.drawLine(i,endOfPrecedentLine,i+pixelsPerTimeUnit,screenHeight/2 - (int)
                                 startY + offset,
                         paint);
-                endOfPrecedentLine = screenHeight/8 - (int)startY + offset;
+                endOfPrecedentLine = screenHeight/2 - (int)startY + offset;
                 precedentStopY = stopY;
             }
+            canvas.scale(getWindowManager().getDefaultDisplay().getWidth(), 0);
         }
     }
 
@@ -158,8 +173,8 @@ public class FallDetailsActivity extends AppCompatActivity {
     }
 
     private String getFormattedSessionName(String name) {
-        if (name.length() > 25) {
-            return name.substring(0, 25) + "...";
+        if (name.length() > 30) {
+            return name.substring(0, 30) + "...";
         } else {
             return name;
         }

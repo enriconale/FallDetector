@@ -92,6 +92,7 @@ public class Session {
 
     public void setListOfFalls(LinkedList<Fall> list) {
         mFalls = list;
+        mNumberOfFalls = mFalls.size();
     }
 
     public void setDuration(long duration) {

@@ -246,6 +246,8 @@ public class DatabaseManager {
         open();
         mContentValues.put(CreateDatabase.SESSION_NAME, runningSession.getSessionName());
         mContentValues.put(CreateDatabase.SESSION_DURATION, runningSession.getDuration());
+        mContentValues.put(CreateDatabase.SESSION_NUMBER_OF_FALLS, runningSession
+                .getNumberOfFalls());
 
         // Save Values into database
         try {

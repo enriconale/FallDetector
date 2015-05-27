@@ -48,9 +48,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_below="@id/main_layout"
-        android:textSize="24sp"
+        android:textSize="16sp"
         android:id="@+id/session_name" />
 
     <TextView
@@ -66,7 +66,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:textSize="24sp"
-        android:text="Latitude Data"
         android:layout_below="@id/date_time"
         android:id="@+id/latitude" />
 
@@ -75,7 +74,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:textSize="24sp"
-        android:text="Longitude Data"
         android:layout_below="@id/latitude"
         android:id="@+id/longitude" />
 

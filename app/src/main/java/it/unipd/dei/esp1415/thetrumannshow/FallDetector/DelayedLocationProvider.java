@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.content.Context;
 import android.location.Location;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,11 +17,14 @@ public class DelayedLocationProvider implements LocationListener{
     private final Fall mFall;
     private final GoogleApiClient mGoogleApiClient;
     private final FallObjectCreator mFallObjectCreator;
+    private Context mAppContext;
 
-    public DelayedLocationProvider(Fall f, GoogleApiClient apiClient, FallObjectCreator foc){
+    public DelayedLocationProvider(Fall f, GoogleApiClient apiClient, FallObjectCreator foc,
+                                   Context appContext){
         mFall = f;
         mGoogleApiClient = apiClient;
         mFallObjectCreator = foc;
+        mAppContext = appContext;
 
         LocationRequest mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -31,6 +35,9 @@ public class DelayedLocationProvider implements LocationListener{
     @Override
     public void onLocationChanged(Location location) {
         mFall.setLocation(location);
+        SessionsLab lab = SessionsLab.get(mAppContext);
+        lab.getRunningSession().addFall(mFall);
+        lab.saveFallInDatabase(mFall);
         unregisterListener();
 
         mFallObjectCreator.locationFixed();
