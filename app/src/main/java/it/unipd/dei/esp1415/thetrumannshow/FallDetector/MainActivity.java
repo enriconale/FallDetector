@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.mipmap.fall_detector_icon)
                         .setContentTitle("Session going on")
                         .setContentText("I'm watching you")
                         .setOngoing(true);
