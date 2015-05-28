@@ -95,6 +95,11 @@ public class DataAcquisitionUnit
         mGoogleApiClient.disconnect();
     }
 
+    void resume() {
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        mGoogleApiClient.connect();
+    }
+
     // connection to proprietary Google Play Services
 
     protected synchronized void buildGoogleApiClient(Context c) {

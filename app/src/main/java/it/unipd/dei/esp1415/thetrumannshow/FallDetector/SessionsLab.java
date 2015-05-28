@@ -67,10 +67,12 @@ public class SessionsLab {
 
     public void resumeCurrentlyRunningSession() {
         mIsRunningSessionPlaying = true;
+        mDataAcquisitionUnit.resume();
     }
 
     public void pauseCurrentlyRunningSession() {
         mIsRunningSessionPlaying = false;
+        mDataAcquisitionUnit.detach();
     }
 
     public void stopCurrentlyRunningSession() {
@@ -78,6 +80,7 @@ public class SessionsLab {
         mHasRunningSession = false;
         mRunningSession = null;
         mDataAcquisitionUnit.detach();
+        mDataAcquisitionUnit = null;
     }
 
     public boolean hasRunningSession() {
