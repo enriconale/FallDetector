@@ -144,9 +144,11 @@ public class FallDetailsActivity extends AppCompatActivity {
 
             int endOfPrecedentLine = screenHeight/2;
             double precedentStopY = totalAcceleration[0];
-            for (int i = 1; i < totalAcceleration.length; i += pixelsPerTimeUnit) {
+            int j = 1;
+            for (int i = 1; i < screenWidth; i += pixelsPerTimeUnit) {
                 double startY = precedentStopY;
-                double stopY = totalAcceleration[i];
+                double stopY = totalAcceleration[j];
+                j = j +  totalAcceleration.length / (screenWidth / pixelsPerTimeUnit);
                 int offset = getPixelOffset(startY, stopY, pixelsPerAccUnit);
                 canvas.drawLine(i,endOfPrecedentLine,i+pixelsPerTimeUnit,screenHeight/2 - (int)
                                 startY + offset,
