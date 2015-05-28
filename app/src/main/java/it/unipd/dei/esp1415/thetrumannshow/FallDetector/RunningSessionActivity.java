@@ -1,6 +1,7 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -178,6 +179,9 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
                 SessionsLab.get(getApplicationContext()).saveRunningSessionInDatabase();
                 SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
                 FallObjectCreator.resetFallNameCounter();
+                NotificationManager mNotificationManager =
+                        SessionsLab.get(getApplicationContext()).getNotificationManager();
+                mNotificationManager.cancel(1);
                 NavUtils.navigateUpFromSameTask(this);
                 break;
         }

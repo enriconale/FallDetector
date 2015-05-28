@@ -1,11 +1,16 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -113,6 +118,31 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         Intent intent = new Intent(this, RunningSessionService.class);
         startService(intent);
         FallObjectCreator.resetFallNameCounter();
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Session going on")
+                        .setContentText("I'm watching you")
+                        .setOngoing(true);
+
+        Intent resultIntent = new Intent(this, RunningSessionActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(RunningSessionActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        NotificationManager mNotificationManager =
+                SessionsLab.get(getApplicationContext()).getNotificationManager();
+        mNotificationManager.notify(1, mBuilder.build());
+
         mAdapter.notifyDataSetChanged();
     }
 

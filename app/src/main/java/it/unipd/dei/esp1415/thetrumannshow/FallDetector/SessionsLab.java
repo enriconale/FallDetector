@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.provider.ContactsContract;
 
@@ -22,6 +23,7 @@ public class SessionsLab {
     private ArrayList<Session> mSessionsList;
     private Session mRunningSession;
     private DataAcquisitionUnit mDataAcquisitionUnit;
+    NotificationManager mNotificationManager;
 
     private SessionsLab(Context appContext) {
         mAppContext = appContext;
@@ -29,6 +31,8 @@ public class SessionsLab {
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
                 java.util.Locale.getDefault());
         mSessionsList = mDatabaseManager.getAllSessionsFromDatabase();
+        mNotificationManager = (NotificationManager) mAppContext.getSystemService(Context
+                .NOTIFICATION_SERVICE);
     }
 
     public static SessionsLab get(Context c) {
@@ -55,6 +59,10 @@ public class SessionsLab {
 
     public SimpleDateFormat getDateFormat() {
         return mDateFormatter;
+    }
+
+    public NotificationManager getNotificationManager() {
+        return mNotificationManager;
     }
 
     public void resumeCurrentlyRunningSession() {
