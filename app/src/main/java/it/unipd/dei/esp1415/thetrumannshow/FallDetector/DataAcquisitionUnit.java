@@ -83,7 +83,7 @@ public class DataAcquisitionUnit
     }
 
     private void fall(){
-        Toast.makeText(mContext, "REGISTERED FALL EVENT", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, R.string.register_fall_event , Toast.LENGTH_LONG).show();
         FallObjectCreator foc = new FallObjectCreator(timeBuffer, xBuffer, yBuffer, zBuffer,
                 mContext, mGoogleApiClient, mLastFallIndex);
         Thread focThread = new Thread(foc);

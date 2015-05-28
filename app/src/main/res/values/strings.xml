@@ -51,4 +51,13 @@
     <string name="fall_latitude">Latitude: </string>
     <string name="fall_longitude">Longitude: </string>
 
+    <string name="register_fall_event">REGISTERED FALL EVENT</string>
+    <string name="error_deleting_session">An error occurred while deleting the session</string>
+    <string name="error_updating_database">Error updating database</string>
+    <string name="fallen">I fell right now</string>
+    <string name="google_location">Vieni a prendermi a www.google.it/maps/@</string>
+    <string name="resolution">,15z</string>
+    <string name="email1">alessandro.fuser.1@studenti.unipd.it</string>
+
+
 </resources>

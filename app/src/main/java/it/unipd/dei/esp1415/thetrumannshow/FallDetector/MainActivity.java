@@ -153,14 +153,4 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
     }
-
-    public void sendMail(){
-        Intent send = new Intent(Intent.ACTION_SENDTO);
-        String uriText = "mailto:" + Uri.encode("softwaretest@eiketrumann.de") +
-                "?subject=" + Uri.encode("Sono Caduto") +
-                "&body=" + Uri.encode("Vieni a prendermi");
-        Uri uri = Uri.parse(uriText);
-        send.setData(uri);
-        startActivity(Intent.createChooser(send, "Send mail..."));
-    }
 }

@@ -21,7 +21,7 @@ public class Session {
 
     public Session() {
         mUUID = UUID.randomUUID();
-        mSessionName = "New Session";
+        mSessionName = "";
         mStartDate = new Date();
         mDuration = 0;
         mFalls = new LinkedList<Fall>();

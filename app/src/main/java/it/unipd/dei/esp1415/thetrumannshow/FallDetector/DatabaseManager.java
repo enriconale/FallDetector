@@ -147,7 +147,7 @@ public class DatabaseManager {
             mDatabase.delete(CreateDatabase.SESSION_TABLE, CreateDatabase.SESSION_ID + " LIKE ?",
                     sessionId);
         } catch (SQLiteException e) {
-            Toast.makeText(mAppContext, "An error occurred while deleting the session", Toast
+            Toast.makeText(mAppContext, R.string.error_deleting_session , Toast
                     .LENGTH_SHORT).show();
         } finally {
             close();
@@ -254,7 +254,7 @@ public class DatabaseManager {
             mDatabase.update(CreateDatabase.SESSION_TABLE, mContentValues, CreateDatabase.SESSION_ID +
                             " LIKE ?", idString );
         } catch (SQLiteException sqle) {
-            Toast.makeText(mAppContext, "Error updating database",
+            Toast.makeText(mAppContext, R.string.error_updating_database ,
                     Toast.LENGTH_SHORT).show();
         } finally {
             mContentValues.clear();

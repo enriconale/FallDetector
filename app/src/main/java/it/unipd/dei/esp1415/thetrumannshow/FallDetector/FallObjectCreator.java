@@ -40,7 +40,7 @@ public class FallObjectCreator implements Runnable{
 
     public void run(){
         try{Thread.sleep(800);} catch (Exception e) {
-            throw new Error("Who the fuck waked me up? "+e);
+            throw new Error("Error wake up "+e);
         }
 
         timeBuffer = timeBuffer.copy();
@@ -91,9 +91,9 @@ public class FallObjectCreator implements Runnable{
         new DelayedReverseGeocoder(mLastFall, mGoogleApiClient, mContext);
 
         Intent send = new Intent(Intent.ACTION_SENDTO);
-        String uriText = "mailto:" + Uri.encode("softwaretest@eiketrumann.de") +
-                "?subject=" + Uri.encode("Sono Caduto") +
-                "&body=" + Uri.encode("Vieni a prendermi a www.google.com/maps/preview/@"+ mLastFall.getLatitude() + "," + mLastFall.getLongitude()+",8z");
+        String uriText = "mailto:" + Uri.encode(mContext.getString(R.string.email1)) +
+                "?subject=" + Uri.encode(mContext.getString(R.string.fallen)) +
+                "&body=" + Uri.encode(mContext.getString(R.string.google_location) + mLastFall.getLatitude() + "," + mLastFall.getLongitude()+ mContext.getString(R.string.resolution));
         Uri uri = Uri.parse(uriText);
         send.setData(uri);
         send.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
