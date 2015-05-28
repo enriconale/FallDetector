@@ -124,6 +124,11 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         NavUtils.navigateUpFromSameTask(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private String getFormattedSessionName(String name) {
         if (name.length() > 15) {
             return name.substring(0, 15) + "...";

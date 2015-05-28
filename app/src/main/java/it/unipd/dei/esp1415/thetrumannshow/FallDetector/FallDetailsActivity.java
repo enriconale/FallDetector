@@ -119,6 +119,11 @@ public class FallDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     public class MyView extends View {
         protected Paint paint = new Paint();
 
@@ -148,7 +153,7 @@ public class FallDetailsActivity extends AppCompatActivity {
             for (int i = 1; i < screenWidth; i += pixelsPerTimeUnit) {
                 double startY = precedentStopY;
                 double stopY = totalAcceleration[j];
-                j = j +  totalAcceleration.length / (screenWidth / pixelsPerTimeUnit);
+                j = j + totalAcceleration.length / (screenWidth / pixelsPerTimeUnit);
                 int offset = getPixelOffset(startY, stopY, pixelsPerAccUnit);
                 canvas.drawLine(i,endOfPrecedentLine,i+pixelsPerTimeUnit,screenHeight/2 - (int)
                                 startY + offset,
