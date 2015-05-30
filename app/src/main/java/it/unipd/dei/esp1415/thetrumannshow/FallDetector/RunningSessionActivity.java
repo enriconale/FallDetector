@@ -179,9 +179,6 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
                 SessionsLab.get(getApplicationContext()).saveRunningSessionInDatabase();
                 SessionsLab.get(getApplicationContext()).stopCurrentlyRunningSession();
                 FallObjectCreator.resetFallNameCounter();
-                NotificationManager mNotificationManager =
-                        SessionsLab.get(getApplicationContext()).getNotificationManager();
-                mNotificationManager.cancel(1);
                 NavUtils.navigateUpFromSameTask(this);
                 break;
         }

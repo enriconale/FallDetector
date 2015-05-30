@@ -81,6 +81,7 @@ public class SessionsLab {
         mRunningSession = null;
         mDataAcquisitionUnit.detach();
         mDataAcquisitionUnit = null;
+        mNotificationManager.cancel(1);
     }
 
     public boolean hasRunningSession() {

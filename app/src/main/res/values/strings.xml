@@ -59,5 +59,7 @@
     <string name="resolution">,15z</string>
     <string name="email1">alessandro.fuser.1@studenti.unipd.it</string>
 
+    <string name="notification_content_text">I\'m determining all your falls</string>
+
 
 </resources>
