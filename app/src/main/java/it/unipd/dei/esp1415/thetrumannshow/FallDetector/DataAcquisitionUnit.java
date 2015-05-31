@@ -56,6 +56,7 @@ public class DataAcquisitionUnit
                 break;
             case "fast":
                 mChosenSensorRate = SensorManager.SENSOR_DELAY_FASTEST;
+                break;
         }
 
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
