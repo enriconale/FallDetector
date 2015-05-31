@@ -17,6 +17,8 @@
         you want to stop it and start a new one?</string>
     <string name="session_running_dialog_positive_button">Yes</string>
     <string name="session_running_dialog_negative_button">No</string>
+    <string name="insert_valid_email">Please insert a valid e-mail address in the
+        application settings</string>
 
     <string name="session_icon">Session icon.</string>
     <string name="title_activity_fall_details">Fall Details</string>
@@ -55,9 +57,8 @@
     <string name="error_deleting_session">An error occurred while deleting the session</string>
     <string name="error_updating_database">Error updating database</string>
     <string name="fallen">I fell right now</string>
-    <string name="google_location">Vieni a prendermi a www.google.it/maps/@</string>
+    <string name="google_location">Come get me at www.google.it/maps/@</string>
     <string name="resolution">,15z</string>
-    <string name="email1">alessandro.fuser.1@studenti.unipd.it</string>
 
     <string name="notification_content_text">I\'m determining all your falls</string>
     <string name="boot_notification_title">You should start a new session</string>

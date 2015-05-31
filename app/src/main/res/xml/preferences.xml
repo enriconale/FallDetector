@@ -25,6 +25,7 @@
     <EditTextPreference
         android:key="pref_email_address"
         android:title="@string/pref_email_address_title"
-        android:summary="@string/pref_email_address_summary" />
+        android:summary="@string/pref_email_address_summary"
+        android:selectAllOnFocus="true" />
 
 </PreferenceScreen>

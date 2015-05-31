@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,13 +36,18 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Session> mSessionsList;
     private TextView mEmptyListMessage;
+    private SharedPreferences mSharedPreferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String emailString = mSharedPreferences.getString(SettingsActivity.PREF_EMAIL_ADDRESS, "");
+        if (!isValidEmailAddress(emailString)) {
+            Toast.makeText(getApplicationContext(), R.string.insert_valid_email, Toast.LENGTH_LONG).show();
+        }
         mEmptyListMessage = (TextView)findViewById(R.id.empty_list_message);
         mRecyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -89,12 +95,19 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
                 startActivity(intent);
                 break;
             case R.id.action_start_session:
-                if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {
-                    DialogFragment dialog = new SessionAlreadyRunningDialogFragment();
-                    dialog.show(getSupportFragmentManager(), SESSION_RUNNING_DIALOG);
+                String emailString = mSharedPreferences.getString(SettingsActivity
+                        .PREF_EMAIL_ADDRESS, "");
+                if (!isValidEmailAddress(emailString)) {
+                    Toast.makeText(getApplicationContext(), R.string.insert_valid_email,
+                            Toast.LENGTH_LONG).show();
                 } else {
-                    DialogFragment dialog = new NewSessionNameDialogFragment();
-                    dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
+                    if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {
+                        DialogFragment dialog = new SessionAlreadyRunningDialogFragment();
+                        dialog.show(getSupportFragmentManager(), SESSION_RUNNING_DIALOG);
+                    } else {
+                        DialogFragment dialog = new NewSessionNameDialogFragment();
+                        dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
+                    }
                 }
                 break;
         }
@@ -154,5 +167,9 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         mAdapter.notifyDataSetChanged();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
+    }
+
+    private boolean isValidEmailAddress(String str) {
+        return !("".equals(str)) && str.contains("@") && str.contains(".");
     }
 }

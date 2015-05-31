@@ -2,7 +2,9 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
@@ -90,8 +92,11 @@ public class FallObjectCreator implements Runnable{
     void locationFixed(){
         new DelayedReverseGeocoder(mLastFall, mGoogleApiClient, mContext);
 
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String email = sharedPrefs.getString(SettingsActivity.PREF_EMAIL_ADDRESS, "");
+
         Intent send = new Intent(Intent.ACTION_SENDTO);
-        String uriText = "mailto:" + Uri.encode(mContext.getString(R.string.email1)) +
+        String uriText = "mailto:" + Uri.encode(email) +
                 "?subject=" + Uri.encode(mContext.getString(R.string.fallen)) +
                 "&body=" + Uri.encode(mContext.getString(R.string.google_location) + mLastFall.getLatitude() + "," + mLastFall.getLongitude()+ mContext.getString(R.string.resolution));
         Uri uri = Uri.parse(uriText);
