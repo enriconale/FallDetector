@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="rates">
-        <item>25ms</item>
-        <item>50ms</item>
-        <item>100ms</item>
-        <item>200ms</item>
-        <item>500ms</item>
+        <item>Slow</item>
+        <item>Normal</item>
+        <item>Fast</item>
     </string-array>
 
     <string-array name="rate_values">
-        <item>25</item>
-        <item>50</item>
-        <item>100</item>
-        <item>200</item>
-        <item>500</item>
+        <item>slow</item>
+        <item>normal</item>
+        <item>fast</item>
     </string-array>
 </resources>

@@ -73,15 +73,17 @@ public class SessionsLab {
     public void pauseCurrentlyRunningSession() {
         mIsRunningSessionPlaying = false;
         mDataAcquisitionUnit.detach();
+        saveRunningSessionInDatabase();
     }
 
     public void stopCurrentlyRunningSession() {
+        saveRunningSessionInDatabase();
         mIsRunningSessionPlaying = false;
         mHasRunningSession = false;
-        mRunningSession = null;
         mDataAcquisitionUnit.detach();
         mDataAcquisitionUnit = null;
         mNotificationManager.cancel(1);
+        mRunningSession = null;
     }
 
     public boolean hasRunningSession() {

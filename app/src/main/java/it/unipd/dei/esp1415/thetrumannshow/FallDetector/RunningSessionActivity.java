@@ -49,7 +49,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         public void run() {
             mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
                     + " " + mSession.getFormattedDuration());
-            mHandler.postDelayed(mUpdateTimeTask, 100);
+            mHandler.postDelayed(mUpdateTimeTask, 5000);
 
         }
     };

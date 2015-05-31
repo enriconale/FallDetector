@@ -67,10 +67,9 @@ public class Session {
     public int getColor3() {return mColor3;}
 
     public String getFormattedDuration() {
-        int seconds = (int) (mDuration / 1000) % 60;
         int minutes = (int) ((mDuration / (1000*60)) % 60);
         int hours   = (int) ((mDuration / (1000*60*60)) % 24);
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        return String.format("%02d:%02d", hours, minutes);
     }
 
     public LinkedList<Fall> getFalls() {

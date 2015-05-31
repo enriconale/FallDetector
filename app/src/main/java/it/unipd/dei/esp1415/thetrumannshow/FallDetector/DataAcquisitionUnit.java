@@ -2,12 +2,14 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,6 +29,8 @@ public class DataAcquisitionUnit
     private GoogleApiClient mGoogleApiClient;
     private Sensor mAccelerometer;
     private Context mContext;
+    private int mChosenSensorRate;
+
 
     private final static int samples = 10000;
 
@@ -39,13 +43,29 @@ public class DataAcquisitionUnit
     private int mLastFallIndex = -1;
 
     DataAcquisitionUnit(Context c){
+        SharedPreferences mSharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        String sensorRatePreference = mSharedPref.getString(SettingsActivity
+                .PREF_ACCELEROMETER_RATE, "normal");
+
+        switch (sensorRatePreference) {
+            case "slow":
+                mChosenSensorRate = SensorManager.SENSOR_DELAY_UI;
+                break;
+            case "normal":
+                mChosenSensorRate = SensorManager.SENSOR_DELAY_GAME;
+                break;
+            case "fast":
+                mChosenSensorRate = SensorManager.SENSOR_DELAY_FASTEST;
+        }
+
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
 
         //Location
         buildGoogleApiClient(c);
         mGoogleApiClient.connect();
+
 
         mContext = c;
     }
@@ -96,7 +116,7 @@ public class DataAcquisitionUnit
     }
 
     void resume() {
-        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
         mGoogleApiClient.connect();
     }
 

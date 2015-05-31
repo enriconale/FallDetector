@@ -19,7 +19,8 @@
         android:title="@string/pref_accelerometer_rate_title"
         android:summary="@string/pref_accelerometer_rate_summary"
         android:entries="@array/rates"
-        android:entryValues="@array/rate_values" />
+        android:entryValues="@array/rate_values"
+        android:defaultValue="Normal"/>
 
     <EditTextPreference
         android:key="pref_email_address"
