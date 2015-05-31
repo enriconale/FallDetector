@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity implements NewSessionNameDialogFragment
@@ -169,7 +171,11 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
     }
 
-    private boolean isValidEmailAddress(String str) {
-        return !("".equals(str)) && str.contains("@") && str.contains(".");
+    private boolean isValidEmailAddress(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }
