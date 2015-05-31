@@ -60,6 +60,8 @@
     <string name="email1">alessandro.fuser.1@studenti.unipd.it</string>
 
     <string name="notification_content_text">I\'m determining all your falls</string>
+    <string name="boot_notification_title">You should start a new session</string>
+    <string name="boot_notification_text">Tap to open Fall Detector and start a new session</string>
 
 
 </resources>

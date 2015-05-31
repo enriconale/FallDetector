@@ -3,6 +3,7 @@
     package="it.unipd.dei.esp1415.thetrumannshow.FallDetector" >
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -48,6 +49,12 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                        android:value=".MainActivity" />
         </activity>
+
+        <receiver android:name=".BootBroadcastReceiver" android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
