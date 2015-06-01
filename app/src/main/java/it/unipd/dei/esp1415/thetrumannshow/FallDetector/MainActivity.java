@@ -134,31 +134,35 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         startService(intent);
         FallObjectCreator.resetFallNameCounter();
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.notification_icon)
-                        .setContentTitle(SessionsLab.get(getApplicationContext())
-                                .getRunningSession().getSessionName())
-                        .setContentText(getApplicationContext().getString(R.string
-                                .notification_content_text))
-                        .setOngoing(true);
+        boolean userWantsOnGoingNotification = mSharedPreferences.getBoolean(SettingsActivity
+                .PREF_ONGOING_NOTIFICATION, true);
 
-        Intent resultIntent = new Intent(this, RunningSessionActivity.class);
+        if (userWantsOnGoingNotification) {
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.mipmap.notification_icon)
+                            .setContentTitle(getApplicationContext().getString(R.string.notification_title_text))
+                            .setContentText(getApplicationContext().getString(R.string
+                                    .notification_content_text))
+                            .setOngoing(true);
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(RunningSessionActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
+            Intent resultIntent = new Intent(this, RunningSessionActivity.class);
 
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addParentStack(RunningSessionActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
 
-        NotificationManager mNotificationManager =
-                SessionsLab.get(getApplicationContext()).getNotificationManager();
-        mNotificationManager.notify(1, mBuilder.build());
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
+
+            NotificationManager mNotificationManager =
+                    SessionsLab.get(getApplicationContext()).getNotificationManager();
+            mNotificationManager.notify(1, mBuilder.build());
+        }
 
         mAdapter.notifyDataSetChanged();
     }

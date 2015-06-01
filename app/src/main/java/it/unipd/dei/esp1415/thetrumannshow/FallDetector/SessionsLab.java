@@ -2,6 +2,8 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 
 import java.text.SimpleDateFormat;
@@ -82,7 +84,12 @@ public class SessionsLab {
         mHasRunningSession = false;
         mDataAcquisitionUnit.detach();
         mDataAcquisitionUnit = null;
-        mNotificationManager.cancel(1);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mAppContext);
+        boolean userWantsOnGoingNotification = sp.getBoolean(SettingsActivity
+                .PREF_ONGOING_NOTIFICATION, true);
+        if (userWantsOnGoingNotification) {
+            mNotificationManager.cancel(1);
+        }
         mRunningSession = null;
     }
 

@@ -6,6 +6,12 @@
         android:summary="@string/pref_daily_notification_summary"
         android:defaultValue="false" />
 
+    <CheckBoxPreference
+        android:key="pref_ongoing_notification"
+        android:title="@string/pref_ongoing_notification_title"
+        android:summary="@string/pref_ongoing_notification_summary"
+        android:defaultValue="true"/>
+
     <EditTextPreference
         android:key="pref_session_duration"
         android:title="@string/pref_session_duration_title"

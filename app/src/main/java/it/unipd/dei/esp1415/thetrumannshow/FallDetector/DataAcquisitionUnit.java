@@ -95,7 +95,7 @@ public class DataAcquisitionUnit
             double acc = Math.sqrt(xBuffer.readOne(j) * xBuffer.readOne(j)
                     + yBuffer.readOne(j) * yBuffer.readOne(j)
                     + zBuffer.readOne(j) * zBuffer.readOne(j));
-            if (acc > 18.0) {
+            if (acc > 25.0) {
                 mLastFallIndex = j;
                 return true;
             }

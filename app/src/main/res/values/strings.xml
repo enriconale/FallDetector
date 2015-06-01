@@ -49,6 +49,9 @@
     <string name="pref_email_address_title">Email address</string>
     <string name="pref_email_address_summary">Choose an email address to which send the notice of a
         fall.</string>
+    <string name="pref_ongoing_notification_title">Ongoing notification</string>
+    <string name="pref_ongoing_notification_summary">Let the app show an ongoing
+        notification when you start a new session.</string>
 
     <string name="fall_latitude">Latitude: </string>
     <string name="fall_longitude">Longitude: </string>
@@ -60,7 +63,8 @@
     <string name="google_location">Come get me at www.google.it/maps/@</string>
     <string name="resolution">,15z</string>
 
-    <string name="notification_content_text">I\'m determining all your falls</string>
+    <string name="notification_title_text">Fall Detector active</string>
+    <string name="notification_content_text">I\'m detecting all your falls</string>
     <string name="boot_notification_title">You should start a new session</string>
     <string name="boot_notification_text">Tap to open Fall Detector and start a new session</string>
 
