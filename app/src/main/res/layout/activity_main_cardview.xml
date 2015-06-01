@@ -60,33 +60,100 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/header_layout"
-            android:background="#e0e0e0"/>
+            android:background="#e0e0e0"
+            />
 
-        <TextView
-            android:id="@+id/number_of_falls"
+        <RelativeLayout
+            android:id="@+id/number_of_falls_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
+            android:orientation="horizontal"
             android:layout_below="@id/header_layout"
-            android:textSize="18sp"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="2dp">
 
-        <TextView
-            android:id="@+id/session_start_date_time"
+            <ImageView
+                android:id="@+id/number_of_falls_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/fall_18dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/cardview_falls"
+                />
+
+            <TextView
+                android:id="@+id/number_of_falls"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/number_of_falls_icon"
+                android:layout_toEndOf="@+id/number_of_falls_icon"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/session_start_date_time_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_below="@id/number_of_falls"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:layout_below="@id/number_of_falls_header"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp">
 
-        <TextView
-            android:id="@+id/session_duration"
+            <ImageView
+                android:id="@+id/session_start_date_time_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/calendar_18dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/cardview_startdate"/>
+
+            <TextView
+                android:id="@+id/session_start_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/session_start_date_time_icon"
+                android:layout_toEndOf="@+id/session_start_date_time_icon"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/session_duration_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_below="@id/session_start_date_time"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:layout_below="@id/session_start_date_time_header"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp">
 
+            <ImageView
+                android:id="@+id/session_duration_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/clock_18dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/cardview_duration"
+                />
+
+            <TextView
+                android:id="@+id/session_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/session_duration_icon"
+                android:layout_toEndOf="@+id/session_duration_icon"
+                android:textSize="18sp" />
+
+            </RelativeLayout>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

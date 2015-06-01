@@ -36,11 +36,10 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         protected Handler mHandler = new Handler();
         protected Runnable mUpdateTimeTask = new Runnable() {
             public void run() {
-                mSessionDuration.setText(appContext.getString(R.string.cardview_duration)
-                        + " " + session.getFormattedDuration());
-                mNumOfFalls.setText(appContext.getString(R.string.cardview_falls)+" " + session.getFalls().size());
+                mSessionDuration.setText(session.getFormattedDuration());
+                mNumOfFalls.setText(Integer.toString(session.getFalls().size()));
 
-                mHandler.postDelayed(mUpdateTimeTask, 100);
+                mHandler.postDelayed(mUpdateTimeTask, 1000);
 
             }
         };
@@ -88,15 +87,9 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         }
 
 
-        String tmpStrBuilder = mAppContext.getString(R.string.cardview_falls) + " " +
-                tmpSession.getNumberOfFalls();
-        viewHolder.mNumOfFalls.setText(tmpStrBuilder);
-        tmpStrBuilder = mAppContext.getString(R.string.cardview_startdate) + " " +
-                mDateFormatter.format(tmpSession.getDate());
-        viewHolder.mStartDateTime.setText(tmpStrBuilder);
-        tmpStrBuilder = mAppContext.getString(R.string.cardview_duration) + " " +
-                tmpSession.getFormattedDuration();
-        viewHolder.mSessionDuration.setText(tmpStrBuilder);
+        viewHolder.mNumOfFalls.setText(Integer.toString(tmpSession.getNumberOfFalls()));
+        viewHolder.mStartDateTime.setText(mDateFormatter.format(tmpSession.getDate()));
+        viewHolder.mSessionDuration.setText(tmpSession.getFormattedDuration());
         viewHolder.mSessionIcon.clearColorFilter();
 
         if (SessionsLab.get(mAppContext).hasRunningSession() && x == 0) {

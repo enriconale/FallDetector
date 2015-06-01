@@ -1,7 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.app.Activity;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -12,20 +11,15 @@ import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 
@@ -47,14 +41,17 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
     private Handler mHandler = new Handler();
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
-            mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
-                    + " " + mSession.getFormattedDuration());
+            mSessionDuration.setText(mSession.getFormattedDuration());
             mHandler.postDelayed(mUpdateTimeTask, 5000);
 
         }
     };
 
     private boolean mEditingName = false;
+
+    private RelativeLayout mFallsListContainer;
+    private LinearLayout mItemsWrapper;
+    private RelativeLayout.LayoutParams mLp;
 
 
     @Override
@@ -63,7 +60,8 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         setContentView(R.layout.activity_running_session);
 
         mSession = SessionsLab.get(getApplicationContext()).getRunningSession();
-        mDateFormatter = SessionsLab.get(getApplicationContext()).getDateFormat();
+        mDateFormatter = new SimpleDateFormat("dd/MM/yyyy\nHH:mm",
+                java.util.Locale.getDefault());
 
         mSessionName = (TextView)findViewById(R.id.session_name);
         mEditSessionNameEditText = (EditText)findViewById(R.id.edit_session_name);
@@ -105,39 +103,14 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
             }
         });
 
-        RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id
+        mFallsListContainer = (RelativeLayout)findViewById(R.id
                 .falls_list_container);
-        LinearLayout itemsWrapper = new LinearLayout(getApplicationContext());
-        itemsWrapper.setOrientation(LinearLayout.VERTICAL);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+        mItemsWrapper = new LinearLayout(getApplicationContext());
+        mItemsWrapper.setOrientation(LinearLayout.VERTICAL);
+        mLp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        SimpleDateFormat fallItemDateFormatter = new SimpleDateFormat("HH:mm",
-                java.util.Locale.getDefault());
-        for (int i = 0; i < mSession.getFalls().size(); i++) {
-            final int fallPositionInList = i;
-            final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,
-                    itemsWrapper, false);
-            singleFallListItem.setId(i);
 
-            TextView fallNameTextView = (TextView)singleFallListItem.findViewById(R.id.fall_id);
-            TextView fallHourTextView = (TextView)singleFallListItem.findViewById(R.id.fall_hour);
-            fallNameTextView.setText(mSession.getFalls().get(i).getName());
-            fallHourTextView.setText(fallItemDateFormatter.format(mSession.getFalls().get(i).getDate()));
-            singleFallListItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), FallDetailsActivity.class);
-                    intent.putExtra(SessionsListAdapter.SESSION_DETAILS, 0);
-                    intent.putExtra(SessionDetailsActivity.FALL_DETAILS, fallPositionInList);
-                    startActivity(intent);
-                }
-            });
-            if (i != 0) {
-                lp.addRule(RelativeLayout.BELOW, i - 1);
-            }
-            itemsWrapper.addView(singleFallListItem);
-        }
-        fallsListContainer.addView(itemsWrapper);
+        createListOfFalls(mFallsListContainer, mItemsWrapper, mLp);
 
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.postDelayed(mUpdateTimeTask, 0);
@@ -239,5 +212,36 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         } else {
             return name;
         }
+    }
+
+    private void createListOfFalls(RelativeLayout fallsListContainer, LinearLayout itemsWrapper,
+                                   RelativeLayout.LayoutParams lp) {
+        SimpleDateFormat fallItemDateFormatter = new SimpleDateFormat("HH:mm",
+                java.util.Locale.getDefault());
+        for (int i = 0; i < mSession.getFalls().size(); i++) {
+            final int fallPositionInList = i;
+            final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,
+                    itemsWrapper, false);
+            singleFallListItem.setId(i);
+
+            TextView fallNameTextView = (TextView)singleFallListItem.findViewById(R.id.fall_id);
+            TextView fallHourTextView = (TextView)singleFallListItem.findViewById(R.id.fall_hour);
+            fallNameTextView.setText(mSession.getFalls().get(i).getName());
+            fallHourTextView.setText(fallItemDateFormatter.format(mSession.getFalls().get(i).getDate()));
+            singleFallListItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), FallDetailsActivity.class);
+                    intent.putExtra(SessionsListAdapter.SESSION_DETAILS, 0);
+                    intent.putExtra(SessionDetailsActivity.FALL_DETAILS, fallPositionInList);
+                    startActivity(intent);
+                }
+            });
+            if (i != 0) {
+                lp.addRule(RelativeLayout.BELOW, i - 1);
+            }
+            itemsWrapper.addView(singleFallListItem);
+        }
+        fallsListContainer.addView(itemsWrapper);
     }
 }

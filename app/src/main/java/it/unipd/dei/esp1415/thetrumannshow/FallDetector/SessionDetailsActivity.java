@@ -36,7 +36,8 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_details);
 
-        mDateFormatter = SessionsLab.get(getApplicationContext()).getDateFormat();
+        mDateFormatter = new SimpleDateFormat("dd/MM/yyyy\nHH:mm",
+                java.util.Locale.getDefault());
 
         mSessionPositionInList = getIntent().getExtras().getInt(SessionsListAdapter.SESSION_DETAILS);
         mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mSessionPositionInList);
@@ -52,8 +53,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
 
         mSessionName.setText(getFormattedSessionName(mSession.getSessionName()));
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
-        mSessionDuration.setText(getApplicationContext().getString(R.string.cardview_duration)
-                + " " + mSession.getFormattedDuration());
+        mSessionDuration.setText(mSession.getFormattedDuration());
         mSessionIcon.setImageResource(R.mipmap.recording_icon);
         mSessionIcon.setColorFilter(Color.rgb(mSession.getColor1(), mSession.getColor2(),
                 mSession.getColor3()));
