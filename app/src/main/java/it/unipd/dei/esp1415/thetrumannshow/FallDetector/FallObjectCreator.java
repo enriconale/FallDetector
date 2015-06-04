@@ -102,6 +102,10 @@ public class FallObjectCreator implements Runnable{
         Uri uri = Uri.parse(uriText);
         send.setData(uri);
         send.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(send);
+        try{
+            mContext.startActivity(send);
+        } catch (Exception e){
+            System.err.println("Could not Launch E-Mail-Application: "+e);
+        }
     }
 }
