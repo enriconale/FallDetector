@@ -171,6 +171,16 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.postDelayed(mUpdateTimeTask, 0);
+        mFallsListContainer.removeAllViewsInLayout();
+        mItemsWrapper.removeAllViewsInLayout();
+        mFallsListContainer = (RelativeLayout)findViewById(R.id
+                .falls_list_container);
+        mItemsWrapper = new LinearLayout(getApplicationContext());
+        mItemsWrapper.setOrientation(LinearLayout.VERTICAL);
+        mLp = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        createListOfFalls(mFallsListContainer, mItemsWrapper, mLp);
+
     }
 
     @Override
