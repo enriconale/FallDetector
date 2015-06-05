@@ -21,8 +21,8 @@ import java.text.SimpleDateFormat;
 
 
 public class FallDetailsActivity extends AppCompatActivity {
-    public static final int NUMBER_OF_TIME_MOMENTS = 150;
-    public static final int NUMBER_OF_ACCELERATION_UNITS = 100;
+    private static int NUMBER_OF_TIME_MOMENTS = 150;
+    private static int NUMBER_OF_ACCELERATION_UNITS = 100;
 
     private SimpleDateFormat mDateFormatter;
     private TextView mFallNameTextView;
@@ -140,20 +140,27 @@ public class FallDetailsActivity extends AppCompatActivity {
             paint.setColor(Color.parseColor("#000000"));
             int screenWidth = getWidth();
             int screenHeight = getHeight();
-            int pixelsPerTimeUnit = getNumOfHorizontalPixelsPerTimeUnit(screenWidth);
-            int pixelsPerAccUnit = getNumOfVerticalPixelsPerAccelerationUnit(screenHeight);
-
             double[] totalAcceleration = getTotalAcceleration(mFall.getXAcceleration(), mFall
                             .getYAcceleration(),
                     mFall.getZAcceleration());
+            NUMBER_OF_TIME_MOMENTS = totalAcceleration.length;
+            int pixelsPerTimeUnit = getNumOfHorizontalPixelsPerTimeUnit(screenWidth);
+            int pixelsPerAccUnit = getNumOfVerticalPixelsPerAccelerationUnit(screenHeight);
+
+
 
             int endOfPrecedentLine = screenHeight/2;
             double precedentStopY = totalAcceleration[0];
             int j = 1;
             for (int i = 1; i < screenWidth; i += pixelsPerTimeUnit) {
                 double startY = precedentStopY;
-                double stopY = totalAcceleration[j];
-                j = j + totalAcceleration.length / (screenWidth / pixelsPerTimeUnit);
+                double stopY;
+                try {
+                    stopY = totalAcceleration[j++];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    stopY = totalAcceleration[totalAcceleration.length - 1];
+                }
+
                 int offset = getPixelOffset(startY, stopY, pixelsPerAccUnit);
                 canvas.drawLine(i,endOfPrecedentLine,i+pixelsPerTimeUnit,screenHeight/2 - (int)
                                 startY + offset,

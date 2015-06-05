@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         Intent intent = new Intent(this, RunningSessionService.class);
         startService(intent);
         FallObjectCreator.resetFallNameCounter();
+        SessionsLab.get(getApplicationContext()).saveRunningSessionInDatabase();
 
         boolean userWantsOnGoingNotification = mSharedPreferences.getBoolean(SettingsActivity
                 .PREF_ONGOING_NOTIFICATION, true);

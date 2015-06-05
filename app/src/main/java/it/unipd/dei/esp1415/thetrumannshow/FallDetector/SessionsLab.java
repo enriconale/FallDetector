@@ -49,6 +49,7 @@ public class SessionsLab {
         mHasRunningSession = true;
         mIsRunningSessionPlaying = true;
         mDataAcquisitionUnit = new DataAcquisitionUnit(mAppContext);
+        mIsRunningSessionAlreadySavedInDatabase = false;
     }
 
     public ArrayList<Session> getSessions() {
