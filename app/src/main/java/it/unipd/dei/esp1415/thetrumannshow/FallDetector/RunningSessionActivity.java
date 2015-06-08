@@ -42,7 +42,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
             mSessionDuration.setText(mSession.getFormattedDuration());
-            mHandler.postDelayed(mUpdateTimeTask, 5000);
+            mHandler.postDelayed(mUpdateTimeTask, 100);
 
         }
     };

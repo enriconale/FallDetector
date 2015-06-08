@@ -13,10 +13,11 @@ import java.util.TimerTask;
  * @author Enrico Naletto
  */
 public class RunningSessionService extends IntentService {
+    private final long ONE_HOUR_IN_MILLIS = 3600000;
     private Timer mTimer;
     private long mExecutionTime = 0;
     private SessionsLab mSessionsLab;
-    int mMaxSessionDuration;
+    long mMaxSessionDuration;
 
     public RunningSessionService() {
         super("RunningSessionService");
@@ -24,12 +25,11 @@ public class RunningSessionService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d("Service started", "Service started");
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
         mMaxSessionDuration = Integer.parseInt(sharedPrefs.getString(SettingsActivity
-                        .PREF_SESSION_DURATION, "12"));
+                        .PREF_SESSION_DURATION, "12")) * ONE_HOUR_IN_MILLIS;
 
         mSessionsLab = SessionsLab.get(getApplicationContext());
         final Session mRunningSession = mSessionsLab.getRunningSession();
@@ -38,11 +38,10 @@ public class RunningSessionService extends IntentService {
             @Override
             public void run() {
                 if (mSessionsLab.hasRunningSession()) {
-                    Log.d("Service going on", mRunningSession.getSessionName());
                     if (mSessionsLab.isRunningSessionPlaying()) {
-                        mExecutionTime += 2000;
+                        mExecutionTime += 1000;
                         mRunningSession.setDuration(mExecutionTime);
-                        if (convertMillisToHours(mExecutionTime) >= mMaxSessionDuration) {
+                        if (mExecutionTime >= mMaxSessionDuration) {
                             mSessionsLab.stopCurrentlyRunningSession();
                             mTimer.cancel();
                         }
@@ -51,15 +50,11 @@ public class RunningSessionService extends IntentService {
                     mTimer.cancel();
                 }
             }
-        }, 0, 2000);
+        }, 0, 1000);
     }
 
     @Override
     public void onDestroy() {
-        Log.d("destroyed", "destroyed");
-    }
 
-    private int convertMillisToHours(long millis) {
-        return (int) ((millis / (1000*60*60)) % 24);
     }
 }

@@ -1,9 +1,11 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 
 public class FallDetailsActivity extends AppCompatActivity {
@@ -28,6 +31,7 @@ public class FallDetailsActivity extends AppCompatActivity {
     private TextView mFallNameTextView;
     private TextView mSessionNameTextView;
     private TextView mFallDateTextView;
+    private RelativeLayout mFallLocationHeader;
     private TextView mFallLatitudeTextView;
     private TextView mFallLongitudeTextView;
     private ImageView mSessionIcon;
@@ -78,6 +82,17 @@ public class FallDetailsActivity extends AppCompatActivity {
         resultString = Double.toString(mFall.getLongitude());
         mFallLongitudeTextView = (TextView)findViewById(R.id.longitude);
         mFallLongitudeTextView.setText(resultString);
+
+        mFallLocationHeader = (RelativeLayout)findViewById(R.id.fall_location_header);
+        mFallLocationHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", mFall.getLatitude(),
+                        mFall.getLongitude());
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(intent);
+            }
+        });
 
         mGraphContainer = (RelativeLayout)findViewById(R.id.graph_container);
         ViewGroup.LayoutParams params = mGraphContainer.getLayoutParams();

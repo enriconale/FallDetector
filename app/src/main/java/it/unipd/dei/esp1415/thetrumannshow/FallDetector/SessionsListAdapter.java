@@ -39,7 +39,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
                 mSessionDuration.setText(session.getFormattedDuration());
                 mNumOfFalls.setText(Integer.toString(session.getFalls().size()));
 
-                mHandler.postDelayed(mUpdateTimeTask, 1000);
+                mHandler.postDelayed(mUpdateTimeTask, 200);
 
             }
         };

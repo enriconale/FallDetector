@@ -124,11 +124,12 @@ public class DatabaseManager {
 
         Cursor cursor = mDatabase.query(CreateDatabase.FALL_TABLE, null, CreateDatabase
                         .OWNER_SESSION + " = '" + sessionUUID.toString() + "' ",
-                null, null, null, null);
+                null, null, null, CreateDatabase.FALL_DATE);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Fall fall = getFallFromCursor(cursor);
+            Log.d("FALL NAME", fall.getName());
             fallsList.add(fall);
             cursor.moveToNext();
         }
