@@ -17,6 +17,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     private final String LAST_NOTIFICATION_DATE_KEY = "it.unipd.dei.esp1415.thetrumannshow" +
             ".FallDetector.lastNotificationDate";
     private final long TWELVE_HOURS = 43200000;
+    private final long FIVE_SECONDS = 5000;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -31,7 +32,8 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         long today = new Date().getTime();
 
         if (intent.getAction().equalsIgnoreCase("android.intent.action.BOOT_COMPLETED")
-                && userWantsBootNotification && (today - lastNotification > TWELVE_HOURS)) {
+                && userWantsBootNotification && (today - lastNotification > TWELVE_HOURS) ||
+                (today - lastNotification < FIVE_SECONDS)) {
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context)
