@@ -99,6 +99,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
                     mSessionName.setText(getFormattedSessionName(newName));
                     mEditSessionNameEditText.setText(newName);
                     mEditingName = false;
+                    SessionsLab.get(getApplicationContext()).saveRunningSessionInDatabase();
                 }
             }
         });

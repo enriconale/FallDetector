@@ -124,7 +124,7 @@ public class DatabaseManager {
 
         Cursor cursor = mDatabase.query(CreateDatabase.FALL_TABLE, null, CreateDatabase
                         .OWNER_SESSION + " = '" + sessionUUID.toString() + "' ",
-                null, null, null, CreateDatabase.FALL_DATE);
+                null, null, null, "ROWID");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
