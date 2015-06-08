@@ -20,6 +20,14 @@
             android:textSize="16sp" />
 
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/fall_hour"
+            android:layout_toStartOf="@+id/fall_hour"
+            android:id="@+id/mail_is_sent"
+            android:src="@mipmap/email_sent"/>
+
+        <ImageView
             android:id="@+id/fall_more_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
