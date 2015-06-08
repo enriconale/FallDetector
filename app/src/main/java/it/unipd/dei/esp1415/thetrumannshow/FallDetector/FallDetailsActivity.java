@@ -137,7 +137,8 @@ public class FallDetailsActivity extends AppCompatActivity {
 
             super.onDraw(canvas);
             paint.setStyle(Paint.Style.FILL);
-            paint.setColor(Color.parseColor("#000000"));
+            paint.setStrokeWidth(4);
+            paint.setColor(Color.parseColor("red"));
             int screenWidth = getWidth();
             int screenHeight = getHeight();
             double[] totalAcceleration = getTotalAcceleration(mFall.getXAcceleration(), mFall
