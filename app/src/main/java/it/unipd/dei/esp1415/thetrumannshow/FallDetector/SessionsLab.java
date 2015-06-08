@@ -1,10 +1,14 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,12 +75,67 @@ public class SessionsLab {
     public void resumeCurrentlyRunningSession() {
         mIsRunningSessionPlaying = true;
         mDataAcquisitionUnit.resume();
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mAppContext);
+        boolean userWantsOnGoingNotification = sp.getBoolean(SettingsActivity
+                .PREF_ONGOING_NOTIFICATION, true);
+        if (userWantsOnGoingNotification) {
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(mAppContext)
+                            .setSmallIcon(R.mipmap.notification_icon)
+                            .setContentTitle(mAppContext.getString(R.string.notification_title_text))
+                            .setContentText(mAppContext.getString(R.string
+                                    .notification_content_text))
+                            .setOngoing(true);
+
+            Intent resultIntent = new Intent(mAppContext, RunningSessionActivity.class);
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(mAppContext);
+            stackBuilder.addParentStack(RunningSessionActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
+
+            mNotificationManager.notify(1, mBuilder.build());
+        }
     }
 
     public void pauseCurrentlyRunningSession() {
         mIsRunningSessionPlaying = false;
         mDataAcquisitionUnit.detach();
         saveRunningSessionInDatabase();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mAppContext);
+        boolean userWantsOnGoingNotification = sp.getBoolean(SettingsActivity
+                .PREF_ONGOING_NOTIFICATION, true);
+        if (userWantsOnGoingNotification) {
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(mAppContext)
+                            .setSmallIcon(R.mipmap.notification_icon)
+                            .setContentTitle(mAppContext.getString(R.string.notification_title_text_paused))
+                            .setContentText(mAppContext.getString(R.string
+                                    .notification_content_text_paused))
+                            .setOngoing(true);
+
+            Intent resultIntent = new Intent(mAppContext, RunningSessionActivity.class);
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(mAppContext);
+            stackBuilder.addParentStack(RunningSessionActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
+
+            mNotificationManager.notify(1, mBuilder.build());
+        }
     }
 
     public void stopCurrentlyRunningSession() {

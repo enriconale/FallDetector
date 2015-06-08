@@ -65,6 +65,8 @@
 
     <string name="notification_title_text">Fall Detector active</string>
     <string name="notification_content_text">I\'m detecting all your falls</string>
+    <string name="notification_title_text_paused">Fall Detector currently paused</string>
+    <string name="notification_content_text_paused">Tap to open the application</string>
     <string name="boot_notification_title">You should start a new session</string>
     <string name="boot_notification_text">Tap to open Fall Detector and start a new session</string>
 
