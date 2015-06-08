@@ -55,6 +55,8 @@
 
     <string name="fall_latitude">Latitude: </string>
     <string name="fall_longitude">Longitude: </string>
+    <string name="location_icon_description">Location</string>
+    <string name="graph_header">Acceleration graph:</string>
 
     <string name="register_fall_event">REGISTERED FALL EVENT</string>
     <string name="error_deleting_session">An error occurred while deleting the session</string>

@@ -41,8 +41,8 @@ public class FallDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_fall_details);
 
-        mDateFormatter = SessionsLab.get(getApplicationContext())
-                .getDateFormat();
+        mDateFormatter = new SimpleDateFormat("dd/MM/yyyy\nHH:mm",
+                java.util.Locale.getDefault());
 
         int mSessionPositionInList = getIntent().getExtras().getInt(
                 SessionsListAdapter.SESSION_DETAILS);
@@ -71,13 +71,11 @@ public class FallDetailsActivity extends AppCompatActivity {
         mFallDateTextView = (TextView)findViewById(R.id.date_time);
         mFallDateTextView.setText(mDateFormatter.format(mFall.getDate()));
 
-        String resultString = getApplicationContext().getString(R.string.fall_latitude) + " " +
-            Double.toString(mFall.getLatitude());
+        String resultString = Double.toString(mFall.getLatitude());
         mFallLatitudeTextView = (TextView)findViewById(R.id.latitude);
         mFallLatitudeTextView.setText(resultString);
 
-        resultString = getApplicationContext().getString(R.string.fall_longitude) + " " +
-            Double.toString(mFall.getLongitude());
+        resultString = Double.toString(mFall.getLongitude());
         mFallLongitudeTextView = (TextView)findViewById(R.id.longitude);
         mFallLongitudeTextView.setText(resultString);
 

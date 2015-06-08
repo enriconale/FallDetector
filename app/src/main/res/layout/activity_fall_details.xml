@@ -1,88 +1,144 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="it.unipd.dei.esp1415.thetrumannshow.FallDetector.FallDetailsActivity">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="it.unipd.dei.esp1415.thetrumannshow.FallDetector.FallDetailsActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/main_layout" >
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/activity_vertical_margin">
 
-        <ImageView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/main_layout"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/session_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/session_icon"
+                android:layout_toEndOf="@id/session_icon"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:textSize="24sp"
+                android:id="@+id/fall_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/fall_name"
+                android:layout_alignStart="@id/fall_name"
+                android:layout_marginTop="4dp"
+                android:layout_below="@id/fall_name"
+                android:textSize="18sp"
+                android:id="@+id/session_name" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/main_layout"
+            android:background="#e0e0e0"
+            />
+
+        <RelativeLayout
+            android:id="@+id/date_time_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:id="@+id/session_icon"/>
+            android:layout_below="@id/main_layout"
+            android:layout_marginTop="24dp">
+
+            <ImageView
+                android:id="@+id/date_time_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/calendar_24dp"
+                android:contentDescription="@string/cardview_startdate"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/date_time_icon"
+                android:layout_toEndOf="@+id/date_time_icon"
+                android:id="@+id/date_time" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fall_location_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date_time_header"
+            android:layout_marginTop="24dp">
+
+            <ImageView
+                android:id="@+id/location_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/location_24dp"
+                android:contentDescription="@string/location_icon_description"/>
+
+            <TextView
+                android:id="@+id/latitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/location_icon"
+                android:layout_toEndOf="@id/location_icon"
+                android:textSize="24sp"
+                 />
+
+            <TextView
+                android:id="@+id/longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:layout_below="@id/latitude"
+                android:layout_alignLeft="@+id/latitude"
+                android:layout_alignStart="@+id/latitude"
+                 />
+
+        </RelativeLayout>
 
         <TextView
+            android:id="@+id/graph_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/session_icon"
-            android:layout_toEndOf="@id/session_icon"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_centerVertical="true"
+            android:text="@string/graph_header"
+            android:textStyle="bold"
             android:textSize="24sp"
-            android:id="@+id/fall_name" />
+            android:layout_marginTop="32dp"
+            android:layout_below="@+id/fall_location_header"/>
 
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/graph_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:id="@+id/email_is_sent"
-            android:src="@mipmap/email_sent"/>
+            android:layout_below="@+id/graph_header"
+            android:layout_marginTop="16dp"/>
+
 
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="24dp"
-        android:layout_below="@id/main_layout"
-        android:textSize="24sp"
-        android:id="@+id/session_name" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_below="@id/session_name"
-        android:textSize="24sp"
-        android:id="@+id/date_time" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:textSize="24sp"
-        android:layout_below="@id/date_time"
-        android:id="@+id/latitude" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="24sp"
-        android:layout_below="@id/latitude"
-        android:id="@+id/longitude" />
-
-    <RelativeLayout
-        android:id="@+id/graph_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/longitude"
-        android:layout_marginTop="24dp"/>
-
-
-</RelativeLayout>
+</ScrollView>
