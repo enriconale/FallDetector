@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderApi;
 
 /**
  * Created by eike on 12.05.15.
@@ -93,7 +92,7 @@ public class FallObjectCreator implements Runnable{
         new DelayedReverseGeocoder(mLastFall, mGoogleApiClient, mContext);
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        String email = sharedPrefs.getString(SettingsActivity.PREF_EMAIL_ADDRESS, "");
+        String email = buildStringOfEmailAddresses(sharedPrefs);
 
         Intent send = new Intent(Intent.ACTION_SENDTO);
         String uriText = "mailto:" + Uri.encode(email) +
@@ -107,5 +106,47 @@ public class FallObjectCreator implements Runnable{
         } catch (Exception e){
             System.err.println("Could not Launch E-Mail-Application: "+e);
         }
+    }
+
+    private String buildStringOfEmailAddresses(SharedPreferences sharedPreferences) {
+        String emailString1 = sharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS1, "");
+        String emailString2 = sharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS2, "");
+        String emailString3 = sharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS3, "");
+        String emailString4 = sharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS4, "");
+        String emailString5 = sharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS5, "");
+
+        String result = "";
+
+        if (!"".equals(emailString1)) {
+            result = result + emailString1 + ", ";
+        }
+
+        if (!"".equals(emailString2)) {
+            result = result + emailString2 + ", ";
+        }
+
+        if (!"".equals(emailString3)) {
+            result = result + emailString3 + ", ";
+        }
+
+        if (!"".equals(emailString4)) {
+            result = result + emailString4 + ", ";
+        }
+
+        if (!"".equals(emailString5)) {
+            result = result + emailString5;
+        }
+
+        String x = Character.toString(result.charAt(result.length() - 2));
+        if (",".equals(x)) {
+            return result.substring(0, result.length() - 2);
+        }
+
+        return result;
     }
 }

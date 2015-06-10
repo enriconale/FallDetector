@@ -20,7 +20,11 @@ public class SettingsActivity extends PreferenceActivity {
     public static final String PREF_DAILY_NOTIFICATION = "pref_daily_notification";
     public static final String PREF_ONGOING_NOTIFICATION = "pref_ongoing_notification";
     public static final String PREF_ACCELEROMETER_RATE = "pref_accelerometer_rate";
-    public static final String PREF_EMAIL_ADDRESS = "pref_email_address";
+    public static final String PREF_EMAIL_ADDRESS1 = "pref_email_address1";
+    public static final String PREF_EMAIL_ADDRESS2 = "pref_email_address2";
+    public static final String PREF_EMAIL_ADDRESS3 = "pref_email_address3";
+    public static final String PREF_EMAIL_ADDRESS4 = "pref_email_address4";
+    public static final String PREF_EMAIL_ADDRESS5 = "pref_email_address5";
     public static final String PREF_SESSION_DURATION = "pref_session_duration";
 
     @Override

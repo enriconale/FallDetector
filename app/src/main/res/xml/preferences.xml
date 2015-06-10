@@ -1,37 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:key="pref_daily_notification"
-        android:title="@string/pref_daily_notification_title"
-        android:summary="@string/pref_daily_notification_summary"
-        android:defaultValue="false" />
 
-    <CheckBoxPreference
-        android:key="pref_ongoing_notification"
-        android:title="@string/pref_ongoing_notification_title"
-        android:summary="@string/pref_ongoing_notification_summary"
-        android:defaultValue="true"/>
+    <PreferenceCategory
+        android:key="button_general_category_key"
+        android:title="@string/pref_general_category_title">
 
-    <EditTextPreference
-        android:key="pref_session_duration"
-        android:title="@string/pref_session_duration_title"
-        android:summary="@string/pref_session_duration_summary"
-        android:numeric="integer"
-        android:defaultValue="12"
-        android:selectAllOnFocus="true" />
+        <CheckBoxPreference
+            android:key="pref_daily_notification"
+            android:title="@string/pref_daily_notification_title"
+            android:summary="@string/pref_daily_notification_summary"
+            android:defaultValue="false" />
 
-    <ListPreference
-        android:key="pref_accelerometer_rate"
-        android:title="@string/pref_accelerometer_rate_title"
-        android:summary="@string/pref_accelerometer_rate_summary"
-        android:entries="@array/rates"
-        android:entryValues="@array/rate_values"
-        android:defaultValue="Normal"/>
+        <CheckBoxPreference
+            android:key="pref_ongoing_notification"
+            android:title="@string/pref_ongoing_notification_title"
+            android:summary="@string/pref_ongoing_notification_summary"
+            android:defaultValue="true"/>
 
-    <EditTextPreference
-        android:key="pref_email_address"
-        android:title="@string/pref_email_address_title"
-        android:summary="@string/pref_email_address_summary"
-        android:selectAllOnFocus="true" />
+        <EditTextPreference
+            android:key="pref_session_duration"
+            android:title="@string/pref_session_duration_title"
+            android:summary="@string/pref_session_duration_summary"
+            android:numeric="integer"
+            android:defaultValue="12"
+            android:selectAllOnFocus="true" />
+
+        <ListPreference
+            android:key="pref_accelerometer_rate"
+            android:title="@string/pref_accelerometer_rate_title"
+            android:summary="@string/pref_accelerometer_rate_summary"
+            android:entries="@array/rates"
+            android:entryValues="@array/rate_values"
+            android:defaultValue="Normal"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="button_emails_category_key"
+        android:title="@string/pref_email_address_category_title"
+        android:summary="@string/pref_email_address_category_summary">
+
+        <EditTextPreference
+            android:key="pref_email_address1"
+            android:title="@string/pref_email_address_title1"
+            android:selectAllOnFocus="true" />
+
+        <EditTextPreference
+            android:key="pref_email_address2"
+            android:title="@string/pref_email_address_title2"
+            android:selectAllOnFocus="true" />
+
+        <EditTextPreference
+            android:key="pref_email_address3"
+            android:title="@string/pref_email_address_title3"
+            android:selectAllOnFocus="true" />
+
+        <EditTextPreference
+            android:key="pref_email_address4"
+            android:title="@string/pref_email_address_title4"
+            android:selectAllOnFocus="true" />
+
+        <EditTextPreference
+            android:key="pref_email_address5"
+            android:title="@string/pref_email_address_title5"
+            android:selectAllOnFocus="true" />
+
+    </PreferenceCategory>
+
+
 
 </PreferenceScreen>

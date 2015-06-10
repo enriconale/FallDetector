@@ -17,7 +17,7 @@
         you want to stop it and start a new one?</string>
     <string name="session_running_dialog_positive_button">Yes</string>
     <string name="session_running_dialog_negative_button">No</string>
-    <string name="insert_valid_email">Please insert a valid e-mail address in the
+    <string name="insert_valid_email">Please insert at least one valid e-mail address in the
         application settings</string>
 
     <string name="session_icon">Session icon.</string>
@@ -37,6 +37,7 @@
     <string name="y_axis">y-Axis: </string>
     <string name="z_axis">z-Axis: </string>
 
+    <string name="pref_general_category_title">General</string>
     <string name="pref_daily_notification_title">Daily notification</string>
     <string name="pref_daily_notification_summary">Let the app notify you to start a new session
         every day.</string>
@@ -46,9 +47,15 @@
     <string name="pref_accelerometer_rate_title">Accelerometer update rate</string>
     <string name="pref_accelerometer_rate_summary">Set an appropriate update rate of the
         accelerometer.</string>
-    <string name="pref_email_address_title">Email address</string>
-    <string name="pref_email_address_summary">Choose an email address to which send the notice of a
-        fall.</string>
+    <string name="pref_email_address_category_title">E-mail addresses</string>
+    <string name="pref_email_address_category_summary">Set up to 5 email address to which send the
+        notice of a fall.</string>
+    <string name="pref_email_address_title1">Address #1</string>
+    <string name="pref_email_address_title2">Address #2</string>
+    <string name="pref_email_address_title3">Address #3</string>
+    <string name="pref_email_address_title4">Address #4</string>
+    <string name="pref_email_address_title5">Address #5</string>
+
     <string name="pref_ongoing_notification_title">Ongoing notification</string>
     <string name="pref_ongoing_notification_summary">Let the app show an ongoing
         notification when you start a new session.</string>

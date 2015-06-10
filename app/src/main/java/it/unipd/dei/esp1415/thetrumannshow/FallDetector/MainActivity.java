@@ -2,10 +2,8 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -45,11 +43,13 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String emailString = mSharedPreferences.getString(SettingsActivity.PREF_EMAIL_ADDRESS, "");
-        if (!isValidEmailAddress(emailString)) {
-            Toast.makeText(getApplicationContext(), R.string.insert_valid_email, Toast.LENGTH_LONG).show();
+        if (hasCorrectEmailSettings()) {
+            Toast.makeText(getApplicationContext(), R.string.insert_valid_email,
+                    Toast.LENGTH_LONG).show();
         }
+
         mEmptyListMessage = (TextView)findViewById(R.id.empty_list_message);
         mRecyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -97,9 +97,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
                 startActivity(intent);
                 break;
             case R.id.action_start_session:
-                String emailString = mSharedPreferences.getString(SettingsActivity
-                        .PREF_EMAIL_ADDRESS, "");
-                if (!isValidEmailAddress(emailString)) {
+                if (hasCorrectEmailSettings()) {
                     Toast.makeText(getApplicationContext(), R.string.insert_valid_email,
                             Toast.LENGTH_LONG).show();
                 } else {
@@ -182,5 +180,21 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         Pattern pattern = Pattern.compile(emailPattern);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    private boolean hasCorrectEmailSettings() {
+        String emailString1 = mSharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS1, "");
+        String emailString2 = mSharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS2, "");
+        String emailString3 = mSharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS3, "");
+        String emailString4 = mSharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS4, "");
+        String emailString5 = mSharedPreferences.getString(SettingsActivity
+                .PREF_EMAIL_ADDRESS5, "");
+        return ((!isValidEmailAddress(emailString1)) && (!isValidEmailAddress(emailString2))
+                && (!isValidEmailAddress(emailString3)) && (!isValidEmailAddress
+                (emailString4)) && (!isValidEmailAddress(emailString5)));
     }
 }
