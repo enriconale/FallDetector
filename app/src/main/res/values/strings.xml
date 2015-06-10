@@ -55,6 +55,10 @@
     <string name="pref_email_address_title3">Address #3</string>
     <string name="pref_email_address_title4">Address #4</string>
     <string name="pref_email_address_title5">Address #5</string>
+    <string name="pref_email_summary_nomailset">Empty</string>
+    <string name="pref_invalid_session_duration">You inserted an invalid number! Setting
+        reset to 12 hours.</string>
+    <string name="pref_invalid_email">This e-mail addrees is not valid.</string>
 
     <string name="pref_ongoing_notification_title">Ongoing notification</string>
     <string name="pref_ongoing_notification_summary">Let the app show an ongoing
