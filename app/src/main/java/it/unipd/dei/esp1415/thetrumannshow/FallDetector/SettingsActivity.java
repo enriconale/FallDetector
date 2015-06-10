@@ -122,7 +122,7 @@ public class SettingsActivity extends PreferenceActivity implements
             EditTextPreference e = (EditTextPreference) p;
             String title = e.getTitle().toString();
             if (title.contains("#")) {
-                if ("".equals(e.getText())) {
+                if ("".equals(e.getText()) || e.getText()==null) {
                     p.setSummary(getApplicationContext().getString(R.string.pref_email_summary_nomailset));
                 } else {
                     if (isValidEmailAddress(e.getText())) {

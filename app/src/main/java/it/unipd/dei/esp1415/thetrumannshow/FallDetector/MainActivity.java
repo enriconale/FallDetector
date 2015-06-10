@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         super.onPause();
     }
 
+
+
+    
+
     @Override
     protected void onDestroy(){
         super.onDestroy();
