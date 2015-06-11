@@ -116,9 +116,9 @@ public class DataAcquisitionUnit
                     + zBuffer.readOne(j) * zBuffer.readOne(j));
             if (acc > 25.0) {
                 mLastFallIndex = j;
-                xBuffer.getFloatingIntegral();
-                yBuffer.getFloatingIntegral();
-                zBuffer.getFloatingIntegral();
+                double xIntegral = xBuffer.getFloatingIntegral();
+                double yIntegral = yBuffer.getFloatingIntegral();
+                double zIntegral = zBuffer.getFloatingIntegral();
                 return true;
             }
         }
