@@ -158,6 +158,7 @@ public class FallDetailsActivity extends AppCompatActivity {
                             .getYAcceleration(),
                     mFall.getZAcceleration());
             NUMBER_OF_TIME_MOMENTS = totalAcceleration.length;
+            NUMBER_OF_ACCELERATION_UNITS = (int)getMaximum(totalAcceleration) + 50;
             int pixelsPerTimeUnit = getNumOfHorizontalPixelsPerTimeUnit(screenWidth);
             int pixelsPerAccUnit = getNumOfVerticalPixelsPerAccelerationUnit(screenHeight);
 
@@ -215,5 +216,15 @@ public class FallDetailsActivity extends AppCompatActivity {
             result[i] = value;
         }
         return result;
+    }
+
+    private double getMaximum(double[] array) {
+        double max = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
+            }
+        }
+        return max;
     }
 }
