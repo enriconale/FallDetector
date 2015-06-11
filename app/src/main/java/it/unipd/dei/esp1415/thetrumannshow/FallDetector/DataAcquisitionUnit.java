@@ -33,7 +33,7 @@ public class DataAcquisitionUnit
     private int mChosenSensorRate;
 
 
-    private final static int samples = 10000;
+    private final static int samples = 1000;
 
     private LongRingBuffer timeBuffer = new LongRingBuffer(samples);
     private DifferentialBuffer xBuffer;
@@ -56,12 +56,12 @@ public class DataAcquisitionUnit
             case "slow":
                 mChosenSensorRate = SensorManager.SENSOR_DELAY_UI;
                 break;
-            case "normal":
-                mChosenSensorRate = SensorManager.SENSOR_DELAY_GAME;
-                break;
             case "fast":
                 mChosenSensorRate = SensorManager.SENSOR_DELAY_FASTEST;
                 break;
+            case "normal":
+            default:
+                mChosenSensorRate = SensorManager.SENSOR_DELAY_GAME;
         }
 
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
@@ -70,9 +70,9 @@ public class DataAcquisitionUnit
         mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
         mSensorManager.registerListener(this, mGravity, 100000);
 
-        xBuffer = new DifferentialBuffer(samples, (2000000 / mChosenSensorRate), mChosenSensorRate);
-        yBuffer = new DifferentialBuffer(samples, (2000000 / mChosenSensorRate), mChosenSensorRate);
-        zBuffer = new DifferentialBuffer(samples, (2000000 / mChosenSensorRate), mChosenSensorRate);
+        xBuffer = new DifferentialBuffer(samples, 900, 10000);
+        yBuffer = new DifferentialBuffer(samples, 900, 10000);
+        zBuffer = new DifferentialBuffer(samples, 900, 10000);
 
         //Location
         buildGoogleApiClient(c);
@@ -94,9 +94,9 @@ public class DataAcquisitionUnit
 
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             timeBuffer.insert(event.timestamp);
-            xBuffer.submitData(event.values[0],currentGravityX);
-            yBuffer.submitData(event.values[1],currentGravityY);
-            zBuffer.submitData(event.values[2],currentGravityZ);
+            xBuffer.submitData(event.values[0],currentGravityX,event.timestamp);
+            yBuffer.submitData(event.values[1],currentGravityY,event.timestamp);
+            zBuffer.submitData(event.values[2],currentGravityZ,event.timestamp);
 
             i++;
 
@@ -116,6 +116,9 @@ public class DataAcquisitionUnit
                     + zBuffer.readOne(j) * zBuffer.readOne(j));
             if (acc > 25.0) {
                 mLastFallIndex = j;
+                xBuffer.getFloatingIntegral();
+                yBuffer.getFloatingIntegral();
+                zBuffer.getFloatingIntegral();
                 return true;
             }
         }

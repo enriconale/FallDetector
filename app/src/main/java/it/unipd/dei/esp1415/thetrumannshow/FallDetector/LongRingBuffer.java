@@ -67,4 +67,8 @@ public class LongRingBuffer{
         }
         return ret;
     }
+
+    public long getCurrentPosition(){
+        return nextPosition - 1;
+    }
 }

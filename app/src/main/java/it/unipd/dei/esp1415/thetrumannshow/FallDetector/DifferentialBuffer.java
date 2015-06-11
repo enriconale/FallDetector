@@ -5,35 +5,47 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
  * All rights reserved.
  */
 public class DifferentialBuffer {
-    private final FloatRingBuffer accelerationBuffer;
-    private final FloatRingBuffer gravityBuffer;
+    private final FloatRingBuffer mAccelerationBuffer;
+    private final FloatRingBuffer mGravityBuffer;
+    private final LongRingBuffer mTimeBuffer;
 
-    private final double intervalMicros;
-    private final int samples;
+    private final double mIntervalMicros;
+    private final int mSamples;
 
-    private double floatingIntegral;
+    private double mFloatingIntegral;
 
     public DifferentialBuffer(int capacity, int samples, double intervalMicros){
-        accelerationBuffer = new FloatRingBuffer(capacity);
-        gravityBuffer = new FloatRingBuffer(capacity);
-        this.intervalMicros = intervalMicros;
-        this.samples = samples;
+        mAccelerationBuffer = new FloatRingBuffer(capacity);
+        mGravityBuffer = new FloatRingBuffer(capacity);
+        mTimeBuffer = new LongRingBuffer(capacity);
+        this.mIntervalMicros = intervalMicros;
+        this.mSamples = samples;
     }
 
-    public void submitData(float acceleration, float gravity){
-        accelerationBuffer.insert(acceleration);
-        gravityBuffer.insert(gravity);
-        long oldBufferPosition = accelerationBuffer.getCurrentPosition() - samples;
-        floatingIntegral += (Math.abs((double)(acceleration-gravity))) * (intervalMicros / 1000000);
-        floatingIntegral -= (Math.abs((double)(accelerationBuffer.readOne(oldBufferPosition)
-                - gravityBuffer.readOne(oldBufferPosition)))) * (intervalMicros / 1000000);
+    public void submitData(float acceleration, float gravity, long timestamp){
+        mAccelerationBuffer.insert(acceleration);
+        mGravityBuffer.insert(gravity);
+        mTimeBuffer.insert(timestamp);
+        long oldBufferPosition = mAccelerationBuffer.getCurrentPosition() - mSamples;
+        long intervalNanos = timestamp - mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition()-1);
+        long oldIntervalNanos = mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - mSamples)
+                - mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - mSamples - 1);
+        mFloatingIntegral += (Math.abs(acceleration-gravity))
+                * ((double) intervalNanos / 1000000000);
+        mFloatingIntegral -= (Math.abs((double)(mAccelerationBuffer.readOne(oldBufferPosition)
+                - mGravityBuffer.readOne(oldBufferPosition))))
+                * ((double) oldIntervalNanos / 1000000000);
     }
 
     public FloatRingBuffer getAccelerationBuffer(){
-        return accelerationBuffer;
+        return mAccelerationBuffer;
     }
 
     public float readOne(long position){
-        return accelerationBuffer.readOne(position);
+        return mAccelerationBuffer.readOne(position);
+    }
+
+    public double getFloatingIntegral(){
+        return mFloatingIntegral;
     }
 }
