@@ -104,8 +104,6 @@ public class FallDetailsActivity extends AppCompatActivity {
 
         MyView v = new MyView(getApplicationContext());
         mGraphContainer.addView(v);
-
-
     }
 
 
@@ -150,7 +148,7 @@ public class FallDetailsActivity extends AppCompatActivity {
 
             super.onDraw(canvas);
             paint.setStyle(Paint.Style.FILL);
-            paint.setStrokeWidth(4);
+            paint.setStrokeWidth(3);
             paint.setColor(Color.parseColor("red"));
             int screenWidth = getWidth();
             int screenHeight = getHeight();
@@ -158,7 +156,8 @@ public class FallDetailsActivity extends AppCompatActivity {
                             .getYAcceleration(),
                     mFall.getZAcceleration());
             NUMBER_OF_TIME_MOMENTS = totalAcceleration.length;
-            NUMBER_OF_ACCELERATION_UNITS = (int)getMaximum(totalAcceleration) + 50;
+            NUMBER_OF_ACCELERATION_UNITS = (int)(getMaximum(totalAcceleration) + getMinimum
+                    (totalAcceleration)) + 50;
             int pixelsPerTimeUnit = getNumOfHorizontalPixelsPerTimeUnit(screenWidth);
             int pixelsPerAccUnit = getNumOfVerticalPixelsPerAccelerationUnit(screenHeight);
 
@@ -226,5 +225,15 @@ public class FallDetailsActivity extends AppCompatActivity {
             }
         }
         return max;
+    }
+
+    private double getMinimum(double[] array) {
+        double min = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] < min) {
+                min = array[i];
+            }
+        }
+        return min;
     }
 }
