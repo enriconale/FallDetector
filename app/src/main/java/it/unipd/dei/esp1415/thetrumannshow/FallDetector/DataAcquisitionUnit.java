@@ -40,12 +40,13 @@ public class DataAcquisitionUnit
     private DifferentialBuffer yBuffer;
     private DifferentialBuffer zBuffer;
 
-    private float currentGravityX;
-    private float currentGravityY;
-    private float currentGravityZ;
+    private float currentGravityX = 0;
+    private float currentGravityY = 0;
+    private float currentGravityZ = 0;
 
     private long i = 0;
-    private int mLastFallIndex = -1;
+    private long mLastFallIndex = -1;
+    private boolean mFallPending;
 
     DataAcquisitionUnit(Context c){
         SharedPreferences mSharedPref = PreferenceManager.getDefaultSharedPreferences(c);
@@ -65,14 +66,16 @@ public class DataAcquisitionUnit
         }
 
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mGravity = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mGravity, 100000);
+        try{Thread.sleep(200);} catch (Exception e) {}
+        mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
 
-        xBuffer = new DifferentialBuffer(samples, 900, 10000);
-        yBuffer = new DifferentialBuffer(samples, 900, 10000);
-        zBuffer = new DifferentialBuffer(samples, 900, 10000);
+
+        xBuffer = new DifferentialBuffer(samples, 500, 10000);
+        yBuffer = new DifferentialBuffer(samples, 500, 10000);
+        zBuffer = new DifferentialBuffer(samples, 500, 10000);
 
         //Location
         buildGoogleApiClient(c);
@@ -110,7 +113,7 @@ public class DataAcquisitionUnit
 
     // dummy implementation of fall detection
     private boolean isFall(int start, int end){
-         for(int j = start; j < end; j++) {
+         /*for(int j = start; j < end; j++) {
             double acc = Math.sqrt(xBuffer.readOne(j) * xBuffer.readOne(j)
                     + yBuffer.readOne(j) * yBuffer.readOne(j)
                     + zBuffer.readOne(j) * zBuffer.readOne(j));
@@ -121,6 +124,36 @@ public class DataAcquisitionUnit
                 double zIntegral = zBuffer.getFloatingIntegral();
                 return true;
             }
+        }
+        return false;
+        */
+        if(mFallPending){
+            double xIntegral = xBuffer.getFloatingIntegral();
+            double yIntegral = yBuffer.getFloatingIntegral();
+            double zIntegral = zBuffer.getFloatingIntegral();
+
+            double integralSum = (xIntegral + yIntegral +zIntegral);
+
+            if(integralSum < 10){
+                mFallPending = false;
+                return true;
+            }
+
+            mFallPending = false;
+        }
+
+        double xIntegral = xBuffer.getFloatingIntegral();
+        double yIntegral = yBuffer.getFloatingIntegral();
+        double zIntegral = zBuffer.getFloatingIntegral();
+
+        double weightedIntegral = (xIntegral*currentGravityX + yIntegral*currentGravityX +zIntegral*currentGravityZ);
+
+        if(weightedIntegral > 60) {
+            mLastFallIndex = xBuffer.getAccelerationBuffer().getCurrentPosition();
+            xBuffer.resetIntegral();
+            yBuffer.resetIntegral();
+            zBuffer.resetIntegral();
+            mFallPending = true;
         }
         return false;
     }
@@ -141,6 +174,7 @@ public class DataAcquisitionUnit
 
     void resume() {
         mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
+        mSensorManager.registerListener(this, mGravity, 100000);
         mGoogleApiClient.connect();
     }
 

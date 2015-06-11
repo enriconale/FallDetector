@@ -12,9 +12,10 @@ public class DifferentialBuffer {
     private final double mIntervalMicros;
     private final int mSamples;
 
-    private double mFloatingIntegral;
+    private double mFloatingIntegral = 0;
+    private int afterResetCounter = 0;
 
-    private final double mAccelerationThreshold = 10;
+    private final double mAccelerationThreshold = 1;
 
     public DifferentialBuffer(int capacity, int samples, double intervalMicros){
         mAccelerationBuffer = new FloatRingBuffer(capacity);
@@ -39,13 +40,14 @@ public class DifferentialBuffer {
 
         double oldCleanAcceleration = Math.abs((double)(mAccelerationBuffer.readOne(oldBufferPosition)
                 - mGravityBuffer.readOne(oldBufferPosition)));
-        if (oldCleanAcceleration > mAccelerationThreshold){
+        if (oldCleanAcceleration > mAccelerationThreshold && ! (afterResetCounter < mSamples)){
             long oldIntervalNanos = mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - mSamples)
                     - mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - mSamples - 1);
             mFloatingIntegral -= oldCleanAcceleration
                     * ((double) oldIntervalNanos / 1000000000);
         }
 
+        afterResetCounter++;
     }
 
     public FloatRingBuffer getAccelerationBuffer(){
@@ -58,5 +60,10 @@ public class DifferentialBuffer {
 
     public double getFloatingIntegral(){
         return mFloatingIntegral;
+    }
+
+    public void resetIntegral(){
+        mFloatingIntegral = 0;
+        afterResetCounter = 0;
     }
 }
