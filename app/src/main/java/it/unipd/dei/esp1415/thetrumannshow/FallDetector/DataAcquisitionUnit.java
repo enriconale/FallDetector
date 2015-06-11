@@ -36,9 +36,13 @@ public class DataAcquisitionUnit
     private final static int samples = 10000;
 
     private LongRingBuffer timeBuffer = new LongRingBuffer(samples);
-    private FloatRingBuffer xBuffer = new FloatRingBuffer(samples);
-    private FloatRingBuffer yBuffer = new FloatRingBuffer(samples);
-    private FloatRingBuffer zBuffer = new FloatRingBuffer(samples);
+    private DifferentialBuffer xBuffer;
+    private DifferentialBuffer yBuffer;
+    private DifferentialBuffer zBuffer;
+
+    private float currentGravityX;
+    private float currentGravityY;
+    private float currentGravityZ;
 
     private long i = 0;
     private int mLastFallIndex = -1;
@@ -66,6 +70,10 @@ public class DataAcquisitionUnit
         mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
         mSensorManager.registerListener(this, mGravity, 100000);
 
+        xBuffer = new DifferentialBuffer(samples, (2000000 / mChosenSensorRate), mChosenSensorRate);
+        yBuffer = new DifferentialBuffer(samples, (2000000 / mChosenSensorRate), mChosenSensorRate);
+        zBuffer = new DifferentialBuffer(samples, (2000000 / mChosenSensorRate), mChosenSensorRate);
+
         //Location
         buildGoogleApiClient(c);
         mGoogleApiClient.connect();
@@ -79,14 +87,16 @@ public class DataAcquisitionUnit
 
     public void onSensorChanged(SensorEvent event){
         if(event.sensor.getType() == Sensor.TYPE_GRAVITY){
-            
+            currentGravityX = event.values[0];
+            currentGravityY = event.values[1];
+            currentGravityZ = event.values[2];
         }
 
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             timeBuffer.insert(event.timestamp);
-            xBuffer.insert(event.values[0]);
-            yBuffer.insert(event.values[1]);
-            zBuffer.insert(event.values[2]);
+            xBuffer.submitData(event.values[0],currentGravityX);
+            yBuffer.submitData(event.values[1],currentGravityY);
+            zBuffer.submitData(event.values[2],currentGravityZ);
 
             i++;
 
@@ -100,7 +110,7 @@ public class DataAcquisitionUnit
 
     // dummy implementation of fall detection
     private boolean isFall(int start, int end){
-        /* for(int j = start; j < end; j++) {
+         for(int j = start; j < end; j++) {
             double acc = Math.sqrt(xBuffer.readOne(j) * xBuffer.readOne(j)
                     + yBuffer.readOne(j) * yBuffer.readOne(j)
                     + zBuffer.readOne(j) * zBuffer.readOne(j));
@@ -109,12 +119,13 @@ public class DataAcquisitionUnit
                 return true;
             }
         }
-        return false; */
+        return false;
     }
 
     private void fall(){
         Toast.makeText(mContext, R.string.register_fall_event , Toast.LENGTH_LONG).show();
-        FallObjectCreator foc = new FallObjectCreator(timeBuffer, xBuffer, yBuffer, zBuffer,
+        FallObjectCreator foc = new FallObjectCreator(timeBuffer, xBuffer.getAccelerationBuffer(),
+                yBuffer.getAccelerationBuffer(), zBuffer.getAccelerationBuffer(),
                 mContext, mGoogleApiClient, mLastFallIndex);
         Thread focThread = new Thread(foc);
         focThread.run();
