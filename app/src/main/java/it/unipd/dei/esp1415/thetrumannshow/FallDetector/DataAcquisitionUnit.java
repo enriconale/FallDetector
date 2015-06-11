@@ -39,6 +39,7 @@ public class DataAcquisitionUnit
     private DifferentialBuffer xBuffer;
     private DifferentialBuffer yBuffer;
     private DifferentialBuffer zBuffer;
+    private FloatingIntegral[] mTemporaryFloatingIntegrals = {null,null,null};
 
     private float currentGravityX = 0;
     private float currentGravityY = 0;
@@ -128,11 +129,15 @@ public class DataAcquisitionUnit
         return false;
         */
         if(mFallPending){
-            double xIntegral = xBuffer.getFloatingIntegral();
-            double yIntegral = yBuffer.getFloatingIntegral();
-            double zIntegral = zBuffer.getFloatingIntegral();
+            double xIntegral = mTemporaryFloatingIntegrals[0].getValue();
+            double yIntegral = mTemporaryFloatingIntegrals[1].getValue();
+            double zIntegral = mTemporaryFloatingIntegrals[2].getValue();
 
             double integralSum = (xIntegral + yIntegral +zIntegral);
+
+            xBuffer.removeFloatingIntegral(mTemporaryFloatingIntegrals[0]);
+            xBuffer.removeFloatingIntegral(mTemporaryFloatingIntegrals[1]);
+            xBuffer.removeFloatingIntegral(mTemporaryFloatingIntegrals[2]);
 
             if(integralSum < 10){
                 mFallPending = false;
@@ -149,10 +154,9 @@ public class DataAcquisitionUnit
         double weightedIntegral = (xIntegral*currentGravityX + yIntegral*currentGravityX +zIntegral*currentGravityZ);
 
         if(weightedIntegral > 60) {
-            mLastFallIndex = xBuffer.getAccelerationBuffer().getCurrentPosition();
-            xBuffer.resetIntegral();
-            yBuffer.resetIntegral();
-            zBuffer.resetIntegral();
+            mTemporaryFloatingIntegrals[0] = xBuffer.requestTemporaryIntegral(200);
+            mTemporaryFloatingIntegrals[1] = yBuffer.requestTemporaryIntegral(200);
+            mTemporaryFloatingIntegrals[2] = zBuffer.requestTemporaryIntegral(200);
             mFallPending = true;
         }
         return false;

@@ -1,5 +1,7 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import java.util.LinkedList;
+
 /**
  * Created by Eike Trumann on 11.06.15.
  * All rights reserved.
@@ -9,11 +11,8 @@ public class DifferentialBuffer {
     private final FloatRingBuffer mGravityBuffer;
     private final LongRingBuffer mTimeBuffer;
 
-    private final double mIntervalMicros;
-    private final int mSamples;
-
-    private double mFloatingIntegral = 0;
-    private int afterResetCounter = 0;
+    private LinkedList<FloatingIntegral> mIntegrals= new LinkedList<FloatingIntegral>();
+    private final FloatingIntegral mPrincipalFloatingIntegral;
 
     private final double mAccelerationThreshold = 1;
 
@@ -21,33 +20,37 @@ public class DifferentialBuffer {
         mAccelerationBuffer = new FloatRingBuffer(capacity);
         mGravityBuffer = new FloatRingBuffer(capacity);
         mTimeBuffer = new LongRingBuffer(capacity);
-        this.mIntervalMicros = intervalMicros;
-        this.mSamples = samples;
+        mPrincipalFloatingIntegral = new FloatingIntegral(0,samples);
+        mIntegrals.add(mPrincipalFloatingIntegral);
     }
 
     public void submitData(float acceleration, float gravity, long timestamp){
         mAccelerationBuffer.insert(acceleration);
         mGravityBuffer.insert(gravity);
         mTimeBuffer.insert(timestamp);
-        long oldBufferPosition = mAccelerationBuffer.getCurrentPosition() - mSamples;
 
         double cleanAcceleration = Math.abs(acceleration - gravity);
         if (cleanAcceleration > mAccelerationThreshold){
             long intervalNanos = timestamp - mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition()-1);
-            mFloatingIntegral += (Math.abs(acceleration - gravity))
+            double distance = (Math.abs(acceleration - gravity))
                     * ((double) intervalNanos / 1000000000);
-        }
 
-        double oldCleanAcceleration = Math.abs((double)(mAccelerationBuffer.readOne(oldBufferPosition)
-                - mGravityBuffer.readOne(oldBufferPosition)));
-        if (oldCleanAcceleration > mAccelerationThreshold && ! (afterResetCounter < mSamples)){
-            long oldIntervalNanos = mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - mSamples)
-                    - mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - mSamples - 1);
-            mFloatingIntegral -= oldCleanAcceleration
-                    * ((double) oldIntervalNanos / 1000000000);
-        }
+             for (FloatingIntegral f:mIntegrals){
+                f.add(distance);
+            }
+         }
 
-        afterResetCounter++;
+        for(FloatingIntegral f:mIntegrals) {
+            long oldBufferPosition = mAccelerationBuffer.getCurrentPosition() - f.size;
+            double oldCleanAcceleration = Math.abs((double) (mAccelerationBuffer.readOne(oldBufferPosition)
+                    - mGravityBuffer.readOne(oldBufferPosition)));
+            if (oldCleanAcceleration > mAccelerationThreshold) {
+                long oldIntervalNanos = mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - f.size)
+                        - mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - f.size - 1);
+                f.substract(oldCleanAcceleration
+                        * ((double) oldIntervalNanos / 1000000000));
+            }
+        }
     }
 
     public FloatRingBuffer getAccelerationBuffer(){
@@ -59,11 +62,16 @@ public class DifferentialBuffer {
     }
 
     public double getFloatingIntegral(){
-        return mFloatingIntegral;
+        return mPrincipalFloatingIntegral.getValue();
     }
 
-    public void resetIntegral(){
-        mFloatingIntegral = 0;
-        afterResetCounter = 0;
+    public FloatingIntegral requestTemporaryIntegral(int sampleCount){
+        FloatingIntegral fInt = new FloatingIntegral(0,sampleCount);
+        mIntegrals.add(fInt);
+        return fInt;
+    }
+
+    public void removeFloatingIntegral(FloatingIntegral f){
+        mIntegrals.remove(f);
     }
 }
