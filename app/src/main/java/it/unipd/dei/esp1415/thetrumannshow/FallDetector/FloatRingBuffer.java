@@ -67,4 +67,8 @@ public class FloatRingBuffer{
         }
         return ret;
     }
+
+    public long getCurrentPosition(){
+        return nextPosition - 1;
+    }
 }

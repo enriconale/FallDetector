@@ -28,6 +28,7 @@ public class DataAcquisitionUnit
     private static SensorManager mSensorManager;
     private GoogleApiClient mGoogleApiClient;
     private Sensor mAccelerometer;
+    private Sensor mGravity;
     private Context mContext;
     private int mChosenSensorRate;
 
@@ -61,7 +62,9 @@ public class DataAcquisitionUnit
 
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mGravity = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
+        mSensorManager.registerListener(this, mGravity, 100000);
 
         //Location
         buildGoogleApiClient(c);
@@ -75,23 +78,29 @@ public class DataAcquisitionUnit
     }
 
     public void onSensorChanged(SensorEvent event){
-        timeBuffer.insert(event.timestamp);
-        xBuffer.insert(event.values[0]);
-        yBuffer.insert(event.values[1]);
-        zBuffer.insert(event.values[2]);
+        if(event.sensor.getType() == Sensor.TYPE_GRAVITY){
+            
+        }
 
-        i++;
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            timeBuffer.insert(event.timestamp);
+            xBuffer.insert(event.values[0]);
+            yBuffer.insert(event.values[1]);
+            zBuffer.insert(event.values[2]);
 
-        if (i % (samples / 100) == 0){
-            if(isFall((((int)(i - (samples / 100)) % samples) - 100), ((int) (i % samples) - 100 ))){
-                fall();
+            i++;
+
+            if (i % (samples / 100) == 0) {
+                if (isFall((((int) (i - (samples / 100)) % samples) - 100), ((int) (i % samples) - 100))) {
+                    fall();
+                }
             }
         }
     }
 
     // dummy implementation of fall detection
     private boolean isFall(int start, int end){
-        for(int j = start; j < end; j++) {
+        /* for(int j = start; j < end; j++) {
             double acc = Math.sqrt(xBuffer.readOne(j) * xBuffer.readOne(j)
                     + yBuffer.readOne(j) * yBuffer.readOne(j)
                     + zBuffer.readOne(j) * zBuffer.readOne(j));
@@ -100,7 +109,7 @@ public class DataAcquisitionUnit
                 return true;
             }
         }
-        return false;
+        return false; */
     }
 
     private void fall(){
