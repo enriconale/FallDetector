@@ -1,13 +1,11 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
@@ -35,19 +33,17 @@ public class DataAcquisitionUnit
 
     private final static int samples = 1000;
 
-    private LongRingBuffer timeBuffer = new LongRingBuffer(samples);
+    private LongRingBuffer mTimeBuffer = new LongRingBuffer(samples);
     private DifferentialBuffer xBuffer;
     private DifferentialBuffer yBuffer;
     private DifferentialBuffer zBuffer;
-    private FloatingIntegral[] mTemporaryFloatingIntegrals = {null,null,null};
 
-    private float currentGravityX = 0;
-    private float currentGravityY = 0;
-    private float currentGravityZ = 0;
+    private float mCurrentGravityX = 0;
+    private float mCurrentGravityY = 0;
+    private float mCurrentGravityZ = 0;
 
     private long i = 0;
     private long mLastFallIndex = -1;
-    private boolean mFallPending;
 
     DataAcquisitionUnit(Context c){
         SharedPreferences mSharedPref = PreferenceManager.getDefaultSharedPreferences(c);
@@ -74,9 +70,9 @@ public class DataAcquisitionUnit
         mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
 
 
-        xBuffer = new DifferentialBuffer(samples, 500, 10000);
-        yBuffer = new DifferentialBuffer(samples, 500, 10000);
-        zBuffer = new DifferentialBuffer(samples, 500, 10000);
+        xBuffer = new DifferentialBuffer(samples, mTimeBuffer);
+        yBuffer = new DifferentialBuffer(samples, mTimeBuffer);
+        zBuffer = new DifferentialBuffer(samples, mTimeBuffer);
 
         //Location
         buildGoogleApiClient(c);
@@ -91,21 +87,21 @@ public class DataAcquisitionUnit
 
     public void onSensorChanged(SensorEvent event){
         if(event.sensor.getType() == Sensor.TYPE_GRAVITY){
-            currentGravityX = event.values[0];
-            currentGravityY = event.values[1];
-            currentGravityZ = event.values[2];
+            mCurrentGravityX = event.values[0];
+            mCurrentGravityY = event.values[1];
+            mCurrentGravityZ = event.values[2];
         }
 
         if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            timeBuffer.insert(event.timestamp);
-            xBuffer.submitData(event.values[0],currentGravityX,event.timestamp);
-            yBuffer.submitData(event.values[1],currentGravityY,event.timestamp);
-            zBuffer.submitData(event.values[2],currentGravityZ,event.timestamp);
+            mTimeBuffer.insert(event.timestamp);
+            xBuffer.submitData(event.values[0], mCurrentGravityX);
+            yBuffer.submitData(event.values[1], mCurrentGravityY);
+            zBuffer.submitData(event.values[2], mCurrentGravityZ);
 
             i++;
 
-            if (i % (samples / 100) == 0) {
-                if (isFall((((int) (i - (samples / 100)) % samples) - 100), ((int) (i % samples) - 100))) {
+            if (i % (samples / 10) == 0) {
+                if (isFall()) {
                     fall();
                 }
             }
@@ -113,58 +109,28 @@ public class DataAcquisitionUnit
     }
 
     // dummy implementation of fall detection
-    private boolean isFall(int start, int end){
-         /*for(int j = start; j < end; j++) {
-            double acc = Math.sqrt(xBuffer.readOne(j) * xBuffer.readOne(j)
-                    + yBuffer.readOne(j) * yBuffer.readOne(j)
-                    + zBuffer.readOne(j) * zBuffer.readOne(j));
-            if (acc > 25.0) {
-                mLastFallIndex = j;
-                double xIntegral = xBuffer.getFloatingIntegral();
-                double yIntegral = yBuffer.getFloatingIntegral();
-                double zIntegral = zBuffer.getFloatingIntegral();
+    private boolean isFall(){
+        double xIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
+        double yIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
+        double zIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
+
+        if(/*xIntegral + yIntegral + zIntegral) < 10*/ true) {
+            xIntegral = xBuffer.requestIntegralByTime(1000000000L, 000000000);
+            yIntegral = xBuffer.requestIntegralByTime(1000000000L, 000000000);
+            zIntegral = xBuffer.requestIntegralByTime(1000000000L, 000000000);
+            double weightedIntegral = Math.sqrt(Math.abs(
+                    xIntegral * mCurrentGravityX * xIntegral * mCurrentGravityX
+                    + yIntegral * mCurrentGravityY * yIntegral * mCurrentGravityX
+                    + zIntegral * mCurrentGravityZ * zIntegral * mCurrentGravityZ));
+            if (weightedIntegral > 10)
                 return true;
-            }
-        }
-        return false;
-        */
-        if(mFallPending){
-            double xIntegral = mTemporaryFloatingIntegrals[0].getValue();
-            double yIntegral = mTemporaryFloatingIntegrals[1].getValue();
-            double zIntegral = mTemporaryFloatingIntegrals[2].getValue();
-
-            double integralSum = (xIntegral + yIntegral +zIntegral);
-
-            xBuffer.removeFloatingIntegral(mTemporaryFloatingIntegrals[0]);
-            xBuffer.removeFloatingIntegral(mTemporaryFloatingIntegrals[1]);
-            xBuffer.removeFloatingIntegral(mTemporaryFloatingIntegrals[2]);
-
-            if(integralSum < 10){
-                mFallPending = false;
-                return true;
-            }
-
-            mFallPending = false;
-        }
-
-        double xIntegral = xBuffer.getFloatingIntegral();
-        double yIntegral = yBuffer.getFloatingIntegral();
-        double zIntegral = zBuffer.getFloatingIntegral();
-
-        double weightedIntegral = (xIntegral*currentGravityX + yIntegral*currentGravityX +zIntegral*currentGravityZ);
-
-        if(weightedIntegral > 60) {
-            mTemporaryFloatingIntegrals[0] = xBuffer.requestTemporaryIntegral(200);
-            mTemporaryFloatingIntegrals[1] = yBuffer.requestTemporaryIntegral(200);
-            mTemporaryFloatingIntegrals[2] = zBuffer.requestTemporaryIntegral(200);
-            mFallPending = true;
         }
         return false;
     }
 
     private void fall(){
         Toast.makeText(mContext, R.string.register_fall_event , Toast.LENGTH_LONG).show();
-        FallObjectCreator foc = new FallObjectCreator(timeBuffer, xBuffer.getAccelerationBuffer(),
+        FallObjectCreator foc = new FallObjectCreator(mTimeBuffer, xBuffer.getAccelerationBuffer(),
                 yBuffer.getAccelerationBuffer(), zBuffer.getAccelerationBuffer(),
                 mContext, mGoogleApiClient, mLastFallIndex);
         Thread focThread = new Thread(foc);
