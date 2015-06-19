@@ -66,6 +66,9 @@ public class DataAcquisitionUnit
     // counter when last fall was detected
     private long mLastFallIndex = -1;
 
+    // fallback-mode if there is no gravity sensor
+    private boolean mFallbackMode = false;
+
     /**
      *
      * @param c Application context of the FallDetector application
@@ -89,7 +92,7 @@ public class DataAcquisitionUnit
 
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getSensorList(Sensor.TYPE_GRAVITY).isEmpty()){
-            throw new Error("No gravity Sensor found");
+            mFallbackMode = true;
         }
 
         mGravity = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
@@ -120,7 +123,7 @@ public class DataAcquisitionUnit
                     });
                 }
             }
-        }, 3000, 1000);
+        }, 3000,1000);
 
         mContext = c;
     }
@@ -147,9 +150,24 @@ public class DataAcquisitionUnit
 
     // dummy implementation of fall detection
     private boolean isFall(){
+        if (mFallbackMode){
+            long j = i;
+            long end = j - (1000000000/xBuffer.approximateIntervalNanos());
+            for(; j > end; j--){
+                double totalAcc =Math.sqrt(
+                        xBuffer.getAccelerationBuffer().readOne(j) * xBuffer.getAccelerationBuffer().readOne(j)
+                        + yBuffer.getAccelerationBuffer().readOne(j) * yBuffer.getAccelerationBuffer().readOne(j)
+                        + zBuffer.getAccelerationBuffer().readOne(j) * zBuffer.getAccelerationBuffer().readOne(j));
+                if (totalAcc > 20)
+                    return true;
+            }
+            return false;
+        }
+
         double xIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
         double yIntegral = yBuffer.requestIntegralByTime(2000000000, 0);
         double zIntegral = zBuffer.requestIntegralByTime(2000000000, 0);
+
         // System.out.println("i: "+i);
         // System.out.println("new: "+(xIntegral + yIntegral + zIntegral));
         if((xIntegral + yIntegral + zIntegral) < 20) {
@@ -169,7 +187,13 @@ public class DataAcquisitionUnit
     }
 
     private void fall(){
-        mLastFallIndex = i - (2500000000L / xBuffer.approximateIntervalNanos());
+        if(mFallbackMode){
+            mLastFallIndex = i - (500000000L / xBuffer.approximateIntervalNanos());
+            try{wait(100);} catch (Exception e) {}
+        }
+        else {
+            mLastFallIndex = i - (2500000000L / xBuffer.approximateIntervalNanos());
+        }
         Toast.makeText(mContext, R.string.register_fall_event , Toast.LENGTH_LONG).show();
         FallObjectCreator foc = new FallObjectCreator(mTimeBuffer, xBuffer.getAccelerationBuffer(),
                 yBuffer.getAccelerationBuffer(), zBuffer.getAccelerationBuffer(),
