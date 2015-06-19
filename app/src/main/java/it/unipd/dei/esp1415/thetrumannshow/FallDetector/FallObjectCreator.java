@@ -40,17 +40,12 @@ public class FallObjectCreator implements Runnable{
     }
 
     public void run(){
-        try{Thread.sleep(800);} catch (Exception e) {
-            throw new Error("Error wake up "+e);
-        }
-
         timeBuffer = timeBuffer.copy();
         xBuffer = xBuffer.copy();
         yBuffer = yBuffer.copy();
         zBuffer = zBuffer.copy();
 
         mLastFall = constructFallObject(mLastFallIndex);
-
 
         new DelayedLocationProvider(mLastFall, mGoogleApiClient, this, mContext);
     }
@@ -62,9 +57,10 @@ public class FallObjectCreator implements Runnable{
     long[] getSurroundingSecond(long index){
         long nanosecond = timeBuffer.readOne(index);
         long j = index;
-        for(; timeBuffer.readOne(j) > (nanosecond - 500000000); j--){
-            if (j < (index - 100)) {
-                throw new IndexOutOfBoundsException();
+        for(; timeBuffer.readOne(j) > (nanosecond - 500000000L); j--){
+            if (j < -1000) {
+                j = -1000;
+                break;
             }
         }
         long begin = j;

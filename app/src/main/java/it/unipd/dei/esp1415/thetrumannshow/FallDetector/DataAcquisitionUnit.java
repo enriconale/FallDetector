@@ -169,6 +169,7 @@ public class DataAcquisitionUnit
     }
 
     private void fall(){
+        mLastFallIndex = i - (2500000000L / xBuffer.approximateIntervalNanos());
         Toast.makeText(mContext, R.string.register_fall_event , Toast.LENGTH_LONG).show();
         FallObjectCreator foc = new FallObjectCreator(mTimeBuffer, xBuffer.getAccelerationBuffer(),
                 yBuffer.getAccelerationBuffer(), zBuffer.getAccelerationBuffer(),

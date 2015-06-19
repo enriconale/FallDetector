@@ -45,7 +45,7 @@ public class DifferentialBuffer {
         return requestIntegral((int) (interval/intervalSize), (int) (offset/intervalSize));
     }
 
-    private long approximateIntervalNanos(){
+    public long approximateIntervalNanos(){
         long diff = mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition()) -
                 mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - 99);
         return diff / 99;
