@@ -25,15 +25,17 @@ public class DifferentialBuffer {
     public double requestIntegral(int samples, int offset){
         double integral = 0;
         long j = mTimeBuffer.getCurrentPosition() - offset;
-
-        for(;j >= 0 && j > j - samples; j--){
+        //System.out.println("J: "+j+"; Samples: "+samples);
+        long termination = j - samples;
+        for(;j >= 0 && j > termination; j--){
             double cleanAcceleration = mAccelerationBuffer.readOne(j) - mGravityBuffer.readOne(j);
+            // System.out.println("J: "+j+" CleanAcc "+cleanAcceleration);
             if(cleanAcceleration > mAccelerationThreshold
                     || cleanAcceleration < -mAccelerationThreshold){
                 long intervalNanos = mTimeBuffer.readOne(j) - mTimeBuffer.readOne(j-1);
-                integral += cleanAcceleration * ((double) intervalNanos / 1000000000);
+                integral += Math.abs(cleanAcceleration) * ((double) intervalNanos / 1000000000);
             }
-         }
+        }
 
         return integral;
     }

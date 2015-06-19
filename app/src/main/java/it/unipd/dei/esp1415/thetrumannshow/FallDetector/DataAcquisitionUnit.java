@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
@@ -7,12 +8,18 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.widget.Chronometer;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Eike Trumann on 29.03.15.
@@ -21,30 +28,48 @@ import com.google.android.gms.location.LocationServices;
 public class DataAcquisitionUnit
         implements SensorEventListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener
+    {
 
+    // Sensor manager to provide sensors for data acquistion
     private static SensorManager mSensorManager;
+    // Google API-client to use proprietary fused location provider
     private GoogleApiClient mGoogleApiClient;
+    // Reference to the accelerometer
     private Sensor mAccelerometer;
+    // Gravity sensor to register only actual acceleration
     private Sensor mGravity;
+    // Application context given from MainActivity
     private Context mContext;
+    private Activity mMainActivity;
+    // Sensor Rate chosen in application settings.
     private int mChosenSensorRate;
 
-
+    // size of the sensor sample buffer
     private final static int samples = 1000;
 
+    // Shared time buffer for accelerometer data
     private LongRingBuffer mTimeBuffer = new LongRingBuffer(samples);
+    // Buffer for accelerometer data and gravity for comparison
     private DifferentialBuffer xBuffer;
     private DifferentialBuffer yBuffer;
     private DifferentialBuffer zBuffer;
 
+    // temporary storage for last known gravity value
     private float mCurrentGravityX = 0;
     private float mCurrentGravityY = 0;
     private float mCurrentGravityZ = 0;
 
+    // counter for incoming sensor data
     private long i = 0;
+
+    // counter when last fall was detected
     private long mLastFallIndex = -1;
 
+    /**
+     *
+     * @param c Application context of the FallDetector application
+     */
     DataAcquisitionUnit(Context c){
         SharedPreferences mSharedPref = PreferenceManager.getDefaultSharedPreferences(c);
         String sensorRatePreference = mSharedPref.getString(SettingsActivity
@@ -63,9 +88,14 @@ public class DataAcquisitionUnit
         }
 
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
+        if (mSensorManager.getSensorList(Sensor.TYPE_GRAVITY).isEmpty()){
+            throw new Error("No gravity Sensor found");
+        }
+
         mGravity = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mGravity, 100000);
+
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         try{Thread.sleep(200);} catch (Exception e) {}
         mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
 
@@ -78,6 +108,19 @@ public class DataAcquisitionUnit
         buildGoogleApiClient(c);
         mGoogleApiClient.connect();
 
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (isFall()) {
+                    MainActivity.getLastActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fall();
+                        }
+                    });
+                }
+            }
+        }, 3000, 1000);
 
         mContext = c;
     }
@@ -99,31 +142,28 @@ public class DataAcquisitionUnit
             zBuffer.submitData(event.values[2], mCurrentGravityZ);
 
             i++;
-
-            if (i % (samples / 10) == 0) {
-                if (isFall()) {
-                    fall();
-                }
-            }
         }
     }
 
     // dummy implementation of fall detection
     private boolean isFall(){
         double xIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
-        double yIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
-        double zIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
-
-        if(/*xIntegral + yIntegral + zIntegral) < 10*/ true) {
-            xIntegral = xBuffer.requestIntegralByTime(1000000000L, 000000000);
-            yIntegral = xBuffer.requestIntegralByTime(1000000000L, 000000000);
-            zIntegral = xBuffer.requestIntegralByTime(1000000000L, 000000000);
+        double yIntegral = yBuffer.requestIntegralByTime(2000000000, 0);
+        double zIntegral = zBuffer.requestIntegralByTime(2000000000, 0);
+        // System.out.println("i: "+i);
+        // System.out.println("new: "+(xIntegral + yIntegral + zIntegral));
+        if((xIntegral + yIntegral + zIntegral) < 20) {
+            xIntegral = xBuffer.requestIntegralByTime(1000000000L, 2000000000);
+            yIntegral = yBuffer.requestIntegralByTime(1000000000L, 2000000000);
+            zIntegral = zBuffer.requestIntegralByTime(1000000000L, 2000000000);
             double weightedIntegral = Math.sqrt(Math.abs(
                     xIntegral * mCurrentGravityX * xIntegral * mCurrentGravityX
                     + yIntegral * mCurrentGravityY * yIntegral * mCurrentGravityX
                     + zIntegral * mCurrentGravityZ * zIntegral * mCurrentGravityZ));
-            if (weightedIntegral > 10)
+            // System.out.println("weighted: "+weightedIntegral);
+            if (weightedIntegral > 50) {
                 return true;
+            }
         }
         return false;
     }

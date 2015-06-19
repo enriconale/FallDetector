@@ -1,5 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -38,10 +39,13 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
     private TextView mEmptyListMessage;
     private SharedPreferences mSharedPreferences;
 
+    private static Activity mLastActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mLastActivity = this;
         setContentView(R.layout.activity_main);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -200,5 +204,9 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         return ((!isValidEmailAddress(emailString1)) && (!isValidEmailAddress(emailString2))
                 && (!isValidEmailAddress(emailString3)) && (!isValidEmailAddress
                 (emailString4)) && (!isValidEmailAddress(emailString5)));
+    }
+
+    public static Activity getLastActivity(){
+        return mLastActivity;
     }
 }
