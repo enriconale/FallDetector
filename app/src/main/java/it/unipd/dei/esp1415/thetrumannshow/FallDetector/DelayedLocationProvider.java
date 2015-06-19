@@ -11,6 +11,9 @@ import com.google.android.gms.location.LocationServices;
 /**
  * Copyright Eike Trumann 12.05.15
  * All rights reserved
+ *
+ * The Delayed Location Provider requests a location from Googles FusedLocationProvider.
+ * It is meant to use its own thread to not delay other parts of the application.
  */
 
 public class DelayedLocationProvider implements LocationListener{

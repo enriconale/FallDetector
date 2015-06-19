@@ -8,10 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Looper;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.widget.Chronometer;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,6 +21,9 @@ import java.util.TimerTask;
 /**
  * Created by Eike Trumann on 29.03.15.
  * all rights reserved
+ *
+ * The DataAcquisitionUnit is the core part of the fall detection.
+ * It requests the datasets from the Android framework and includes the fall detection algorithm.
  */
 public class DataAcquisitionUnit
         implements SensorEventListener,
@@ -70,14 +70,21 @@ public class DataAcquisitionUnit
     private boolean mFallbackMode = false;
 
     /**
-     *
+     * Set up ans start data acquisition
      * @param c Application context of the FallDetector application
      */
     DataAcquisitionUnit(Context c){
+        // set up data-buffers
+        xBuffer = new DifferentialBuffer(samples, mTimeBuffer);
+        yBuffer = new DifferentialBuffer(samples, mTimeBuffer);
+        zBuffer = new DifferentialBuffer(samples, mTimeBuffer);
+
+
         SharedPreferences mSharedPref = PreferenceManager.getDefaultSharedPreferences(c);
         String sensorRatePreference = mSharedPref.getString(SettingsActivity
                 .PREF_ACCELEROMETER_RATE, "normal");
 
+        // set sample rate according to user preference
         switch (sensorRatePreference) {
             case "slow":
                 mChosenSensorRate = SensorManager.SENSOR_DELAY_UI;
@@ -90,31 +97,35 @@ public class DataAcquisitionUnit
                 mChosenSensorRate = SensorManager.SENSOR_DELAY_GAME;
         }
 
+        // activate fallback to shock detection for devices without gravity sensor
         mSensorManager = (SensorManager) c.getSystemService(Context.SENSOR_SERVICE);
         if (mSensorManager.getSensorList(Sensor.TYPE_GRAVITY).isEmpty()){
             mFallbackMode = true;
         }
 
-        mGravity = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        mSensorManager.registerListener(this, mGravity, 100000);
+        // register gravity listener at low frequency (10 Hz) as comparison for accelerometer
+        if (!mFallbackMode) {
+            mGravity = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+            mSensorManager.registerListener(this, mGravity, 100000);
+        }
 
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        // wait to make sure the first gravity sample is ready
         try{Thread.sleep(200);} catch (Exception e) {}
+
+        // register accelerometer listener
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
-
-
-        xBuffer = new DifferentialBuffer(samples, mTimeBuffer);
-        yBuffer = new DifferentialBuffer(samples, mTimeBuffer);
-        zBuffer = new DifferentialBuffer(samples, mTimeBuffer);
 
         //Location
         buildGoogleApiClient(c);
         mGoogleApiClient.connect();
 
+        // set up timer to execute fall detection every second, delay of 3 seconds
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if (isFall()) {
+                    // the fall method must be run on the UiThread to allow opening email-activity
                     MainActivity.getLastActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -128,9 +139,11 @@ public class DataAcquisitionUnit
         mContext = c;
     }
 
-    public void onAccuracyChanged(Sensor sensor, int Accuracy){
-    }
-
+        /**
+         * Saves gravity data to temporary storage
+         * Saves accelerometer data to buffer
+         * @param event Event carrying accelerometer / gravity data
+         */
     public void onSensorChanged(SensorEvent event){
         if(event.sensor.getType() == Sensor.TYPE_GRAVITY){
             mCurrentGravityX = event.values[0];
@@ -148,11 +161,19 @@ public class DataAcquisitionUnit
         }
     }
 
-    // dummy implementation of fall detection
+        /**
+         * Fall detection method.
+         * Fallback: fall is detected if there is any acceleration above 20 m/(s^2)
+         * Normal: First looks if integral over last two seconds does not reveal significant motion,
+         * than tests, if there was significant motion in the second before.
+         * @return true if a fall was detected
+         */
     private boolean isFall(){
         if (mFallbackMode){
             long j = i;
+            // one second sampling interval
             long end = j - (1000000000/xBuffer.approximateIntervalNanos());
+            // tests every triplet of accelerometer data for acceleration above 20 m/(s^2)
             for(; j > end; j--){
                 double totalAcc =Math.sqrt(
                         xBuffer.getAccelerationBuffer().readOne(j) * xBuffer.getAccelerationBuffer().readOne(j)
@@ -164,21 +185,24 @@ public class DataAcquisitionUnit
             return false;
         }
 
+        // Builds integral of movement in the last two seconds
         double xIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
         double yIntegral = yBuffer.requestIntegralByTime(2000000000, 0);
         double zIntegral = zBuffer.requestIntegralByTime(2000000000, 0);
 
-        // System.out.println("i: "+i);
-        // System.out.println("new: "+(xIntegral + yIntegral + zIntegral));
+        // If there was no significant movement in the last two seconds,
+        // looks if the was movement in direction of gravity in the second before
+        // The number 20 is an empirical value
         if((xIntegral + yIntegral + zIntegral) < 20) {
             xIntegral = xBuffer.requestIntegralByTime(1000000000L, 2000000000);
             yIntegral = yBuffer.requestIntegralByTime(1000000000L, 2000000000);
             zIntegral = zBuffer.requestIntegralByTime(1000000000L, 2000000000);
+            // Weight movement with gravity to reveal downward movement
             double weightedIntegral = Math.sqrt(Math.abs(
                     xIntegral * mCurrentGravityX * xIntegral * mCurrentGravityX
                     + yIntegral * mCurrentGravityY * yIntegral * mCurrentGravityX
                     + zIntegral * mCurrentGravityZ * zIntegral * mCurrentGravityZ));
-            // System.out.println("weighted: "+weightedIntegral);
+            // Empirical value of a fall (ca. 40 cm)
             if (weightedIntegral > 50) {
                 return true;
             }
@@ -186,7 +210,12 @@ public class DataAcquisitionUnit
         return false;
     }
 
+    /**
+    * Builds a fall-object to be saved to the data-storage
+    */
     private void fall(){
+        // in fallback, a fall in the last second is revealed
+        // in normal mode a fall between two and three seconds ago is revealed
         if(mFallbackMode){
             mLastFallIndex = i - (500000000L / xBuffer.approximateIntervalNanos());
             try{wait(100);} catch (Exception e) {}
@@ -195,26 +224,38 @@ public class DataAcquisitionUnit
             mLastFallIndex = i - (2500000000L / xBuffer.approximateIntervalNanos());
         }
         Toast.makeText(mContext, R.string.register_fall_event , Toast.LENGTH_LONG).show();
+
+        // give the FallObjectCreator the acceleration data and the apiClient for location
         FallObjectCreator foc = new FallObjectCreator(mTimeBuffer, xBuffer.getAccelerationBuffer(),
                 yBuffer.getAccelerationBuffer(), zBuffer.getAccelerationBuffer(),
                 mContext, mGoogleApiClient, mLastFallIndex);
+
+        // start FallObjectCreator in new thread to not block application during location search
         Thread focThread = new Thread(foc);
         focThread.run();
     }
 
+    /**
+     * Detaches the listeners, when the session is closed
+     */
     void detach(){
         mSensorManager.unregisterListener(this);
         mGoogleApiClient.disconnect();
     }
 
+    /**
+     * Resumes the listeners after a break
+     */
     void resume() {
         mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
         mSensorManager.registerListener(this, mGravity, 100000);
         mGoogleApiClient.connect();
     }
 
-    // connection to proprietary Google Play Services
-
+    /**
+     * connection to proprietary Google Play Services
+     * used for FusedLocationProvider when a fall was detected
+     */
     protected synchronized void buildGoogleApiClient(Context c) {
         mGoogleApiClient = new GoogleApiClient.Builder(c)
                 .addApi(LocationServices.API)
@@ -222,6 +263,10 @@ public class DataAcquisitionUnit
                 .addOnConnectionFailedListener(this)
                 .build();
     }
+
+    /*
+     * Useless methods required to implement interfaces correctly
+     */
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -233,5 +278,9 @@ public class DataAcquisitionUnit
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int Accuracy){
     }
 }
