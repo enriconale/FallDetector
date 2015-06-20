@@ -143,10 +143,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
             stackBuilder.addNextIntent(resultIntent);
 
             PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
+                    stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.setContentIntent(resultPendingIntent);
 
             NotificationManager mNotificationManager =
