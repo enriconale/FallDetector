@@ -17,7 +17,10 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
-
+/**
+ * @author Enrico Naletto
+ * Activity that shows the details of a single session, with all its falls.
+ */
 public class SessionDetailsActivity extends AppCompatActivity implements DeleteSessionDialog
         .DeleteSessionDialogListener {
     public static final String FALL_DETAILS = "fall_details";

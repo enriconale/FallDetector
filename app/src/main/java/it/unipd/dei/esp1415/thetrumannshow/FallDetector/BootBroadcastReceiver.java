@@ -12,6 +12,10 @@ import android.support.v4.app.TaskStackBuilder;
 
 import java.util.Date;
 
+/**
+ * @author Enrico Naletto
+ * Receiver that displays a simple notification after the phone boot process.
+ */
 public class BootBroadcastReceiver extends BroadcastReceiver {
     private final String APP_PACKAGE_NAME = "it.unipd.dei.esp1415.thetrumannshow.FallDetector";
     private final String LAST_NOTIFICATION_DATE_KEY = "it.unipd.dei.esp1415.thetrumannshow" +

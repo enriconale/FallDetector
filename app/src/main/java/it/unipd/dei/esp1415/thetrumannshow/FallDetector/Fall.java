@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * @author Enrico Naletto
  */
-public class Fall /*extends ActionBarActivity*/{
+public class Fall {
     private final String mFallName;
     private final Date mDate;
 

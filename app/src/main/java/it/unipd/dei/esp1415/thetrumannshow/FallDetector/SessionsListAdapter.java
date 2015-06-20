@@ -15,6 +15,11 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+/**
+ * @author Enrico Naletto
+ * Adapter that builds every card (with the appropriate informations)in the MainActivity
+ * CardListView.
+ */
 public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapter.MyViewHolder> {
     public static final String SESSION_DETAILS = "session_details";
 
@@ -62,7 +67,6 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         mDateFormatter = SessionsLab.get(appContext).getDateFormat();
     }
 
-    //Nothing more to do here
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(

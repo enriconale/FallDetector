@@ -117,6 +117,7 @@ public class SettingsActivity extends PreferenceActivity implements
         }
     }
 
+    //Method needed to verify if the user set correctly the preferences
     private void verifySettings(Preference p) {
         if (p instanceof EditTextPreference) {
             EditTextPreference e = (EditTextPreference) p;

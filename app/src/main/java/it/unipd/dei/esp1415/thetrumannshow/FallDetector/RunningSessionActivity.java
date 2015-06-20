@@ -23,7 +23,10 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
-
+/**
+ * @author Enrico Naletto
+ * Activity that shows the details of the running session.
+ */
 public class RunningSessionActivity extends AppCompatActivity implements SensorEventListener {
     private static SimpleDateFormat mDateFormatter;
 

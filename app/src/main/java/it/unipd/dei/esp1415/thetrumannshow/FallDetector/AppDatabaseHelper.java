@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by alessandro on 05/05/15.
  */
-public class CreateDatabase extends SQLiteOpenHelper{
+public class AppDatabaseHelper extends SQLiteOpenHelper{
 
     private static final String DB_NAME = "Database.db";
     private static final int DB_VERSION = 2;
@@ -64,17 +64,17 @@ public class CreateDatabase extends SQLiteOpenHelper{
             + OWNER_SESSION + ", "
             + FALL_NAME + "));";
 
-    private static CreateDatabase mDBHelper;
+    private static AppDatabaseHelper mDBHelper;
 
-    public static CreateDatabase getInstance(Context ctx) {
+    public static AppDatabaseHelper getInstance(Context ctx) {
 
         if (mDBHelper == null) { //this will ensure no multiple instances out there.
-            mDBHelper = new CreateDatabase(ctx.getApplicationContext());
+            mDBHelper = new AppDatabaseHelper(ctx.getApplicationContext());
         }
         return mDBHelper;
     }
 
-    private CreateDatabase(Context context) {
+    private AppDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
