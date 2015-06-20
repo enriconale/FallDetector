@@ -189,20 +189,25 @@ public class DataAcquisitionUnit
         double xIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
         double yIntegral = yBuffer.requestIntegralByTime(2000000000, 0);
         double zIntegral = zBuffer.requestIntegralByTime(2000000000, 0);
-
+        System.out.println("First: "+(xIntegral + yIntegral + zIntegral));
         // If there was no significant movement in the last two seconds,
         // looks if the was movement in direction of gravity in the second before
-        // The number 20 is an empirical value
-        if((xIntegral + yIntegral + zIntegral) < 20) {
+        // The number 15 is an empirical value
+        if((xIntegral + yIntegral + zIntegral) < 15) {
             xIntegral = xBuffer.requestIntegralByTime(1000000000L, 2000000000);
             yIntegral = yBuffer.requestIntegralByTime(1000000000L, 2000000000);
             zIntegral = zBuffer.requestIntegralByTime(1000000000L, 2000000000);
             // Weight movement with gravity to reveal downward movement
+            // if the sign of integral ang gravity are different 0 is added.
             double weightedIntegral = Math.sqrt(Math.abs(
-                    xIntegral * mCurrentGravityX * xIntegral * mCurrentGravityX
-                            + yIntegral * mCurrentGravityY * yIntegral * mCurrentGravityX
-                            + zIntegral * mCurrentGravityZ * zIntegral * mCurrentGravityZ));
+                    ((xIntegral * mCurrentGravityX) > 0.0 ?
+                        xIntegral * mCurrentGravityX * xIntegral * mCurrentGravityX : 0) +
+                    (yIntegral * mCurrentGravityY > 0.0 ?
+                        yIntegral * mCurrentGravityY * yIntegral * mCurrentGravityY : 0) +
+                    (zIntegral * mCurrentGravityZ > 0.0 ?
+                        zIntegral * mCurrentGravityZ * zIntegral * mCurrentGravityZ : 0)));
             // Empirical value of a fall (ca. 40 cm)
+            System.out.println("Weighted: "+weightedIntegral);
             if (weightedIntegral > 50) {
                 return true;
             }
