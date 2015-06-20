@@ -22,8 +22,12 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-
+/**
+ * @author Enrico Naletto
+ * Activity that shows the details of a single fall.
+ */
 public class FallDetailsActivity extends AppCompatActivity {
+    //Variables needed to draw the graph
     private static int NUMBER_OF_TIME_MOMENTS = 150;
     private static int NUMBER_OF_ACCELERATION_UNITS = 100;
 
@@ -98,8 +102,7 @@ public class FallDetailsActivity extends AppCompatActivity {
         ViewGroup.LayoutParams params = mGraphContainer.getLayoutParams();
         int height = getWindowManager().getDefaultDisplay().getHeight();
         int width = getWindowManager().getDefaultDisplay().getWidth();
-        int grapContainerHeight = height / 3;
-        params.height = grapContainerHeight;
+        params.height = height / 3;
         params.width = width;
 
         MyView v = new MyView(getApplicationContext());

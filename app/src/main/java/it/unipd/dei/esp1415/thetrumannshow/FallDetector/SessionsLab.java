@@ -16,7 +16,8 @@ import java.util.LinkedList;
 
 /**
  * @author Enrico Naletto
- * Singleton class to manage the list of sessions and the currently active session.
+ * Singleton class to manage the list of sessions, the currently running session, the
+ * saving to (and loading from) the database.
  */
 public class SessionsLab {
     private static boolean mHasRunningSession = false;
@@ -31,6 +32,7 @@ public class SessionsLab {
     private DataAcquisitionUnit mDataAcquisitionUnit;
     NotificationManager mNotificationManager;
 
+    //Private constructor
     private SessionsLab(Context appContext) {
         mAppContext = appContext;
         mDatabaseManager = new DatabaseManager(appContext);
@@ -41,6 +43,7 @@ public class SessionsLab {
                 .NOTIFICATION_SERVICE);
     }
 
+    //Public method used to get the unique instance of SessionsLab.
     public static SessionsLab get(Context c) {
         if (sSessionsLab == null) {
             sSessionsLab = new SessionsLab(c.getApplicationContext());
@@ -48,6 +51,7 @@ public class SessionsLab {
         return sSessionsLab;
     }
 
+    //Creates and starts a new session
     public void createNewRunningSession(Session session) {
         mRunningSession = session;
         mHasRunningSession = true;
@@ -72,6 +76,8 @@ public class SessionsLab {
         return mNotificationManager;
     }
 
+    //Resumes the running session when paused, and accordingly changes the ongoing notification (if
+    // present)
     public void resumeCurrentlyRunningSession() {
         mIsRunningSessionPlaying = true;
         mDataAcquisitionUnit.resume();
@@ -105,6 +111,7 @@ public class SessionsLab {
         }
     }
 
+    //Pauses the running session, and accordingly changes the ongoing notification (if present)
     public void pauseCurrentlyRunningSession() {
         mIsRunningSessionPlaying = false;
         mDataAcquisitionUnit.detach();
@@ -138,6 +145,7 @@ public class SessionsLab {
         }
     }
 
+    //Stops and saves into the database the running session
     public void stopCurrentlyRunningSession() {
         saveRunningSessionInDatabase();
         mIsRunningSessionPlaying = false;
@@ -165,6 +173,7 @@ public class SessionsLab {
         return mDatabaseManager.getFallsFromDatabase(session);
     }
 
+    //Saves (or updates in case it has been already saved) the running session into the database
     public void saveRunningSessionInDatabase() {
         if (mIsRunningSessionAlreadySavedInDatabase) {
             mDatabaseManager.updateRunningSessionInDatabase();

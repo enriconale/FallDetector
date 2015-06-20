@@ -7,6 +7,7 @@ import java.util.UUID;
 
 /**
  * @author Enrico Naletto
+ * Class that represents a Session object
  */
 public class Session {
     private UUID mUUID;
@@ -24,7 +25,7 @@ public class Session {
         mSessionName = "";
         mStartDate = new Date();
         mDuration = 0;
-        mFalls = new LinkedList<Fall>();
+        mFalls = new LinkedList<>();
         mColor1 = (int)(Math.random() * 256);
         mColor2 = (int)(Math.random() * 256);
         mColor3 = (int)(Math.random() * 256);

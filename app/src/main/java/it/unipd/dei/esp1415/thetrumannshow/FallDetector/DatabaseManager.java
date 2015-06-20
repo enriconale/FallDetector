@@ -15,11 +15,11 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 /**
- * Created by alessandro on 05/05/15.
+ * @author Alessandro Fuser
  */
 public class DatabaseManager {
 
-    private static CreateDatabase mDbHelper;
+    private static AppDatabaseHelper mDbHelper;
     private SQLiteDatabase mDatabase;
     private ContentValues mContentValues;
     private Context mAppContext;
@@ -28,26 +28,25 @@ public class DatabaseManager {
     public DatabaseManager(Context ctx){
         mAppContext = ctx;
         mContentValues = new ContentValues();
-        mDbHelper = CreateDatabase.getInstance(ctx);
-        //mDatabase = mDbHelper.getWritableDatabase();
+        mDbHelper = AppDatabaseHelper.getInstance(ctx);
     }
 
     public void saveSession(Session session) {
         open();
-        mContentValues.put(CreateDatabase.SESSION_ID, session.getUUID().toString());
-        mContentValues.put(CreateDatabase.SESSION_NAME, session.getSessionName());
-        mContentValues.put(CreateDatabase.SESSION_DATE, SessionsLab.get(mAppContext).getDateFormat().format
+        mContentValues.put(AppDatabaseHelper.SESSION_ID, session.getUUID().toString());
+        mContentValues.put(AppDatabaseHelper.SESSION_NAME, session.getSessionName());
+        mContentValues.put(AppDatabaseHelper.SESSION_DATE, SessionsLab.get(mAppContext).getDateFormat().format
                 (session.getDate()));
-        mContentValues.put(CreateDatabase.SESSION_DURATION, session.getDuration());
-        mContentValues.put(CreateDatabase.SESSION_ICON_COLOR_1, session.getColor1());
-        mContentValues.put(CreateDatabase.SESSION_ICON_COLOR_2, session.getColor2());
-        mContentValues.put(CreateDatabase.SESSION_ICON_COLOR_3, session.getColor3());
-        mContentValues.put(CreateDatabase.SESSION_NUMBER_OF_FALLS, session.getNumberOfFalls());
+        mContentValues.put(AppDatabaseHelper.SESSION_DURATION, session.getDuration());
+        mContentValues.put(AppDatabaseHelper.SESSION_ICON_COLOR_1, session.getColor1());
+        mContentValues.put(AppDatabaseHelper.SESSION_ICON_COLOR_2, session.getColor2());
+        mContentValues.put(AppDatabaseHelper.SESSION_ICON_COLOR_3, session.getColor3());
+        mContentValues.put(AppDatabaseHelper.SESSION_NUMBER_OF_FALLS, session.getNumberOfFalls());
 
         try {
-            mDatabase.insert(CreateDatabase.SESSION_TABLE, null, mContentValues);
+            mDatabase.insert(AppDatabaseHelper.SESSION_TABLE, null, mContentValues);
         } catch (SQLiteException sqle) {
-
+            Toast.makeText(mAppContext, R.string.database_exception, Toast.LENGTH_SHORT).show();
         }
         mContentValues.clear();
         close();
@@ -56,41 +55,41 @@ public class DatabaseManager {
     public void saveFall(Fall fall) {
         SessionsLab.get(mAppContext).saveRunningSessionInDatabase();
         open();
-        mContentValues.put(CreateDatabase.FALL_NAME, fall.getName());
-        mContentValues.put(CreateDatabase.FALL_DATE, SessionsLab.get(mAppContext).getDateFormat().format(fall
+        mContentValues.put(AppDatabaseHelper.FALL_NAME, fall.getName());
+        mContentValues.put(AppDatabaseHelper.FALL_DATE, SessionsLab.get(mAppContext).getDateFormat().format(fall
                 .getDate()));
 
         if (fall.getLatitude() != null) {
-            mContentValues.put(CreateDatabase.FALL_LATITUDE, fall.getLatitude());
+            mContentValues.put(AppDatabaseHelper.FALL_LATITUDE, fall.getLatitude());
         } else {
-            mContentValues.put(CreateDatabase.FALL_LATITUDE, 0);
+            mContentValues.put(AppDatabaseHelper.FALL_LATITUDE, 0);
         }
 
         if (fall.getLongitude() != null) {
-            mContentValues.put(CreateDatabase.FALL_LONGITUDE, fall.getLongitude());
+            mContentValues.put(AppDatabaseHelper.FALL_LONGITUDE, fall.getLongitude());
         } else {
-            mContentValues.put(CreateDatabase.FALL_LONGITUDE, 0);
+            mContentValues.put(AppDatabaseHelper.FALL_LONGITUDE, 0);
         }
 
 
-        mContentValues.put(CreateDatabase.X_ACCELERATION, formatFloatArray(fall.getXAcceleration()));
-        mContentValues.put(CreateDatabase.Y_ACCELERATION, formatFloatArray(fall.getYAcceleration()));
-        mContentValues.put(CreateDatabase.Z_ACCELERATION, formatFloatArray(fall.getZAcceleration()));
+        mContentValues.put(AppDatabaseHelper.X_ACCELERATION, formatFloatArray(fall.getXAcceleration()));
+        mContentValues.put(AppDatabaseHelper.Y_ACCELERATION, formatFloatArray(fall.getYAcceleration()));
+        mContentValues.put(AppDatabaseHelper.Z_ACCELERATION, formatFloatArray(fall.getZAcceleration()));
 
         if (fall.isEmailSent()) {
-            mContentValues.put(CreateDatabase.EMAIL_SENT, 1);
+            mContentValues.put(AppDatabaseHelper.EMAIL_SENT, 1);
         } else {
-            mContentValues.put(CreateDatabase.EMAIL_SENT, 0);
+            mContentValues.put(AppDatabaseHelper.EMAIL_SENT, 0);
         }
 
-        mContentValues.put(CreateDatabase.OWNER_SESSION, SessionsLab.get(mAppContext).getRunningSession()
+        mContentValues.put(AppDatabaseHelper.OWNER_SESSION, SessionsLab.get(mAppContext).getRunningSession()
                 .getUUID().toString());
 
 
         try {
-            mDatabase.insert(CreateDatabase.FALL_TABLE, null, mContentValues);
+            mDatabase.insert(AppDatabaseHelper.FALL_TABLE, null, mContentValues);
         } catch (SQLiteException sqle) {
-
+            Toast.makeText(mAppContext, R.string.database_exception, Toast.LENGTH_SHORT).show();
         } finally {
             mContentValues.clear();
             close();
@@ -99,9 +98,9 @@ public class DatabaseManager {
 
     public ArrayList<Session> getAllSessionsFromDatabase() {
         open();
-        ArrayList<Session> sessions = new ArrayList<Session>();
+        ArrayList<Session> sessions = new ArrayList<>();
 
-        Cursor cursor = mDatabase.query(CreateDatabase.SESSION_TABLE,
+        Cursor cursor = mDatabase.query(AppDatabaseHelper.SESSION_TABLE,
                 null, null, null, null, null, null);
 
         cursor.moveToFirst();
@@ -121,7 +120,7 @@ public class DatabaseManager {
         UUID sessionUUID = session.getUUID();
         LinkedList<Fall> fallsList = new LinkedList<>();
 
-        Cursor cursor = mDatabase.query(CreateDatabase.FALL_TABLE, null, CreateDatabase
+        Cursor cursor = mDatabase.query(AppDatabaseHelper.FALL_TABLE, null, AppDatabaseHelper
                         .OWNER_SESSION + " = '" + sessionUUID.toString() + "' ",
                 null, null, null, "ROWID");
 
@@ -143,7 +142,7 @@ public class DatabaseManager {
         String[] sessionId = new String[] {session.getUUID().toString()};
 
         try {
-            mDatabase.delete(CreateDatabase.SESSION_TABLE, CreateDatabase.SESSION_ID + " LIKE ?",
+            mDatabase.delete(AppDatabaseHelper.SESSION_TABLE, AppDatabaseHelper.SESSION_ID + " LIKE ?",
                     sessionId);
         } catch (SQLiteException e) {
             Toast.makeText(mAppContext, R.string.error_deleting_session , Toast
@@ -154,34 +153,34 @@ public class DatabaseManager {
     }
 
     private Session getSessionFromCursor(Cursor cursor) {
-        UUID sessionUUID = UUID.fromString(cursor.getString(cursor.getColumnIndex(CreateDatabase
+        UUID sessionUUID = UUID.fromString(cursor.getString(cursor.getColumnIndex(AppDatabaseHelper
                 .SESSION_ID)));
 
-        String sessionName = cursor.getString(cursor.getColumnIndex(CreateDatabase.SESSION_NAME));
+        String sessionName = cursor.getString(cursor.getColumnIndex(AppDatabaseHelper.SESSION_NAME));
 
         Date sessionDate = new Date();
         try {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
                     java.util.Locale.getDefault());
             sessionDate = dateFormatter.parse(cursor.getString
-                    (cursor.getColumnIndex(CreateDatabase.SESSION_DATE)));
+                    (cursor.getColumnIndex(AppDatabaseHelper.SESSION_DATE)));
         } catch (ParseException e) {
             //TODO manage possible exception
         }
 
-        long sessionDuration = cursor.getLong(cursor.getColumnIndex(CreateDatabase
+        long sessionDuration = cursor.getLong(cursor.getColumnIndex(AppDatabaseHelper
                 .SESSION_DURATION));
 
-        int sessionIconColor1 = cursor.getInt(cursor.getColumnIndex(CreateDatabase
+        int sessionIconColor1 = cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper
                 .SESSION_ICON_COLOR_1));
 
-        int sessionIconColor2 = cursor.getInt(cursor.getColumnIndex(CreateDatabase
+        int sessionIconColor2 = cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper
                 .SESSION_ICON_COLOR_2));
 
-        int sessionIconColor3 = cursor.getInt(cursor.getColumnIndex(CreateDatabase
+        int sessionIconColor3 = cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper
                 .SESSION_ICON_COLOR_3));
 
-        int sessionNumberOfFalls = cursor.getInt(cursor.getColumnIndex(CreateDatabase
+        int sessionNumberOfFalls = cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper
                 .SESSION_NUMBER_OF_FALLS));
 
         return new Session(sessionUUID, sessionName, sessionDate, sessionDuration,
@@ -189,34 +188,34 @@ public class DatabaseManager {
     }
 
     private Fall getFallFromCursor(Cursor cursor) {
-        String fallName = cursor.getString(cursor.getColumnIndex(CreateDatabase.FALL_NAME));
+        String fallName = cursor.getString(cursor.getColumnIndex(AppDatabaseHelper.FALL_NAME));
 
         Date fallDate = new Date();
         try {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
                     java.util.Locale.getDefault());
             fallDate = dateFormatter.parse(cursor.getString
-                    (cursor.getColumnIndex(CreateDatabase.FALL_DATE)));
+                    (cursor.getColumnIndex(AppDatabaseHelper.FALL_DATE)));
         } catch (ParseException e) {
             //TODO manage possible exception
         }
 
-        double fallLatitude = cursor.getDouble(cursor.getColumnIndex(CreateDatabase.FALL_LATITUDE));
+        double fallLatitude = cursor.getDouble(cursor.getColumnIndex(AppDatabaseHelper.FALL_LATITUDE));
 
-        double fallLongitude = cursor.getDouble(cursor.getColumnIndex(CreateDatabase
+        double fallLongitude = cursor.getDouble(cursor.getColumnIndex(AppDatabaseHelper
                 .FALL_LONGITUDE));
 
         float[] xAccelerationData = parseAccelerationDataFromString(cursor.getString(cursor
-                .getColumnIndex(CreateDatabase.X_ACCELERATION)));
+                .getColumnIndex(AppDatabaseHelper.X_ACCELERATION)));
 
         float[] yAccelerationData = parseAccelerationDataFromString(cursor.getString(cursor
-                .getColumnIndex(CreateDatabase.Y_ACCELERATION)));
+                .getColumnIndex(AppDatabaseHelper.Y_ACCELERATION)));
 
         float[] zAccelerationData = parseAccelerationDataFromString(cursor.getString(cursor
-                .getColumnIndex(CreateDatabase.Z_ACCELERATION)));
+                .getColumnIndex(AppDatabaseHelper.Z_ACCELERATION)));
 
         boolean isEmailSent = false;
-        switch (cursor.getInt(cursor.getColumnIndex(CreateDatabase.EMAIL_SENT))) {
+        switch (cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper.EMAIL_SENT))) {
             case 0:
                 break;
             case 1:
@@ -243,14 +242,14 @@ public class DatabaseManager {
         String[] idString = new String[] {runningSession.getUUID().toString()};
 
         open();
-        mContentValues.put(CreateDatabase.SESSION_NAME, runningSession.getSessionName());
-        mContentValues.put(CreateDatabase.SESSION_DURATION, runningSession.getDuration());
-        mContentValues.put(CreateDatabase.SESSION_NUMBER_OF_FALLS, runningSession
+        mContentValues.put(AppDatabaseHelper.SESSION_NAME, runningSession.getSessionName());
+        mContentValues.put(AppDatabaseHelper.SESSION_DURATION, runningSession.getDuration());
+        mContentValues.put(AppDatabaseHelper.SESSION_NUMBER_OF_FALLS, runningSession
                 .getNumberOfFalls());
 
         // Save Values into database
         try {
-            mDatabase.update(CreateDatabase.SESSION_TABLE, mContentValues, CreateDatabase.SESSION_ID +
+            mDatabase.update(AppDatabaseHelper.SESSION_TABLE, mContentValues, AppDatabaseHelper.SESSION_ID +
                             " LIKE ?", idString );
         } catch (SQLiteException sqle) {
             Toast.makeText(mAppContext, R.string.error_updating_database ,

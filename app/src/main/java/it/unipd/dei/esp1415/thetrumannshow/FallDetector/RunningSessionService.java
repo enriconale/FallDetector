@@ -11,6 +11,8 @@ import java.util.TimerTask;
 
 /**
  * @author Enrico Naletto
+ * Simple service that tracks the duration of the running session and stops it in case it reaches
+ * the maximum duration set by the user.
  */
 public class RunningSessionService extends IntentService {
     private final long ONE_HOUR_IN_MILLIS = 3600000;

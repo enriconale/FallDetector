@@ -1,6 +1,7 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -23,7 +24,10 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
-
+/**
+ * @author Enrico Naletto
+ * Activity that shows the details of the running session.
+ */
 public class RunningSessionActivity extends AppCompatActivity implements SensorEventListener {
     private static SimpleDateFormat mDateFormatter;
 
@@ -69,52 +73,60 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         mSessionDuration = (TextView)findViewById(R.id.session_duration);
         mEditSessionNameImageView = (ImageView)findViewById(R.id.modify_session_name);
 
-        mSessionName.setText(getFormattedSessionName(mSession.getSessionName()));
-        mEditSessionNameEditText.setText(mSession.getSessionName());
-        mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
+        try {
+            mSessionName.setText(getFormattedSessionName(mSession.getSessionName()));
+            mEditSessionNameEditText.setText(mSession.getSessionName());
+            mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
 
-        mAccXAxis = (TextView)findViewById(R.id.acc_x_axis);
-        mAccYAxis = (TextView)findViewById(R.id.acc_y_axis);
-        mAccZAxis = (TextView)findViewById(R.id.acc_z_axis);
+            mAccXAxis = (TextView)findViewById(R.id.acc_x_axis);
+            mAccYAxis = (TextView)findViewById(R.id.acc_y_axis);
+            mAccZAxis = (TextView)findViewById(R.id.acc_z_axis);
 
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        mEditSessionNameImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mEditingName) {
-                    showVirtualKeyboard();
-                    mEditSessionNameImageView.setImageResource(R.mipmap.action_done);
-                    mSessionName.setVisibility(View.GONE);
-                    mEditSessionNameEditText.setVisibility(View.VISIBLE);
-                    mEditingName = true;
-                } else {
-                    hideVirtualKeyboard();
-                    mEditSessionNameImageView.setImageResource(R.mipmap.action_edit);
-                    mSessionName.setVisibility(View.VISIBLE);
-                    mEditSessionNameEditText.setVisibility(View.GONE);
-                    String newName = mEditSessionNameEditText.getText().toString();
-                    mSession.setSessionName(newName);
-                    mSessionName.setText(getFormattedSessionName(newName));
-                    mEditSessionNameEditText.setText(newName);
-                    mEditingName = false;
-                    SessionsLab.get(getApplicationContext()).saveRunningSessionInDatabase();
+            mEditSessionNameImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!mEditingName) {
+                        showVirtualKeyboard();
+                        mEditSessionNameImageView.setImageResource(R.mipmap.action_done);
+                        mSessionName.setVisibility(View.GONE);
+                        mEditSessionNameEditText.setVisibility(View.VISIBLE);
+                        mEditingName = true;
+                    } else {
+                        hideVirtualKeyboard();
+                        mEditSessionNameImageView.setImageResource(R.mipmap.action_edit);
+                        mSessionName.setVisibility(View.VISIBLE);
+                        mEditSessionNameEditText.setVisibility(View.GONE);
+                        String newName = mEditSessionNameEditText.getText().toString();
+                        mSession.setSessionName(newName);
+                        mSessionName.setText(getFormattedSessionName(newName));
+                        mEditSessionNameEditText.setText(newName);
+                        mEditingName = false;
+                        SessionsLab.get(getApplicationContext()).saveRunningSessionInDatabase();
+                    }
                 }
-            }
-        });
+            });
 
-        mFallsListContainer = (RelativeLayout)findViewById(R.id
-                .falls_list_container);
-        mItemsWrapper = new LinearLayout(getApplicationContext());
-        mItemsWrapper.setOrientation(LinearLayout.VERTICAL);
-        mLp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            mFallsListContainer = (RelativeLayout)findViewById(R.id
+                    .falls_list_container);
+            mItemsWrapper = new LinearLayout(getApplicationContext());
+            mItemsWrapper.setOrientation(LinearLayout.VERTICAL);
+            mLp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 
-        createListOfFalls(mFallsListContainer, mItemsWrapper, mLp);
+            createListOfFalls(mFallsListContainer, mItemsWrapper, mLp);
 
-        mHandler.removeCallbacks(mUpdateTimeTask);
-        mHandler.postDelayed(mUpdateTimeTask, 0);
+            mHandler.removeCallbacks(mUpdateTimeTask);
+            mHandler.postDelayed(mUpdateTimeTask, 0);
+        } catch (NullPointerException e) {
+            NotificationManager mNotificationManager = (NotificationManager) getApplicationContext()
+                    .getSystemService(Context
+                    .NOTIFICATION_SERVICE);
+            mNotificationManager.cancel(1);
+            this.finish();
+        }
     }
 
 

@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         setContentView(R.layout.activity_main);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (hasCorrectEmailSettings()) {
+        if (hasIncorrectEmailSettings()) {
             Toast.makeText(getApplicationContext(), R.string.insert_valid_email,
                     Toast.LENGTH_LONG).show();
         }
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
                 startActivity(intent);
                 break;
             case R.id.action_start_session:
-                if (hasCorrectEmailSettings()) {
+                if (hasIncorrectEmailSettings()) {
                     Toast.makeText(getApplicationContext(), R.string.insert_valid_email,
                             Toast.LENGTH_LONG).show();
                 } else {
@@ -143,10 +143,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
             stackBuilder.addNextIntent(resultIntent);
 
             PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
+                    stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.setContentIntent(resultPendingIntent);
 
             NotificationManager mNotificationManager =
@@ -173,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         return matcher.matches();
     }
 
-    private boolean hasCorrectEmailSettings() {
+    private boolean hasIncorrectEmailSettings() {
         String emailString1 = mSharedPreferences.getString(SettingsActivity
                 .PREF_EMAIL_ADDRESS1, "");
         String emailString2 = mSharedPreferences.getString(SettingsActivity
