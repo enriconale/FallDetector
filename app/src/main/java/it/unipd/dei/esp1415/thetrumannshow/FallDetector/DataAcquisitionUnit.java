@@ -29,7 +29,7 @@ public class DataAcquisitionUnit
         implements SensorEventListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener
-    {
+{
 
     // Sensor manager to provide sensors for data acquistion
     private static SensorManager mSensorManager;
@@ -139,11 +139,11 @@ public class DataAcquisitionUnit
         mContext = c;
     }
 
-        /**
-         * Saves gravity data to temporary storage
-         * Saves accelerometer data to buffer
-         * @param event Event carrying accelerometer / gravity data
-         */
+    /**
+     * Saves gravity data to temporary storage
+     * Saves accelerometer data to buffer
+     * @param event Event carrying accelerometer / gravity data
+     */
     public void onSensorChanged(SensorEvent event){
         if(event.sensor.getType() == Sensor.TYPE_GRAVITY){
             mCurrentGravityX = event.values[0];
@@ -161,13 +161,13 @@ public class DataAcquisitionUnit
         }
     }
 
-        /**
-         * Fall detection method.
-         * Fallback: fall is detected if there is any acceleration above 20 m/(s^2)
-         * Normal: First looks if integral over last two seconds does not reveal significant motion,
-         * than tests, if there was significant motion in the second before.
-         * @return true if a fall was detected
-         */
+    /**
+     * Fall detection method.
+     * Fallback: fall is detected if there is any acceleration above 20 m/(s^2)
+     * Normal: First looks if integral over last two seconds does not reveal significant motion,
+     * than tests, if there was significant motion in the second before.
+     * @return true if a fall was detected
+     */
     private boolean isFall(){
         if (mFallbackMode){
             long j = i;
@@ -177,8 +177,8 @@ public class DataAcquisitionUnit
             for(; j > end; j--){
                 double totalAcc =Math.sqrt(
                         xBuffer.getAccelerationBuffer().readOne(j) * xBuffer.getAccelerationBuffer().readOne(j)
-                        + yBuffer.getAccelerationBuffer().readOne(j) * yBuffer.getAccelerationBuffer().readOne(j)
-                        + zBuffer.getAccelerationBuffer().readOne(j) * zBuffer.getAccelerationBuffer().readOne(j));
+                                + yBuffer.getAccelerationBuffer().readOne(j) * yBuffer.getAccelerationBuffer().readOne(j)
+                                + zBuffer.getAccelerationBuffer().readOne(j) * zBuffer.getAccelerationBuffer().readOne(j));
                 if (totalAcc > 20)
                     return true;
             }
@@ -200,8 +200,8 @@ public class DataAcquisitionUnit
             // Weight movement with gravity to reveal downward movement
             double weightedIntegral = Math.sqrt(Math.abs(
                     xIntegral * mCurrentGravityX * xIntegral * mCurrentGravityX
-                    + yIntegral * mCurrentGravityY * yIntegral * mCurrentGravityX
-                    + zIntegral * mCurrentGravityZ * zIntegral * mCurrentGravityZ));
+                            + yIntegral * mCurrentGravityY * yIntegral * mCurrentGravityX
+                            + zIntegral * mCurrentGravityZ * zIntegral * mCurrentGravityZ));
             // Empirical value of a fall (ca. 40 cm)
             if (weightedIntegral > 50) {
                 return true;
@@ -211,8 +211,9 @@ public class DataAcquisitionUnit
     }
 
     /**
-    * Builds a fall-object to be saved to the data-storage
-    */
+     * Builds a fall-object to be saved to the data-storage.
+     * Must be run on the UI thread to function properly.
+     */
     private void fall(){
         // in fallback, a fall in the last second is revealed
         // in normal mode a fall between two and three seconds ago is revealed
@@ -236,7 +237,7 @@ public class DataAcquisitionUnit
     }
 
     /**
-     * Detaches the listeners, when the session is closed
+     * Detaches the listeners when the session is closed
      */
     void detach(){
         mSensorManager.unregisterListener(this);
@@ -269,18 +270,14 @@ public class DataAcquisitionUnit
      */
 
     @Override
-    public void onConnected(Bundle bundle) {
-    }
+    public void onConnected(Bundle bundle) { }
 
     @Override
-    public void onConnectionSuspended(int i) {
-    }
+    public void onConnectionSuspended(int i) { }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-    }
+    public void onConnectionFailed(ConnectionResult connectionResult) { }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int Accuracy){
-    }
+    public void onAccuracyChanged(Sensor sensor, int Accuracy){ }
 }

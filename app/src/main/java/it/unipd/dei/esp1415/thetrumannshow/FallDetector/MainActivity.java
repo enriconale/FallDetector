@@ -67,23 +67,6 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         if (mAdapter.getItemCount() == 0) {
             mEmptyListMessage.setVisibility(View.VISIBLE);
         }
-
-        // starting data acquisition, for now only till pause
-
-    }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
-    }
-
-
-
-    
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
     }
 
     @Override
@@ -206,6 +189,10 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
                 (emailString4)) && (!isValidEmailAddress(emailString5)));
     }
 
+    /**
+     * Gives a reference to the last opened MainActivity to permit code execution on the ui thread
+     * @return the last used MainActivity
+     */
     public static Activity getLastActivity(){
         return mLastActivity;
     }
