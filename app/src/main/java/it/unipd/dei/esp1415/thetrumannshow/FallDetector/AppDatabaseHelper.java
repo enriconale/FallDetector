@@ -7,12 +7,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Created by alessandro on 05/05/15.
+ * Class that modify the database of the application
  */
 public class AppDatabaseHelper extends SQLiteOpenHelper{
 
     private static final String DB_NAME = "Database.db";
     private static final int DB_VERSION = 2;
 
+    //definition of variables for the column of session table
     public static final String SESSION_TABLE = "Session";
     public static final String SESSION_ID = "id";
     public static final String SESSION_NAME = "name";
@@ -23,6 +25,7 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
     public static final String SESSION_ICON_COLOR_3 = "icon_color_3";
     public static final String SESSION_NUMBER_OF_FALLS = "number_of_falls";
 
+    //definition of variables for the column of fall table
     public static final String FALL_TABLE = "Fall";
     public static final String FALL_NAME = "name";
     public static final String FALL_DATE = "date";
@@ -34,6 +37,7 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
     public static final String EMAIL_SENT = "email_sent";
     public static final String OWNER_SESSION = "session_id";
 
+    //creation of the session table
     private static final String SESSION_TABLE_CREATE = "create table "
             + SESSION_TABLE + " ("
             + SESSION_ID + " text primary key, "
@@ -45,6 +49,7 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
             + SESSION_ICON_COLOR_3 + " integer, "
             + SESSION_NUMBER_OF_FALLS + " integer);";
 
+    //creation of the fall table
     private static final String FALL_TABLE_CREATE = "create table "
             + FALL_TABLE + " ("
             + FALL_NAME + " text, "
@@ -64,7 +69,9 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
             + OWNER_SESSION + ", "
             + FALL_NAME + "));";
 
+
     private static AppDatabaseHelper mDBHelper;
+
 
     public static AppDatabaseHelper getInstance(Context ctx) {
 
@@ -74,16 +81,19 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
         return mDBHelper;
     }
 
+    //constructor
     private AppDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
+    //override of method onCreate with the instance of a new session table and a new fall table
     @Override
     public void onCreate(SQLiteDatabase db){
         db.execSQL(SESSION_TABLE_CREATE);
         db.execSQL(FALL_TABLE_CREATE);
     }
 
+    //override of method onUpgrade with elimination of the tables and creation of new ones
     @Override
     public void onUpgrade(SQLiteDatabase db, int OldVersion, int NewVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + FALL_TABLE + ";");
