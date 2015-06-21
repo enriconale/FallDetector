@@ -15,6 +15,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -67,7 +69,11 @@ public class DataAcquisitionUnit
     private long mLastFallIndex = -1;
 
     // fallback-mode if there is no gravity sensor
-    private boolean mFallbackMode = true;
+    private boolean mFallbackMode = false;
+
+    // for debug-reasons the data can be written to a file
+    private final static boolean WRITE_FILE = false;
+    private OutputStreamWriter fileOut;
 
     /**
      * Set up ans start data acquisition
@@ -137,6 +143,16 @@ public class DataAcquisitionUnit
         }, 3000,1000);
 
         mContext = c;
+
+        if(WRITE_FILE){
+            try {
+                java.io.FileOutputStream fOut = mContext.openFileOutput("accelerometerdata.txt",
+                        Context.MODE_WORLD_READABLE);
+                fileOut = new java.io.OutputStreamWriter(fOut);
+            } catch (IOException e){
+                System.out.println("Writing to file failed: "+ e);
+            }
+        }
     }
 
     /**
@@ -158,6 +174,15 @@ public class DataAcquisitionUnit
             zBuffer.submitData(event.values[2], mCurrentGravityZ);
 
             i++;
+
+            if (WRITE_FILE){
+                try {
+                    String text = i+" "+event.values[0]+" "+mCurrentGravityX+" "+event.values[1]+" "+mCurrentGravityY+" "+event.values[2]+" "+mCurrentGravityZ+"\n";
+                    fileOut.write(text.toCharArray());
+                } catch (IOException e) {
+                    System.err.println(e.toString());
+                }
+            }
         }
     }
 
@@ -190,6 +215,19 @@ public class DataAcquisitionUnit
         double yIntegral = yBuffer.requestIntegralByTime(2000000000, 0);
         double zIntegral = zBuffer.requestIntegralByTime(2000000000, 0);
 
+        if(WRITE_FILE) {
+            try {
+                String str = "x" + xIntegral + "\n";
+                fileOut.write(str.toCharArray());
+                str = "y" + yIntegral + "\n";
+                fileOut.write(str.toCharArray());
+                str = "z" + zIntegral + "\n";
+                fileOut.write(str.toCharArray());
+            } catch (IOException e){
+                System.err.println(e.toString());
+            }
+        }
+
         // If there was no significant movement in the last two seconds,
         // looks if the was movement in direction of gravity in the second before
         // The number 20 is an empirical value
@@ -203,7 +241,29 @@ public class DataAcquisitionUnit
                             + yIntegral * mCurrentGravityY * yIntegral * mCurrentGravityX
                             + zIntegral * mCurrentGravityZ * zIntegral * mCurrentGravityZ));
             // Empirical value of a fall (ca. 40 cm)
+            if(WRITE_FILE) {
+                try {
+                    String str = "x" + xIntegral + "\n";
+                    fileOut.write(str.toCharArray());
+                    str = "y" + yIntegral + "\n";
+                    fileOut.write(str.toCharArray());
+                    str = "z" + zIntegral + "\n";
+                    fileOut.write(str.toCharArray());
+                    str = "Weighted" + weightedIntegral + "\n";
+                    fileOut.write(str.toCharArray());
+                } catch (IOException e){
+                    System.err.println(e.toString());
+                }
+            }
             if (weightedIntegral > 50) {
+                if(WRITE_FILE) {
+                    try {
+                        String str = "FALL DETECTED HERE";
+                        fileOut.write(str.toCharArray());
+                    } catch (IOException e){
+                        System.err.println(e.toString());
+                    }
+                }
                 return true;
             }
         }
