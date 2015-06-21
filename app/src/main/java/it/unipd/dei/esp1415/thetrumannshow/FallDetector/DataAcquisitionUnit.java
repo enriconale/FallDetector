@@ -67,7 +67,7 @@ public class DataAcquisitionUnit
     private long mLastFallIndex = -1;
 
     // fallback-mode if there is no gravity sensor
-    private boolean mFallbackMode = false;
+    private boolean mFallbackMode = true;
 
     /**
      * Set up ans start data acquisition
@@ -179,7 +179,7 @@ public class DataAcquisitionUnit
                         xBuffer.getAccelerationBuffer().readOne(j) * xBuffer.getAccelerationBuffer().readOne(j)
                                 + yBuffer.getAccelerationBuffer().readOne(j) * yBuffer.getAccelerationBuffer().readOne(j)
                                 + zBuffer.getAccelerationBuffer().readOne(j) * zBuffer.getAccelerationBuffer().readOne(j));
-                if (totalAcc > 20)
+                if (totalAcc > 25)
                     return true;
             }
             return false;
