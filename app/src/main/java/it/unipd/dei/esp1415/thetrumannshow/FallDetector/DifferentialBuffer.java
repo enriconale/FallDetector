@@ -12,6 +12,7 @@ public class DifferentialBuffer {
     private final FloatRingBuffer mAccelerationBuffer;
     private final FloatRingBuffer mGravityBuffer;
     private final LongRingBuffer mTimeBuffer;
+    private long[] mLastI = {0,0,0,0};
 
     // An acceleration under 1 m/(s^2) will not be included, this is a noise filter.
     private final double mAccelerationThreshold = 1;
@@ -39,6 +40,21 @@ public class DifferentialBuffer {
     }
 
     /**
+     * Get the integral of the linear acceleration from last i to the new one
+     * Best used with a timer to guarantee interval length.
+     * @param i end of the integral;
+     * @return an integr
+     */
+    public double requestNextIntegral(long i){
+        mLastI[3] = mLastI[2];
+        mLastI[2] = mLastI[1];
+        mLastI[1] = mLastI[0];
+        mLastI[0] = i;
+
+        return requestIntegral((int)(mLastI[0]-mLastI[1]), 0);
+    }
+
+    /**
      * Get an integral over the given sample interval weighted with timestamp difference.
      * @param samples number of samples to include
      * @param offset offset from the newest dataset
@@ -52,33 +68,11 @@ public class DifferentialBuffer {
             double cleanAcceleration = mAccelerationBuffer.readOne(j) - mGravityBuffer.readOne(j);
             if(cleanAcceleration > mAccelerationThreshold
                     || cleanAcceleration < -mAccelerationThreshold){
-                long intervalNanos = mTimeBuffer.readOne(j) - mTimeBuffer.readOne(j-1);
-                integral += Math.abs(cleanAcceleration) * ((double) intervalNanos / 1000000000);
+                integral += Math.abs(cleanAcceleration);
             }
         }
 
         return integral;
-    }
-
-    /**
-     * Request the integral of acceleration data in a given time interval.
-     * @param interval length of interval in nanoseconds
-     * @param offset offset from newest dataset in nanoseconds
-     * @return integral over the linear acceleration in the given interval
-     */
-    public double requestIntegralByTime(long interval,long offset){
-        long intervalSize = approximateIntervalNanos();
-        return requestIntegral((int) (interval/intervalSize), (int) (offset/intervalSize));
-    }
-
-    /**
-     * get the approximate time interval between to samples in the buffer
-     * @return the approximate time between two samples in nanoseconds
-     */
-    public long approximateIntervalNanos(){
-        long diff = mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition()) -
-                mTimeBuffer.readOne(mTimeBuffer.getCurrentPosition() - 99);
-        return diff / 99;
     }
 
     /**
@@ -87,5 +81,16 @@ public class DifferentialBuffer {
      */
     public FloatRingBuffer getAccelerationBuffer(){
         return mAccelerationBuffer;
+    }
+
+    public void setLastIndex(long i){
+        mLastI[3] = mLastI[2];
+        mLastI[2] = mLastI[1];
+        mLastI[1] = mLastI[0];
+        mLastI[0] = i;
+    }
+
+    public long getLastIndex(int offset){
+        return mLastI[offset];
     }
 }

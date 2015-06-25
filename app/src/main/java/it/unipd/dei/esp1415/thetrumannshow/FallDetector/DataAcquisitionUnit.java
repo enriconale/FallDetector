@@ -17,6 +17,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -57,6 +58,11 @@ public class DataAcquisitionUnit
     private DifferentialBuffer yBuffer;
     private DifferentialBuffer zBuffer;
 
+    // Space for the last seconds of acceleration integral
+    private double[] mLastSecondIntegrals = {0,0,0};
+    private double[] m2ndLastSecondIntegrals = {0,0,0};
+    private double[] m3rdLastSecondIntegrals = {0,0,0};
+
     // temporary storage for last known gravity value
     private float mCurrentGravityX = 0;
     private float mCurrentGravityY = 0;
@@ -72,7 +78,7 @@ public class DataAcquisitionUnit
     private boolean mFallbackMode = false;
 
     // for debug-reasons the data can be written to a file
-    private final static boolean WRITE_FILE = false;
+    private final static boolean WRITE_FILE = true;
     private OutputStreamWriter fileOut;
 
     /**
@@ -177,7 +183,8 @@ public class DataAcquisitionUnit
 
             if (WRITE_FILE){
                 try {
-                    String text = i+" "+event.values[0]+" "+mCurrentGravityX+" "+event.values[1]+" "+mCurrentGravityY+" "+event.values[2]+" "+mCurrentGravityZ+"\n";
+                    String text = i+" "+event.values[0]+" "+mCurrentGravityX+" "+event.values[1]+" "
+                            +mCurrentGravityY+" "+event.values[2]+" "+mCurrentGravityZ+"\n";
                     fileOut.write(text.toCharArray());
                 } catch (IOException e) {
                     System.err.println(e.toString());
@@ -197,31 +204,39 @@ public class DataAcquisitionUnit
         if (mFallbackMode){
             long j = i;
             // one second sampling interval
-            long end = j - (1000000000/xBuffer.approximateIntervalNanos());
-            // tests every triplet of accelerometer data for acceleration above 20 m/(s^2)
+            long end = xBuffer.getLastIndex(0);
+            xBuffer.setLastIndex(i);
+            // tests every triplet of accelerometer data for acceleration over 20 m/(s^2)
             for(; j > end; j--){
                 double totalAcc =Math.sqrt(
-                        xBuffer.getAccelerationBuffer().readOne(j) * xBuffer.getAccelerationBuffer().readOne(j)
-                                + yBuffer.getAccelerationBuffer().readOne(j) * yBuffer.getAccelerationBuffer().readOne(j)
-                                + zBuffer.getAccelerationBuffer().readOne(j) * zBuffer.getAccelerationBuffer().readOne(j));
-                if (totalAcc > 25)
+                        xBuffer.getAccelerationBuffer().readOne(j)
+                                * xBuffer.getAccelerationBuffer().readOne(j)
+                                + yBuffer.getAccelerationBuffer().readOne(j)
+                                * yBuffer.getAccelerationBuffer().readOne(j)
+                                + zBuffer.getAccelerationBuffer().readOne(j)
+                                * zBuffer.getAccelerationBuffer().readOne(j));
+                if (totalAcc > 20)
                     return true;
             }
             return false;
         }
 
         // Builds integral of movement in the last two seconds
-        double xIntegral = xBuffer.requestIntegralByTime(2000000000, 0);
-        double yIntegral = yBuffer.requestIntegralByTime(2000000000, 0);
-        double zIntegral = zBuffer.requestIntegralByTime(2000000000, 0);
+        m3rdLastSecondIntegrals = Arrays.copyOf(m2ndLastSecondIntegrals,3);
+        m2ndLastSecondIntegrals = Arrays.copyOf(mLastSecondIntegrals,3);
+
+        // As we know we are called by a timer the interval is one second
+        mLastSecondIntegrals[0] = xBuffer.requestNextIntegral(i);
+        mLastSecondIntegrals[1] = yBuffer.requestNextIntegral(i);
+        mLastSecondIntegrals[2] = zBuffer.requestNextIntegral(i);
 
         if(WRITE_FILE) {
             try {
-                String str = "x" + xIntegral + "\n";
+                String str = "x" + mLastSecondIntegrals[0] + "\n";
                 fileOut.write(str.toCharArray());
-                str = "y" + yIntegral + "\n";
+                str = "y" + mLastSecondIntegrals[1] + "\n";
                 fileOut.write(str.toCharArray());
-                str = "z" + zIntegral + "\n";
+                str = "z" + mLastSecondIntegrals[2] + "\n";
                 fileOut.write(str.toCharArray());
             } catch (IOException e){
                 System.err.println(e.toString());
@@ -231,23 +246,26 @@ public class DataAcquisitionUnit
         // If there was no significant movement in the last two seconds,
         // looks if the was movement in direction of gravity in the second before
         // The number 20 is an empirical value
-        if((xIntegral + yIntegral + zIntegral) < 20) {
-            xIntegral = xBuffer.requestIntegralByTime(1000000000L, 2000000000);
-            yIntegral = yBuffer.requestIntegralByTime(1000000000L, 2000000000);
-            zIntegral = zBuffer.requestIntegralByTime(1000000000L, 2000000000);
+        double lastTwoSeconds = mLastSecondIntegrals[0] + mLastSecondIntegrals[1]
+                + mLastSecondIntegrals[2] + m2ndLastSecondIntegrals[0] +
+                m2ndLastSecondIntegrals[2] + m2ndLastSecondIntegrals[2];
+        if(lastTwoSeconds < 20) {
             // Weight movement with gravity to reveal downward movement
             double weightedIntegral = Math.sqrt(Math.abs(
-                    xIntegral * mCurrentGravityX * xIntegral * mCurrentGravityX
-                            + yIntegral * mCurrentGravityY * yIntegral * mCurrentGravityX
-                            + zIntegral * mCurrentGravityZ * zIntegral * mCurrentGravityZ));
+                    m3rdLastSecondIntegrals[0] * mCurrentGravityX
+                            * m3rdLastSecondIntegrals[0] * mCurrentGravityX +
+                            m3rdLastSecondIntegrals[1] * mCurrentGravityY
+                                    * m3rdLastSecondIntegrals[1] * mCurrentGravityY +
+                            m3rdLastSecondIntegrals[2] * mCurrentGravityY
+                                    * m3rdLastSecondIntegrals[2] * mCurrentGravityY));
             // Empirical value of a fall (ca. 40 cm)
             if(WRITE_FILE) {
                 try {
-                    String str = "x" + xIntegral + "\n";
+                    String str = "x" + m3rdLastSecondIntegrals[0] + "\n";
                     fileOut.write(str.toCharArray());
-                    str = "y" + yIntegral + "\n";
+                    str = "y" + m3rdLastSecondIntegrals[1] + "\n";
                     fileOut.write(str.toCharArray());
-                    str = "z" + zIntegral + "\n";
+                    str = "z" + m3rdLastSecondIntegrals[2] + "\n";
                     fileOut.write(str.toCharArray());
                     str = "Weighted" + weightedIntegral + "\n";
                     fileOut.write(str.toCharArray());
@@ -255,10 +273,10 @@ public class DataAcquisitionUnit
                     System.err.println(e.toString());
                 }
             }
-            if (weightedIntegral > 50) {
+            if (weightedIntegral > 400) {
                 if(WRITE_FILE) {
                     try {
-                        String str = "FALL DETECTED HERE";
+                        String str = "FALL DETECTED HERE\n";
                         fileOut.write(str.toCharArray());
                     } catch (IOException e){
                         System.err.println(e.toString());
@@ -278,11 +296,11 @@ public class DataAcquisitionUnit
         // in fallback, a fall in the last second is revealed
         // in normal mode a fall between two and three seconds ago is revealed
         if(mFallbackMode){
-            mLastFallIndex = i - (500000000L / xBuffer.approximateIntervalNanos());
+            mLastFallIndex = (i + xBuffer.getLastIndex(1)) / 2;
             try{wait(100);} catch (Exception e) {}
         }
         else {
-            mLastFallIndex = i - (2500000000L / xBuffer.approximateIntervalNanos());
+            mLastFallIndex = (xBuffer.getLastIndex(2) - xBuffer.getLastIndex(3)) / 2;
         }
         Toast.makeText(mContext, R.string.register_fall_event , Toast.LENGTH_LONG).show();
 

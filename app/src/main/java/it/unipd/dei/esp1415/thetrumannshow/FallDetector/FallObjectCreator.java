@@ -89,8 +89,6 @@ public class FallObjectCreator implements Runnable{
     }
 
     void locationFixed(){
-        new DelayedReverseGeocoder(mLastFall, mGoogleApiClient, mContext);
-
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         String email = buildStringOfEmailAddresses(sharedPrefs);
 
