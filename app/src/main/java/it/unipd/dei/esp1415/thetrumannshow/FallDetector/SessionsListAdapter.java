@@ -83,14 +83,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         viewHolder.session = tmpSession;
         viewHolder.appContext = mAppContext;
 
-        String sessionName = tmpSession.getSessionName();
-        if (sessionName.length() > 15) {
-            viewHolder.mSessionName.setText(tmpSession.getSessionName().substring(0, 15) + "...");
-        } else {
-            viewHolder.mSessionName.setText(tmpSession.getSessionName());
-        }
 
-
+        viewHolder.mSessionName.setText(getFormattedSessionName(tmpSession.getSessionName()));
         viewHolder.mNumOfFalls.setText(Integer.toString(tmpSession.getNumberOfFalls()));
         viewHolder.mStartDateTime.setText(mDateFormatter.format(tmpSession.getDate()));
         viewHolder.mSessionDuration.setText(tmpSession.getFormattedDuration());
@@ -123,9 +117,17 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     }
 
-    //Numbers of element in the list
+    //Number of elements in the list
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    private String getFormattedSessionName(String name) {
+        if (name.length() > 15) {
+            return name.substring(0, 15) + "...";
+        } else {
+            return name;
+        }
     }
 }
