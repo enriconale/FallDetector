@@ -79,6 +79,7 @@ public class DataAcquisitionUnit
 
     // for debug-reasons the data can be written to a file
     private final static boolean WRITE_FILE = true;
+    private final static double FALLBACK_THRESHOLD = 30;
     private OutputStreamWriter fileOut;
 
     /**
@@ -215,7 +216,7 @@ public class DataAcquisitionUnit
                                 * yBuffer.getAccelerationBuffer().readOne(j)
                                 + zBuffer.getAccelerationBuffer().readOne(j)
                                 * zBuffer.getAccelerationBuffer().readOne(j));
-                if (totalAcc > 20)
+                if (totalAcc > FALLBACK_THRESHOLD)
                     return true;
             }
             return false;
