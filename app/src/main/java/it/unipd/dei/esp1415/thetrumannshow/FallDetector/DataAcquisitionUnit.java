@@ -76,7 +76,7 @@ public class DataAcquisitionUnit
     private boolean mFallbackMode = false;
 
     // for debug-reasons the data can be written to a file
-    private final static boolean WRITE_FILE = true;
+    private final static boolean WRITE_FILE = false;
     private final static double FALLBACK_THRESHOLD = 30;
     private OutputStreamWriter fileOut;
 
