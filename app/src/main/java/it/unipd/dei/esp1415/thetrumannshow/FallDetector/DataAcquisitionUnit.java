@@ -184,7 +184,7 @@ public class DataAcquisitionUnit
 
             if (WRITE_FILE){
                 try {
-                    String text = i+" "+event.values[0]+" "+mCurrentGravityX+" "+event.values[1]+" "
+                    String text = i+" "+event.timestamp+" "+event.values[0]+" "+mCurrentGravityX+" "+event.values[1]+" "
                             +mCurrentGravityY+" "+event.values[2]+" "+mCurrentGravityZ+"\n";
                     fileOut.write(text.toCharArray());
                 } catch (IOException e) {
@@ -294,13 +294,18 @@ public class DataAcquisitionUnit
      * Must be run on the UI thread to function properly.
      */
     private void fall(){
+        long begin = xBuffer.getLastIndex(1);
+        long end = xBuffer.getLastIndex(0);
+
         // in fallback, a fall in the last second is revealed
         // in normal mode a fall between two and three seconds ago is revealed
         if(mFallbackMode){
             mLastFallIndex = (i + xBuffer.getLastIndex(1)) / 2;
-            try{wait(100);} catch (Exception e) {}
+            try{Thread.sleep(600);} catch (Exception e) {}
         }
         else {
+            begin = xBuffer.getLastIndex(3);
+            end = xBuffer.getLastIndex(2);
             mLastFallIndex = (xBuffer.getLastIndex(2) - xBuffer.getLastIndex(3)) / 2;
         }
         Toast.makeText(mContext, R.string.register_fall_event , Toast.LENGTH_LONG).show();
@@ -308,7 +313,7 @@ public class DataAcquisitionUnit
         // give the FallObjectCreator the acceleration data and the apiClient for location
         FallObjectCreator foc = new FallObjectCreator(mTimeBuffer, xBuffer.getAccelerationBuffer(),
                 yBuffer.getAccelerationBuffer(), zBuffer.getAccelerationBuffer(),
-                mContext, mGoogleApiClient, mLastFallIndex);
+                mContext, mGoogleApiClient, mLastFallIndex,begin,end);
 
         // start FallObjectCreator in new thread to not block application during location search
         Thread focThread = new Thread(foc);

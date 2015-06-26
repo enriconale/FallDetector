@@ -24,11 +24,15 @@ public class FallObjectCreator implements Runnable{
     private Fall mLastFall;
 
     private final long mLastFallIndex;
+    private final long mStart;
+    private final long mEnd;
+
     private static int mFallNameIndex = 0;
 
     public FallObjectCreator(LongRingBuffer timeBuffer, FloatRingBuffer xBuffer,
                              FloatRingBuffer yBuffer, FloatRingBuffer zBuffer,
-                             Context context, GoogleApiClient googleApiClient, long fallIndex){
+                             Context context, GoogleApiClient googleApiClient, long fallIndex,
+                             long start, long end){
         this.timeBuffer = timeBuffer;
         this.xBuffer = xBuffer;
         this.yBuffer = yBuffer;
@@ -36,6 +40,8 @@ public class FallObjectCreator implements Runnable{
         this.mContext = context;
         this.mGoogleApiClient = googleApiClient;
         this.mLastFallIndex = fallIndex;
+        this.mStart = start;
+        this.mEnd = end;
         mFallNameIndex++;
     }
 
@@ -72,18 +78,13 @@ public class FallObjectCreator implements Runnable{
             }
         }
         long end = j;
-        return new long[]{begin,end};
+        return new long[] {begin,end};
     }
 
     private Fall constructFallObject(long index){
-        long[] interval = {index - 50, index + 50};
-        try {
-            interval = getSurroundingSecond(index);
-        } catch (IndexOutOfBoundsException e){
-        }
-        float [] xArr = xBuffer.readRange(interval[0],interval[1]);
-        float [] yArr = yBuffer.readRange(interval[0],interval[1]);
-        float [] zArr = zBuffer.readRange(interval[0],interval[1]);
+        float [] xArr = xBuffer.readRange(mStart,mEnd);
+        float [] yArr = yBuffer.readRange(mStart,mEnd);
+        float [] zArr = zBuffer.readRange(mStart,mEnd);
         return new Fall("Fall #" + mFallNameIndex ,new java.util.Date(), null, null ,xArr,yArr,
                 zArr);
     }
