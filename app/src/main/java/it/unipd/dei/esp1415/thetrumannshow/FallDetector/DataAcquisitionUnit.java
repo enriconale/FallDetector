@@ -1,6 +1,5 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
@@ -44,7 +43,6 @@ public class DataAcquisitionUnit
     private Sensor mGravity;
     // Application context given from MainActivity
     private Context mContext;
-    private Activity mMainActivity;
     // Sensor Rate chosen in application settings.
     private int mChosenSensorRate;
 
@@ -313,7 +311,7 @@ public class DataAcquisitionUnit
         // give the FallObjectCreator the acceleration data and the apiClient for location
         FallObjectCreator foc = new FallObjectCreator(mTimeBuffer, xBuffer.getAccelerationBuffer(),
                 yBuffer.getAccelerationBuffer(), zBuffer.getAccelerationBuffer(),
-                mContext, mGoogleApiClient, mLastFallIndex,begin,end);
+                mContext, mGoogleApiClient,begin,end);
 
         // start FallObjectCreator in new thread to not block application during location search
         Thread focThread = new Thread(foc);

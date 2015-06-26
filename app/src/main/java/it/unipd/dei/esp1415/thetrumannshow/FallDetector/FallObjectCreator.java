@@ -23,7 +23,6 @@ public class FallObjectCreator implements Runnable{
 
     private Fall mLastFall;
 
-    private final long mLastFallIndex;
     private final long mStart;
     private final long mEnd;
 
@@ -31,7 +30,7 @@ public class FallObjectCreator implements Runnable{
 
     public FallObjectCreator(LongRingBuffer timeBuffer, FloatRingBuffer xBuffer,
                              FloatRingBuffer yBuffer, FloatRingBuffer zBuffer,
-                             Context context, GoogleApiClient googleApiClient, long fallIndex,
+                             Context context, GoogleApiClient googleApiClient,
                              long start, long end){
         this.timeBuffer = timeBuffer;
         this.xBuffer = xBuffer;
@@ -39,7 +38,6 @@ public class FallObjectCreator implements Runnable{
         this.zBuffer = zBuffer;
         this.mContext = context;
         this.mGoogleApiClient = googleApiClient;
-        this.mLastFallIndex = fallIndex;
         this.mStart = start;
         this.mEnd = end;
         mFallNameIndex++;
@@ -51,7 +49,7 @@ public class FallObjectCreator implements Runnable{
         yBuffer = yBuffer.copy();
         zBuffer = zBuffer.copy();
 
-        mLastFall = constructFallObject(mLastFallIndex);
+        mLastFall = constructFallObject();
 
         new DelayedLocationProvider(mLastFall, mGoogleApiClient, this, mContext);
     }
@@ -60,28 +58,7 @@ public class FallObjectCreator implements Runnable{
         mFallNameIndex = 0;
     }
 
-    long[] getSurroundingSecond(long index){
-        long nanosecond = timeBuffer.readOne(index);
-        long j = index;
-        for(; timeBuffer.readOne(j) > (nanosecond - 500000000L); j--){
-            if (j < -1000) {
-                j = -1000;
-                break;
-            }
-        }
-        long begin = j;
-
-        j = index;
-        for(; timeBuffer.readOne(j) < (nanosecond + 500000000); j++){
-            if (j > (index + 100)) {
-                throw new IndexOutOfBoundsException();
-            }
-        }
-        long end = j;
-        return new long[] {begin,end};
-    }
-
-    private Fall constructFallObject(long index){
+    private Fall constructFallObject(){
         float [] xArr = xBuffer.readRange(mStart,mEnd);
         float [] yArr = yBuffer.readRange(mStart,mEnd);
         float [] zArr = zBuffer.readRange(mStart,mEnd);
