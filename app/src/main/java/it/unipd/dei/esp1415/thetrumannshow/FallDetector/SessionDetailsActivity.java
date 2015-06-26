@@ -114,6 +114,10 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
                 DialogFragment dialog = new DeleteSessionDialog();
                 dialog.show(getSupportFragmentManager(), SESSION_DELETE);
                 break;
+            case R.id.action_settings:
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -13,4 +13,10 @@
         android:title="@string/action_stop_session"
         android:icon="@mipmap/action_stop_circle_outline"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
 </menu>

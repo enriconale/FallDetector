@@ -166,6 +166,10 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
                 FallObjectCreator.resetFallNameCounter();
                 NavUtils.navigateUpFromSameTask(this);
                 break;
+            case R.id.action_settings:
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
