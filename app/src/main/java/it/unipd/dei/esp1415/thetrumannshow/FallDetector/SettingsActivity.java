@@ -37,6 +37,7 @@ public class SettingsActivity extends PreferenceActivity implements
     public static final String PREF_SESSION_DURATION = "pref_session_duration";
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
@@ -47,6 +48,7 @@ public class SettingsActivity extends PreferenceActivity implements
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         Toolbar bar;
@@ -87,6 +89,7 @@ public class SettingsActivity extends PreferenceActivity implements
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onResume() {
         super.onResume();
         getPreferenceScreen().getSharedPreferences()
@@ -94,6 +97,7 @@ public class SettingsActivity extends PreferenceActivity implements
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onPause() {
         super.onPause();
         getPreferenceScreen().getSharedPreferences()
@@ -101,6 +105,7 @@ public class SettingsActivity extends PreferenceActivity implements
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
         verifySettings(findPreference(key));

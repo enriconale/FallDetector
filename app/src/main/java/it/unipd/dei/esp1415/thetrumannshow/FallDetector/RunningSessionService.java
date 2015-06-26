@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;

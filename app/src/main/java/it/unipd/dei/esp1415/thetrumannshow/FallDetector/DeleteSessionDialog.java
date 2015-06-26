@@ -13,7 +13,7 @@ import android.support.v4.app.DialogFragment;
 public class DeleteSessionDialog extends DialogFragment {
 
     public interface DeleteSessionDialogListener {
-        public void onDeleteSessionDialogPositiveClick();
+        void onDeleteSessionDialogPositiveClick();
     }
 
     @Override

@@ -21,7 +21,7 @@ public class NewSessionNameDialogFragment extends DialogFragment {
     private EditText mSessionNameEditText;
 
     public interface NewSessionNameDialogFragmentListener {
-        public void onReturnValueFromNewSessionNameDialog(String sessionName);
+        void onReturnValueFromNewSessionNameDialog(String sessionName);
     }
 
     @Override

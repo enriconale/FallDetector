@@ -2,7 +2,6 @@ package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -38,7 +37,7 @@ public class Session {
         mSessionName = sessionName;
         mStartDate = date;
         mDuration = duration;
-        mFalls = new LinkedList<Fall>();
+        mFalls = new LinkedList<>();
         mColor1 = color1;
         mColor2 = color2;
         mColor3 = color3;

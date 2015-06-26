@@ -13,7 +13,7 @@ import android.support.v4.app.DialogFragment;
 public class SessionAlreadyRunningDialogFragment extends DialogFragment {
 
     public interface SessionAlreadyRunningDialogFragmentListener {
-        public void onSessionAlreadyRunningDialogPositiveClick();
+        void onSessionAlreadyRunningDialogPositiveClick();
     }
 
     @Override

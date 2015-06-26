@@ -158,14 +158,14 @@ public class DatabaseManager {
 
         String sessionName = cursor.getString(cursor.getColumnIndex(AppDatabaseHelper.SESSION_NAME));
 
-        Date sessionDate = new Date();
+        Date sessionDate;
         try {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
                     java.util.Locale.getDefault());
             sessionDate = dateFormatter.parse(cursor.getString
                     (cursor.getColumnIndex(AppDatabaseHelper.SESSION_DATE)));
         } catch (ParseException e) {
-            //TODO manage possible exception
+            sessionDate = new Date();
         }
 
         long sessionDuration = cursor.getLong(cursor.getColumnIndex(AppDatabaseHelper
@@ -190,14 +190,14 @@ public class DatabaseManager {
     private Fall getFallFromCursor(Cursor cursor) {
         String fallName = cursor.getString(cursor.getColumnIndex(AppDatabaseHelper.FALL_NAME));
 
-        Date fallDate = new Date();
+        Date fallDate;
         try {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
                     java.util.Locale.getDefault());
             fallDate = dateFormatter.parse(cursor.getString
                     (cursor.getColumnIndex(AppDatabaseHelper.FALL_DATE)));
         } catch (ParseException e) {
-            //TODO manage possible exception
+            fallDate = new Date();
         }
 
         double fallLatitude = cursor.getDouble(cursor.getColumnIndex(AppDatabaseHelper.FALL_LATITUDE));

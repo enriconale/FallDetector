@@ -1,10 +1,7 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
 
-import android.content.Intent;
 import android.location.Address;
 import android.location.Location;
-import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 
 import java.util.Date;
 

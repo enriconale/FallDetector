@@ -100,7 +100,9 @@ public class FallDetailsActivity extends AppCompatActivity {
 
         mGraphContainer = (RelativeLayout)findViewById(R.id.graph_container);
         ViewGroup.LayoutParams params = mGraphContainer.getLayoutParams();
+        @SuppressWarnings("deprecation")
         int height = getWindowManager().getDefaultDisplay().getHeight();
+        @SuppressWarnings("deprecation")
         int width = getWindowManager().getDefaultDisplay().getWidth();
         params.height = height / 3;
         params.width = width;
@@ -147,6 +149,7 @@ public class FallDetailsActivity extends AppCompatActivity {
         }
 
         @Override
+        @SuppressWarnings("deprecation")
         protected void onDraw(Canvas canvas) {
 
             super.onDraw(canvas);
