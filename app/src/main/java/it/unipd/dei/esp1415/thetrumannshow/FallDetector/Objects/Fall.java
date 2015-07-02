@@ -70,10 +70,6 @@ public class Fall {
         mLongitude = loc.getLongitude();
     }
 
-    public void setAddress(Address addr){
-        mAddress = addr;
-    }
-
     public boolean isEmailSent() {
         return mIsEmailSent;
     }

@@ -25,7 +25,7 @@ public class FloatRingBuffer{
     }
 
     /**
-     * insert a value at the next position and count up the posion counter
+     * insert a value at the next position and count up the position counter
      * @param f number to insert
      */
     public void insert(float f){
