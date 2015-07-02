@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Receivers;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +11,11 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import java.util.Date;
+
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.MainActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SettingsActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 
 /**
  * @author Enrico Naletto

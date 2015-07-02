@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 
 /**
  * @author Enrico Naletto

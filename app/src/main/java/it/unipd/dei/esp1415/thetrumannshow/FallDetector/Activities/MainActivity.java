@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -23,10 +23,17 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.FallObjectCreator;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.NewSessionNameDialogFragment;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Services.RunningSessionService;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.SessionAlreadyRunningDialogFragment;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
-public class MainActivity extends AppCompatActivity implements NewSessionNameDialogFragment
-        .NewSessionNameDialogFragmentListener, SessionAlreadyRunningDialogFragment
-.SessionAlreadyRunningDialogFragmentListener {
+
+public class MainActivity extends AppCompatActivity implements NewSessionNameDialogFragment.NewSessionNameDialogFragmentListener, SessionAlreadyRunningDialogFragment.SessionAlreadyRunningDialogFragmentListener {
 
     private static final String NEW_SESSION_DIALOG = "new_session_dialog";
     private static final String SESSION_RUNNING_DIALOG = "session_running_dialog";

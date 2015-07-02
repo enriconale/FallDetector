@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

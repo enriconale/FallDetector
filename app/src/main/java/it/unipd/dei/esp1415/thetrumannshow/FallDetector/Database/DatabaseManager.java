@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
+
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 
 /**
  * @author Alessandro Fuser

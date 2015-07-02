@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,11 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.RunningSessionActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SessionDetailsActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 
 /**
  * @author Enrico Naletto

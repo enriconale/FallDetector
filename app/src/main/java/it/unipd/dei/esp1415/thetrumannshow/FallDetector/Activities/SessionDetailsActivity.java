@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,12 +17,18 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.DeleteSessionDialog;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
+
 /**
  * @author Enrico Naletto
  * Activity that shows the details of a single session, with all its falls.
  */
-public class SessionDetailsActivity extends AppCompatActivity implements DeleteSessionDialog
-        .DeleteSessionDialogListener {
+public class SessionDetailsActivity extends AppCompatActivity implements DeleteSessionDialog.DeleteSessionDialogListener {
     public static final String FALL_DETAILS = "fall_details";
     public static final String SESSION_DELETE = "session_delete";
     private static SimpleDateFormat mDateFormatter;

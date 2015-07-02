@@ -10,10 +10,10 @@
         android:icon="@mipmap/fall_detector_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <service android:name=".RunningSessionService" />
+        <service android:name=".Services.RunningSessionService" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,35 +22,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FallDetailsActivity"
+            android:name=".Activities.FallDetailsActivity"
             android:label="@string/title_activity_fall_details" >
         </activity>
         <activity
-            android:name=".SessionDetailsActivity"
+            android:name=".Activities.SessionDetailsActivity"
             android:label="@string/title_activity_session_details"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".Activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".Activities.MainActivity" />
         </activity>
         <activity
-            android:name=".RunningSessionActivity"
+            android:name=".Activities.RunningSessionActivity"
             android:label="@string/title_activity_running_session"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".Activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".Activities.MainActivity" />
         </activity>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Activities.SettingsActivity"
             android:label="@string/action_settings"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".Activities.MainActivity" >
             <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value=".MainActivity" />
+                       android:value=".Activities.MainActivity" />
         </activity>
 
-        <receiver android:name=".BootBroadcastReceiver" android:enabled="true">
+        <receiver android:name=".Receivers.BootBroadcastReceiver" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

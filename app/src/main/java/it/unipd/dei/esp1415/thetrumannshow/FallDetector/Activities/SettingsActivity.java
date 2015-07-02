@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 
 /**
  * @author Enrico Naletto
