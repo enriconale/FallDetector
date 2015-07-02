@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,6 +19,10 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.MainActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SettingsActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 
 /**
  * Created by Eike Trumann on 29.03.15.

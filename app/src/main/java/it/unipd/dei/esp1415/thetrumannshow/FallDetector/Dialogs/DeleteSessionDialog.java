@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
+
 /**
  * @author Enrico Naletto
  */
+@SuppressWarnings("NullableProblems")
 public class DeleteSessionDialog extends DialogFragment {
 
     public interface DeleteSessionDialogListener {

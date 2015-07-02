@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,11 +11,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
+
 /**
  * @author Enrico Naletto
  * A simple dialog that is shown when a user starts a new session. Basically it asks the user to
  * insert a name for the new session.
  */
+@SuppressWarnings("NullableProblems")
 public class NewSessionNameDialogFragment extends DialogFragment {
     private String mInsertedSessionName;
     private EditText mSessionNameEditText;

@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils;
 
 import android.content.Context;
 import android.location.Location;
@@ -7,6 +7,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 
 /**
  * Copyright Eike Trumann 12.05.15

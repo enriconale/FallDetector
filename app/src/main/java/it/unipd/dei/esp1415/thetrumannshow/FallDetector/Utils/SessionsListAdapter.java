@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,11 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.RunningSessionActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SessionDetailsActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 
 /**
  * @author Enrico Naletto
@@ -83,14 +88,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         viewHolder.session = tmpSession;
         viewHolder.appContext = mAppContext;
 
-        String sessionName = tmpSession.getSessionName();
-        if (sessionName.length() > 15) {
-            viewHolder.mSessionName.setText(tmpSession.getSessionName().substring(0, 15) + "...");
-        } else {
-            viewHolder.mSessionName.setText(tmpSession.getSessionName());
-        }
 
-
+        viewHolder.mSessionName.setText(getFormattedSessionName(tmpSession.getSessionName()));
         viewHolder.mNumOfFalls.setText(Integer.toString(tmpSession.getNumberOfFalls()));
         viewHolder.mStartDateTime.setText(mDateFormatter.format(tmpSession.getDate()));
         viewHolder.mSessionDuration.setText(tmpSession.getFormattedDuration());
@@ -102,8 +101,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MyViewHolder vh = viewHolder;
-                    vh.mHandler.removeCallbacks(vh.mUpdateTimeTask);
+                    viewHolder.mHandler.removeCallbacks(viewHolder.mUpdateTimeTask);
                     Intent intent = new Intent(v.getContext(), RunningSessionActivity.class);
                     v.getContext().startActivity(intent);
                 }
@@ -123,9 +121,17 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
     }
 
-    //Numbers of element in the list
+    //Number of elements in the list
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    private String getFormattedSessionName(String name) {
+        if (name.length() > 15) {
+            return name.substring(0, 15) + "...";
+        } else {
+            return name;
+        }
     }
 }

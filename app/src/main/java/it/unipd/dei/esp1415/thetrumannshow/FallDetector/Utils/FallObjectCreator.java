@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +8,12 @@ import android.preference.PreferenceManager;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SettingsActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
+
 /**
- * Created by eike on 12.05.15.
+ * @author Eike Trumann
  */
 public class FallObjectCreator implements Runnable{
 

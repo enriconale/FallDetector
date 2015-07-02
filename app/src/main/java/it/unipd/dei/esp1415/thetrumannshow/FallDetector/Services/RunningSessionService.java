@@ -1,4 +1,4 @@
-package it.unipd.dei.esp1415.thetrumannshow.FallDetector;
+package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Services;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -7,6 +7,10 @@ import android.preference.PreferenceManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SettingsActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 
 /**
  * @author Enrico Naletto
