@@ -16,6 +16,7 @@ import android.widget.EditText;
  * A simple dialog that is shown when a user starts a new session. Basically it asks the user to
  * insert a name for the new session.
  */
+@SuppressWarnings("NullableProblems")
 public class NewSessionNameDialogFragment extends DialogFragment {
     private String mInsertedSessionName;
     private EditText mSessionNameEditText;

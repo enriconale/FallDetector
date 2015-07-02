@@ -96,8 +96,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MyViewHolder vh = viewHolder;
-                    vh.mHandler.removeCallbacks(vh.mUpdateTimeTask);
+                    viewHolder.mHandler.removeCallbacks(viewHolder.mUpdateTimeTask);
                     Intent intent = new Intent(v.getContext(), RunningSessionActivity.class);
                     v.getContext().startActivity(intent);
                 }

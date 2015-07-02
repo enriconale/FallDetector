@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 /**
- * Created by eike on 12.05.15.
+ * @author Eike Trumann
  */
 public class FallObjectCreator implements Runnable{
 

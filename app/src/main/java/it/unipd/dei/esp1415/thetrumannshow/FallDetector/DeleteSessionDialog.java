@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 /**
  * @author Enrico Naletto
  */
+@SuppressWarnings("NullableProblems")
 public class DeleteSessionDialog extends DialogFragment {
 
     public interface DeleteSessionDialogListener {
