@@ -323,13 +323,29 @@ public class DataAcquisitionUnit
      */
     void detach(){
         mSensorManager.unregisterListener(this);
-        mGoogleApiClient.disconnect();
     }
 
     /**
      * Resumes the listeners after a break
      */
     void resume() {
+        SharedPreferences mSharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String sensorRatePreference = mSharedPref.getString(SettingsActivity
+                .PREF_ACCELEROMETER_RATE, "normal");
+
+        // set sample rate according to user preference
+        switch (sensorRatePreference) {
+            case "slow":
+                mChosenSensorRate = SensorManager.SENSOR_DELAY_UI;
+                break;
+            case "fast":
+                mChosenSensorRate = SensorManager.SENSOR_DELAY_FASTEST;
+                break;
+            case "normal":
+            default:
+                mChosenSensorRate = SensorManager.SENSOR_DELAY_GAME;
+        }
+
         mSensorManager.registerListener(this, mAccelerometer, mChosenSensorRate);
         mSensorManager.registerListener(this, mGravity, 100000);
         mGoogleApiClient.connect();
