@@ -152,9 +152,10 @@ public class SettingsActivity extends PreferenceActivity implements
                     ((EditTextPreference) p).setText("12");
                 }
             }
-
-            SessionsLab.get(getApplicationContext()).pauseCurrentlyRunningSession();
-            SessionsLab.get(getApplicationContext()).resumeCurrentlyRunningSession();
+            if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {
+                SessionsLab.get(getApplicationContext()).pauseCurrentlyRunningSession();
+                SessionsLab.get(getApplicationContext()).resumeCurrentlyRunningSession();
+            }
         }
     }
 
