@@ -21,6 +21,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.DeleteSessionDia
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.Helper;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
@@ -60,7 +61,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         mSessionIcon = (ImageView)findViewById(R.id.session_icon);
 
 
-        mSessionName.setText(getFormattedSessionName(mSession.getSessionName()));
+        mSessionName.setText(Helper.getFormattedSessionName(mSession.getSessionName()));
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
         mSessionDuration.setText(mSession.getFormattedDuration());
         mSessionIcon.setImageResource(R.mipmap.recording_icon);
@@ -140,13 +141,5 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    private String getFormattedSessionName(String name) {
-        if (name.length() > 15) {
-            return name.substring(0, 15) + "...";
-        } else {
-            return name;
-        }
     }
 }

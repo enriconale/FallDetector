@@ -29,6 +29,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Services.RunningSessionService;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.SessionAlreadyRunningDialogFragment;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.Helper;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         setContentView(R.layout.activity_main);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (hasIncorrectEmailSettings()) {
+        if (Helper.hasIncorrectEmailSettings(mSharedPreferences)) {
             Toast.makeText(getApplicationContext(), R.string.insert_valid_email,
                     Toast.LENGTH_LONG).show();
         }
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
                 startActivity(intent);
                 break;
             case R.id.action_start_session:
-                if (hasIncorrectEmailSettings()) {
+                if (Helper.hasIncorrectEmailSettings(mSharedPreferences)) {
                     Toast.makeText(getApplicationContext(), R.string.insert_valid_email,
                             Toast.LENGTH_LONG).show();
                 } else {
@@ -167,30 +168,6 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         mAdapter.notifyDataSetChanged();
         DialogFragment dialog = new NewSessionNameDialogFragment();
         dialog.show(getSupportFragmentManager(), NEW_SESSION_DIALOG);
-    }
-
-    private boolean isValidEmailAddress(String email) {
-        String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-        Pattern pattern = Pattern.compile(emailPattern);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    private boolean hasIncorrectEmailSettings() {
-        String emailString1 = mSharedPreferences.getString(SettingsActivity
-                .PREF_EMAIL_ADDRESS1, "");
-        String emailString2 = mSharedPreferences.getString(SettingsActivity
-                .PREF_EMAIL_ADDRESS2, "");
-        String emailString3 = mSharedPreferences.getString(SettingsActivity
-                .PREF_EMAIL_ADDRESS3, "");
-        String emailString4 = mSharedPreferences.getString(SettingsActivity
-                .PREF_EMAIL_ADDRESS4, "");
-        String emailString5 = mSharedPreferences.getString(SettingsActivity
-                .PREF_EMAIL_ADDRESS5, "");
-        return ((!isValidEmailAddress(emailString1)) && (!isValidEmailAddress(emailString2))
-                && (!isValidEmailAddress(emailString3)) && (!isValidEmailAddress
-                (emailString4)) && (!isValidEmailAddress(emailString5)));
     }
 
     /**

@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.Helper;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 
 /**
@@ -133,7 +134,7 @@ public class SettingsActivity extends PreferenceActivity implements
                 if ("".equals(e.getText()) || e.getText()==null) {
                     p.setSummary(getApplicationContext().getString(R.string.pref_email_summary_nomailset));
                 } else {
-                    if (isValidEmailAddress(e.getText())) {
+                    if (Helper.isValidEmailAddress(e.getText())) {
                         p.setSummary(e.getText());
                     } else {
                         p.setSummary(R.string.pref_email_summary_nomailset);
@@ -158,13 +159,4 @@ public class SettingsActivity extends PreferenceActivity implements
             }
         }
     }
-
-    private boolean isValidEmailAddress(String email) {
-        String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-        Pattern pattern = Pattern.compile(emailPattern);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
 }

@@ -22,8 +22,8 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 
 /**
  * @author Enrico Naletto
- * Singleton class to manage the list of sessions, the currently running session, the
- * saving to (and loading from) the database.
+ *         Singleton class to manage the list of sessions, the currently running session, the
+ *         saving to (and loading from) the database.
  */
 public class SessionsLab {
     private static boolean mHasRunningSession = false;
@@ -197,5 +197,4 @@ public class SessionsLab {
     public void deleteSessionFromDatabase(Session session) {
         mDatabaseManager.deleteSession(session);
     }
-
 }
