@@ -30,7 +30,6 @@ public class RunningSessionService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
         mMaxSessionDuration = Integer.parseInt(sharedPrefs.getString(SettingsActivity

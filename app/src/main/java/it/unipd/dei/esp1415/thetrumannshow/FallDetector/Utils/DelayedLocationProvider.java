@@ -1,7 +1,10 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -33,6 +36,13 @@ public class DelayedLocationProvider implements LocationListener {
 
         LocationRequest mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(mAppContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(mAppContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
                 this);
     }

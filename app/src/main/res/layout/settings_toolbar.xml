@@ -10,4 +10,5 @@
     app:navigationContentDescription="@string/abc_action_bar_up_description"
     android:background="?attr/colorPrimary"
     app:navigationIcon="?attr/homeAsUpIndicator"
+    app:titleTextColor="@color/white"
     app:title="@string/action_settings" />
