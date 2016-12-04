@@ -1,4 +1,5 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Database;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -30,14 +31,14 @@ public class DatabaseManager {
     private Context mAppContext;
 
 
-    public DatabaseManager(Context ctx){
+    public DatabaseManager(Context ctx) {
         mAppContext = ctx;
         mContentValues = new ContentValues();
         mDbHelper = AppDatabaseHelper.getInstance(ctx);
     }
 
     public void saveSession(Session session) {
-        open();
+        openDatabaseConnection();
         mContentValues.put(AppDatabaseHelper.SESSION_ID, session.getUUID().toString());
         mContentValues.put(AppDatabaseHelper.SESSION_NAME, session.getSessionName());
         mContentValues.put(AppDatabaseHelper.SESSION_DATE, SessionsLab.get(mAppContext).getDateFormat().format
@@ -54,12 +55,12 @@ public class DatabaseManager {
             Toast.makeText(mAppContext, R.string.database_exception, Toast.LENGTH_SHORT).show();
         }
         mContentValues.clear();
-        close();
+        closeDatabaseConnection();
     }
 
     public void saveFall(Fall fall) {
         SessionsLab.get(mAppContext).saveRunningSessionInDatabase();
-        open();
+        openDatabaseConnection();
         mContentValues.put(AppDatabaseHelper.FALL_NAME, fall.getName());
         mContentValues.put(AppDatabaseHelper.FALL_DATE, SessionsLab.get(mAppContext).getDateFormat().format(fall
                 .getDate()));
@@ -97,12 +98,12 @@ public class DatabaseManager {
             Toast.makeText(mAppContext, R.string.database_exception, Toast.LENGTH_SHORT).show();
         } finally {
             mContentValues.clear();
-            close();
+            closeDatabaseConnection();
         }
     }
 
     public ArrayList<Session> getAllSessionsFromDatabase() {
-        open();
+        openDatabaseConnection();
         ArrayList<Session> sessions = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(AppDatabaseHelper.SESSION_TABLE,
@@ -114,14 +115,14 @@ public class DatabaseManager {
             sessions.add(0, session);
             cursor.moveToNext();
         }
-        // make sure to close the cursor
+        // make sure to closeDatabaseConnection the cursor
         cursor.close();
-        close();
+        closeDatabaseConnection();
         return sessions;
     }
 
     public LinkedList<Fall> getFallsFromDatabase(Session session) {
-        open();
+        openDatabaseConnection();
         UUID sessionUUID = session.getUUID();
         LinkedList<Fall> fallsList = new LinkedList<>();
 
@@ -137,23 +138,23 @@ public class DatabaseManager {
         }
 
         cursor.close();
-        close();
+        closeDatabaseConnection();
         return fallsList;
     }
 
     public void deleteSession(Session session) {
-        open();
+        openDatabaseConnection();
 
-        String[] sessionId = new String[] {session.getUUID().toString()};
+        String[] sessionId = new String[]{session.getUUID().toString()};
 
         try {
             mDatabase.delete(AppDatabaseHelper.SESSION_TABLE, AppDatabaseHelper.SESSION_ID + " LIKE ?",
                     sessionId);
         } catch (SQLiteException e) {
-            Toast.makeText(mAppContext, R.string.error_deleting_session , Toast
+            Toast.makeText(mAppContext, R.string.error_deleting_session, Toast
                     .LENGTH_SHORT).show();
         } finally {
-            close();
+            closeDatabaseConnection();
         }
     }
 
@@ -244,9 +245,9 @@ public class DatabaseManager {
 
     public void updateRunningSessionInDatabase() {
         Session runningSession = SessionsLab.get(mAppContext).getRunningSession();
-        String[] idString = new String[] {runningSession.getUUID().toString()};
+        String[] idString = new String[]{runningSession.getUUID().toString()};
 
-        open();
+        openDatabaseConnection();
         mContentValues.put(AppDatabaseHelper.SESSION_NAME, runningSession.getSessionName());
         mContentValues.put(AppDatabaseHelper.SESSION_DURATION, runningSession.getDuration());
         mContentValues.put(AppDatabaseHelper.SESSION_NUMBER_OF_FALLS, runningSession
@@ -255,13 +256,13 @@ public class DatabaseManager {
         // Save Values into database
         try {
             mDatabase.update(AppDatabaseHelper.SESSION_TABLE, mContentValues, AppDatabaseHelper.SESSION_ID +
-                            " LIKE ?", idString );
+                    " LIKE ?", idString);
         } catch (SQLiteException sqle) {
-            Toast.makeText(mAppContext, R.string.error_updating_database ,
+            Toast.makeText(mAppContext, R.string.error_updating_database,
                     Toast.LENGTH_SHORT).show();
         } finally {
             mContentValues.clear();
-            close();
+            closeDatabaseConnection();
         }
     }
 
@@ -275,32 +276,32 @@ public class DatabaseManager {
     }
 
     private float[] parseAccelerationDataFromString(String data) {
-            StringBuilder builder = new StringBuilder(20);
-            LinkedList<Float> lst = new LinkedList<>();
+        StringBuilder builder = new StringBuilder(20);
+        LinkedList<Float> lst = new LinkedList<>();
 
-            for (int i = 0; i < data.length(); i++) {
-                if (Character.toString(data.charAt(i)).equals("&")) {
-                    lst.add(Float.parseFloat(builder.toString()));
-                    builder.setLength(0);
-                } else {
-                    builder.append(data.charAt(i));
-                }
+        for (int i = 0; i < data.length(); i++) {
+            if (Character.toString(data.charAt(i)).equals("&")) {
+                lst.add(Float.parseFloat(builder.toString()));
+                builder.setLength(0);
+            } else {
+                builder.append(data.charAt(i));
             }
+        }
 
-            float[] result = new float[lst.size()];
-            int k = 0;
-            for (Float d : lst) {
-                result[k++] = d;
-            }
+        float[] result = new float[lst.size()];
+        int k = 0;
+        for (Float d : lst) {
+            result[k++] = d;
+        }
 
-            return result;
+        return result;
     }
 
-    private synchronized void open() throws SQLException {
+    private synchronized void openDatabaseConnection() throws SQLException {
         mDatabase = mDbHelper.getWritableDatabase();
     }
 
-    private synchronized void close() {
+    private synchronized void closeDatabaseConnection() {
         mDatabase.close();
     }
 }

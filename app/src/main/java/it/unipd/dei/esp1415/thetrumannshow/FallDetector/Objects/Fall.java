@@ -65,7 +65,7 @@ public class Fall {
         mIsEmailSent = isEmailSent;
     }
 
-    public void setLocation(Location loc){
+    public void setLocation(Location loc) {
         mLatitude = loc.getLatitude();
         mLongitude = loc.getLongitude();
     }

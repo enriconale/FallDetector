@@ -14,8 +14,8 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 
 /**
  * @author Enrico Naletto
- * Simple service that tracks the duration of the running session and stops it in case it reaches
- * the maximum duration set by the user.
+ *         Simple service that tracks the duration of the running session and stops it in case it reaches
+ *         the maximum duration set by the user.
  */
 public class RunningSessionService extends IntentService {
     private final long ONE_HOUR_IN_MILLIS = 3600000;
@@ -34,7 +34,7 @@ public class RunningSessionService extends IntentService {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences
                 (getApplicationContext());
         mMaxSessionDuration = Integer.parseInt(sharedPrefs.getString(SettingsActivity
-                        .PREF_SESSION_DURATION, "12")) * ONE_HOUR_IN_MILLIS;
+                .PREF_SESSION_DURATION, "12")) * ONE_HOUR_IN_MILLIS;
 
         mSessionsLab = SessionsLab.get(getApplicationContext());
         final Session mRunningSession = mSessionsLab.getRunningSession();

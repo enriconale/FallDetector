@@ -22,8 +22,8 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 
 /**
  * @author Enrico Naletto
- * Adapter that builds every card (with the appropriate informations)in the MainActivity
- * CardListView.
+ *         Adapter that builds every card (with the appropriate informations)in the MainActivity
+ *         CardListView.
  */
 public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapter.MyViewHolder> {
     public static final String SESSION_DETAILS = "session_details";
@@ -56,12 +56,12 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
         public MyViewHolder(View v) {
             super(v);
-            mMainCardLayout = (RelativeLayout)v.findViewById(R.id.main_card_layout);
-            mSessionName = (TextView)v.findViewById(R.id.session_name);
-            mSessionIcon = (ImageView)v.findViewById(R.id.session_icon);
-            mNumOfFalls = (TextView)v.findViewById(R.id.number_of_falls);
-            mStartDateTime = (TextView)v.findViewById(R.id.session_start_date_time);
-            mSessionDuration = (TextView)v.findViewById(R.id.session_duration);
+            mMainCardLayout = (RelativeLayout) v.findViewById(R.id.main_card_layout);
+            mSessionName = (TextView) v.findViewById(R.id.session_name);
+            mSessionIcon = (ImageView) v.findViewById(R.id.session_icon);
+            mNumOfFalls = (TextView) v.findViewById(R.id.number_of_falls);
+            mStartDateTime = (TextView) v.findViewById(R.id.session_start_date_time);
+            mSessionDuration = (TextView) v.findViewById(R.id.session_duration);
         }
     }
 
@@ -108,7 +108,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             });
         } else {
             viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
-            viewHolder.mSessionIcon.setColorFilter(Color.rgb(tmpSession.getColor1(),tmpSession.getColor2(),tmpSession.getColor3()));
+            viewHolder.mSessionIcon.setColorFilter(Color.rgb(tmpSession.getColor1(), tmpSession.getColor2(), tmpSession.getColor3()));
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

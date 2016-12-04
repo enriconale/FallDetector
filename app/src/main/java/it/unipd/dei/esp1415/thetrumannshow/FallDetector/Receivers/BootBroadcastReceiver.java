@@ -19,7 +19,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 
 /**
  * @author Enrico Naletto
- * Receiver that displays a simple notification after the phone boot process.
+ *         Receiver that displays a simple notification after the phone boot process.
  */
 public class BootBroadcastReceiver extends BroadcastReceiver {
     private final String APP_PACKAGE_NAME = "it.unipd.dei.esp1415.thetrumannshow.FallDetector";

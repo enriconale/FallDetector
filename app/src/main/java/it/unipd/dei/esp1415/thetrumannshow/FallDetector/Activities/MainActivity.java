@@ -20,8 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.FallObjectCreator;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.NewSessionNameDialogFragment;

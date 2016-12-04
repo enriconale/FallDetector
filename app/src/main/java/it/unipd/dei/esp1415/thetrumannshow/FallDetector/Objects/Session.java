@@ -6,7 +6,7 @@ import java.util.UUID;
 
 /**
  * @author Enrico Naletto
- * Class that represents a Session object
+ *         Class that represents a Session object
  */
 public class Session {
     private UUID mUUID;
@@ -25,9 +25,9 @@ public class Session {
         mStartDate = new Date();
         mDuration = 0;
         mFalls = new LinkedList<>();
-        mColor1 = (int)(Math.random() * 256);
-        mColor2 = (int)(Math.random() * 256);
-        mColor3 = (int)(Math.random() * 256);
+        mColor1 = (int) (Math.random() * 256);
+        mColor2 = (int) (Math.random() * 256);
+        mColor3 = (int) (Math.random() * 256);
         mNumberOfFalls = 0;
     }
 
@@ -60,16 +60,22 @@ public class Session {
         return mDuration;
     }
 
-    public int getColor1() {return mColor1;}
+    public int getColor1() {
+        return mColor1;
+    }
 
-    public int getColor2() {return mColor2;}
+    public int getColor2() {
+        return mColor2;
+    }
 
-    public int getColor3() {return mColor3;}
+    public int getColor3() {
+        return mColor3;
+    }
 
     public String getFormattedDuration() {
         int seconds = (int) (mDuration / (1000) % 60);
-        int minutes = (int) ((mDuration / (1000*60)) % 60);
-        int hours   = (int) ((mDuration / (1000*60*60)) % 24);
+        int minutes = (int) ((mDuration / (1000 * 60)) % 60);
+        int hours = (int) ((mDuration / (1000 * 60 * 60)) % 24);
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 

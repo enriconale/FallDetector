@@ -13,19 +13,19 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 /**
  * Copyright Eike Trumann 12.05.15
  * All rights reserved
- *
+ * <p>
  * The Delayed Location Provider requests a location from Googles FusedLocationProvider.
  * It is meant to use its own thread to not delay other parts of the application.
  */
 
-public class DelayedLocationProvider implements LocationListener{
+public class DelayedLocationProvider implements LocationListener {
     private final Fall mFall;
     private final GoogleApiClient mGoogleApiClient;
     private final FallObjectCreator mFallObjectCreator;
     private Context mAppContext;
 
     public DelayedLocationProvider(Fall f, GoogleApiClient apiClient, FallObjectCreator foc,
-                                   Context appContext){
+                                   Context appContext) {
         mFall = f;
         mGoogleApiClient = apiClient;
         mFallObjectCreator = foc;
@@ -48,7 +48,7 @@ public class DelayedLocationProvider implements LocationListener{
         mFallObjectCreator.locationFixed();
     }
 
-    private void unregisterListener(){
+    private void unregisterListener() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 }

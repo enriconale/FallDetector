@@ -15,7 +15,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 /**
  * @author Eike Trumann
  */
-public class FallObjectCreator implements Runnable{
+public class FallObjectCreator implements Runnable {
 
     private final GoogleApiClient mGoogleApiClient;
     private final Context mContext;
@@ -35,7 +35,7 @@ public class FallObjectCreator implements Runnable{
     public FallObjectCreator(LongRingBuffer timeBuffer, FloatRingBuffer xBuffer,
                              FloatRingBuffer yBuffer, FloatRingBuffer zBuffer,
                              Context context, GoogleApiClient googleApiClient,
-                             long start, long end){
+                             long start, long end) {
         this.timeBuffer = timeBuffer;
         this.xBuffer = xBuffer;
         this.yBuffer = yBuffer;
@@ -47,7 +47,7 @@ public class FallObjectCreator implements Runnable{
         mFallNameIndex++;
     }
 
-    public void run(){
+    public void run() {
         timeBuffer = timeBuffer.copy();
         xBuffer = xBuffer.copy();
         yBuffer = yBuffer.copy();
@@ -62,29 +62,29 @@ public class FallObjectCreator implements Runnable{
         mFallNameIndex = 0;
     }
 
-    private Fall constructFallObject(){
-        float [] xArr = xBuffer.readRange(mStart,mEnd);
-        float [] yArr = yBuffer.readRange(mStart,mEnd);
-        float [] zArr = zBuffer.readRange(mStart,mEnd);
-        return new Fall("Fall #" + mFallNameIndex ,new java.util.Date(), null, null ,xArr,yArr,
+    private Fall constructFallObject() {
+        float[] xArr = xBuffer.readRange(mStart, mEnd);
+        float[] yArr = yBuffer.readRange(mStart, mEnd);
+        float[] zArr = zBuffer.readRange(mStart, mEnd);
+        return new Fall("Fall #" + mFallNameIndex, new java.util.Date(), null, null, xArr, yArr,
                 zArr);
     }
 
-    void locationFixed(){
+    void locationFixed() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         String email = buildStringOfEmailAddresses(sharedPrefs);
 
         Intent send = new Intent(Intent.ACTION_SENDTO);
         String uriText = "mailto:" + Uri.encode(email) +
                 "?subject=" + Uri.encode(mContext.getString(R.string.fallen)) +
-                "&body=" + Uri.encode(mContext.getString(R.string.google_location) + mLastFall.getLatitude() + "," + mLastFall.getLongitude()+ mContext.getString(R.string.resolution));
+                "&body=" + Uri.encode(mContext.getString(R.string.google_location) + mLastFall.getLatitude() + "," + mLastFall.getLongitude() + mContext.getString(R.string.resolution));
         Uri uri = Uri.parse(uriText);
         send.setData(uri);
         send.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        try{
+        try {
             mContext.startActivity(send);
-        } catch (Exception e){
-            System.err.println("Could not Launch E-Mail-Application: "+e);
+        } catch (Exception e) {
+            System.err.println("Could not Launch E-Mail-Application: " + e);
         }
     }
 
