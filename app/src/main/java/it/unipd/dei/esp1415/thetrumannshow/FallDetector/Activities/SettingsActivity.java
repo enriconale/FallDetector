@@ -1,15 +1,14 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities;
 
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -32,10 +31,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static final String PREF_EMAIL_ADDRESS5 = "pref_email_address5";
     public static final String PREF_SESSION_DURATION = "pref_session_duration";
     private static Context mAppContext;
-    /**
-     * A preference value change listener that updates the preference's summary
-     * to reflect its new value.
-     */
+
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -43,12 +39,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 EditTextPreference e = (EditTextPreference) preference;
                 String title = e.getTitle().toString();
                 if (title.contains("#")) {
-                    if ("".equals(e.getText()) || e.getText() == null) {
+                    String val = (String) value;
+                    if ("".equals(val) || val == null) {
                         preference.setSummary(mAppContext.getString(R.string.pref_email_summary_nomailset));
                     } else {
-                        if (Helper.isValidEmailAddress(e.getText())) {
-                            preference.setSummary(e.getText());
+                        if (Helper.isValidEmailAddress(val)) {
+                            preference.setSummary(val);
                         } else {
+                            mAppContext.getSharedPreferences(e.getKey(), 0).edit().clear().apply();
                             preference.setSummary(R.string.pref_email_summary_nomailset);
                             ((EditTextPreference) preference).setText("");
                             Toast.makeText(mAppContext, R.string.pref_invalid_email, Toast.LENGTH_LONG)
@@ -74,24 +72,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     };
 
-    /**
-     * Helper method to determine if the device has an extra-large screen. For
-     * example, 10" tablets are extra-large.
-     */
     private static boolean isXLargeTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
-    /**
-     * Binds a preference's summary to its value. More specifically, when the
-     * preference's value is changed, its summary (line of text below the
-     * preference title) is updated to reflect the value. The summary is also
-     * immediately updated upon calling this method. The exact display format is
-     * dependent on the type of preference.
-     *
-     * @see #sBindPreferenceSummaryToValueListener
-     */
     private static void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
@@ -113,9 +98,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 new GeneralPreferenceFragment()).commit();
     }
 
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -136,27 +118,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return super.onMenuItemSelected(featureId, item);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean onIsMultiPane() {
         return isXLargeTablet(this);
     }
 
-    /**
-     * This method stops fragment injection in malicious applications.
-     * Make sure to deny any unknown fragments here.
-     */
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName);
     }
 
-    /**
-     * This fragment shows general preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
         @Override
@@ -165,10 +136,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.preferences);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
             bindPreferenceSummaryToValue(findPreference(PREF_EMAIL_ADDRESS1));
             bindPreferenceSummaryToValue(findPreference(PREF_EMAIL_ADDRESS2));
             bindPreferenceSummaryToValue(findPreference(PREF_EMAIL_ADDRESS3));
