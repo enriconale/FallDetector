@@ -4,128 +4,125 @@
     android:layout_height="match_parent"
     tools:context="it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SessionDetailsActivity">
 
-   <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    >
-
-
     <RelativeLayout
-        android:id="@+id/main_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        >
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/session_icon"
-         />
-
-    <TextView
-        android:id="@+id/session_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="32sp"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/session_icon"
-        android:layout_toEndOf="@id/session_icon"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp" />
-
-    </RelativeLayout>
-
-   <View
-       android:layout_width="match_parent"
-       android:layout_height="1dp"
-       android:layout_below="@id/main_layout"
-       android:background="#e0e0e0"
-       />
-
-
-       <RelativeLayout
-           android:id="@+id/date_time_header"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_below="@id/main_layout"
-           android:layout_marginTop="24dp">
-
-           <ImageView
-               android:id="@+id/date_time_icon"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginRight="16dp"
-               android:layout_marginEnd="16dp"
-               android:layout_centerVertical="true"
-               android:src="@mipmap/calendar_24dp"
-               android:contentDescription="@string/cardview_startdate"/>
-
-           <TextView
-               android:id="@+id/date_time"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_toRightOf="@+id/date_time_icon"
-               android:layout_toEndOf="@+id/date_time_icon"
-               android:layout_centerVertical="true"
-               android:textSize="24sp" />
-       </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/session_duration_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/date_time_header"
-        android:layout_marginTop="8dp">
-
-        <ImageView
-            android:id="@+id/session_duration_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/clock_24dp"
-            android:contentDescription="@string/cardview_duration"/>
-
-        <TextView
-            android:id="@+id/session_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/session_duration_icon"
-            android:layout_toEndOf="@+id/session_duration_icon"
-            android:layout_centerVertical="true"
-            android:textSize="24sp" />
-
-    </RelativeLayout>
-
-
-    <TextView
-        android:id="@+id/falls_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/session_duration_header"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
-        android:textSize="24sp"
-        android:text="@string/falls_list"
-        android:textStyle="bold"/>
-
-    <RelativeLayout
-        android:id="@+id/falls_list_container"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/falls_header">
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
-    </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/main_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/session_icon" />
+
+            <TextView
+                android:id="@+id/session_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/session_icon"
+                android:layout_toEndOf="@id/session_icon"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/main_layout"
+            android:background="#e0e0e0" />
+
+
+        <RelativeLayout
+            android:id="@+id/date_time_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_layout"
+            android:layout_marginTop="24dp">
+
+            <ImageView
+                android:id="@+id/date_time_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/calendar_24dp"
+                android:contentDescription="@string/cardview_startdate" />
+
+            <TextView
+                android:id="@+id/date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/date_time_icon"
+                android:layout_toEndOf="@+id/date_time_icon"
+                android:layout_centerVertical="true"
+                android:textSize="24sp" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/session_duration_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date_time_header"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:id="@+id/session_duration_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/clock_24dp"
+                android:contentDescription="@string/cardview_duration" />
+
+            <TextView
+                android:id="@+id/session_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/session_duration_icon"
+                android:layout_toEndOf="@+id/session_duration_icon"
+                android:layout_centerVertical="true"
+                android:textSize="24sp" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/falls_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/session_duration_header"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="24sp"
+            android:text="@string/falls_list"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/falls_list_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/falls_header">
+
+        </RelativeLayout>
 
     </RelativeLayout>
 </ScrollView>

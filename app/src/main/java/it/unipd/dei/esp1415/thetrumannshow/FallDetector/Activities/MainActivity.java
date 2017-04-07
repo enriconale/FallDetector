@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
                     Toast.LENGTH_LONG).show();
         }
 
-        mEmptyListMessage = (TextView)findViewById(R.id.empty_list_message);
-        mRecyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
+        mEmptyListMessage = (TextView) findViewById(R.id.empty_list_message);
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -170,9 +170,10 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
 
     /**
      * Gives a reference to the last opened MainActivity to permit code execution on the ui thread
+     *
      * @return the last used MainActivity
      */
-    public static Activity getLastActivity(){
+    public static Activity getLastActivity() {
         return mLastActivity;
     }
 }

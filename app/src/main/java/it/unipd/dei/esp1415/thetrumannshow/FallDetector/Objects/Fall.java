@@ -66,8 +66,13 @@ public class Fall {
     }
 
     public void setLocation(Location loc) {
-        mLatitude = loc.getLatitude();
-        mLongitude = loc.getLongitude();
+        if (loc != null) {
+            mLatitude = loc.getLatitude();
+            mLongitude = loc.getLongitude();
+        } else {
+            mLatitude = null;
+            mLongitude = null;
+        }
     }
 
     public boolean isEmailSent() {

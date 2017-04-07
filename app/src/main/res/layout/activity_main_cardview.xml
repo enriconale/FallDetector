@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
@@ -10,7 +9,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:orientation="horizontal"
-    card_view:cardCornerRadius="2dp" >
+    card_view:cardCornerRadius="2dp">
 
     <RelativeLayout
         android:id="@+id/main_card_layout"
@@ -22,7 +21,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/header_layout"
@@ -30,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="8dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <ImageView
                 android:contentDescription="@string/session_icon"
@@ -41,8 +40,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
                 android:layout_marginRight="4dp"
-                android:layout_marginEnd="4dp"
-                />
+                android:layout_marginEnd="4dp" />
 
             <TextView
                 android:id="@+id/session_name"
@@ -60,8 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/header_layout"
-            android:background="#e0e0e0"
-            />
+            android:background="#e0e0e0" />
 
         <RelativeLayout
             android:id="@+id/number_of_falls_header"
@@ -80,8 +77,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_centerVertical="true"
-                android:contentDescription="@string/cardview_falls"
-                />
+                android:contentDescription="@string/cardview_falls" />
 
             <TextView
                 android:id="@+id/number_of_falls"
@@ -90,7 +86,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/number_of_falls_icon"
                 android:layout_toEndOf="@+id/number_of_falls_icon"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
         </RelativeLayout>
 
@@ -111,7 +107,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_centerVertical="true"
-                android:contentDescription="@string/cardview_startdate"/>
+                android:contentDescription="@string/cardview_startdate" />
 
             <TextView
                 android:id="@+id/session_start_date_time"
@@ -141,8 +137,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_centerVertical="true"
-                android:contentDescription="@string/cardview_duration"
-                />
+                android:contentDescription="@string/cardview_duration" />
 
             <TextView
                 android:id="@+id/session_duration"
@@ -153,7 +148,7 @@
                 android:layout_toEndOf="@+id/session_duration_icon"
                 android:textSize="18sp" />
 
-            </RelativeLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

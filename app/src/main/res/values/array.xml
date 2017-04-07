@@ -5,7 +5,6 @@
         <item>Normal</item>
         <item>Fast</item>
     </string-array>
-
     <string-array name="rate_values">
         <item>slow</item>
         <item>normal</item>

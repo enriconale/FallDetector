@@ -83,24 +83,24 @@ public class FallDetailsActivity extends AppCompatActivity {
         mFallDateTextView = (TextView)findViewById(R.id.date_time);
         mFallDateTextView.setText(mDateFormatter.format(mFall.getDate()));
 
-        String resultString = Double.toString(mFall.getLatitude());
-        mFallLatitudeTextView = (TextView)findViewById(R.id.latitude);
-        mFallLatitudeTextView.setText(resultString);
-
-        resultString = Double.toString(mFall.getLongitude());
-        mFallLongitudeTextView = (TextView)findViewById(R.id.longitude);
-        mFallLongitudeTextView.setText(resultString);
-
-        mFallLocationHeader = (RelativeLayout)findViewById(R.id.fall_location_header);
-        mFallLocationHeader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", mFall.getLatitude(),
-                        mFall.getLongitude());
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(intent);
-            }
-        });
+//        String resultString = Double.toString(mFall.getLatitude());
+//        mFallLatitudeTextView = (TextView)findViewById(R.id.latitude);
+//        mFallLatitudeTextView.setText(resultString);
+//
+//        resultString = Double.toString(mFall.getLongitude());
+//        mFallLongitudeTextView = (TextView)findViewById(R.id.longitude);
+//        mFallLongitudeTextView.setText(resultString);
+//
+//        mFallLocationHeader = (RelativeLayout)findViewById(R.id.fall_location_header);
+//        mFallLocationHeader.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", mFall.getLatitude(),
+//                        mFall.getLongitude());
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+//                startActivity(intent);
+//            }
+//        });
 
         mGraphContainer = (RelativeLayout)findViewById(R.id.graph_container);
         ViewGroup.LayoutParams params = mGraphContainer.getLayoutParams();
@@ -118,16 +118,12 @@ public class FallDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_fall_details, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         switch (id) {
@@ -159,7 +155,6 @@ public class FallDetailsActivity extends AppCompatActivity {
         @Override
         @SuppressWarnings("deprecation")
         protected void onDraw(Canvas canvas) {
-
             super.onDraw(canvas);
             paint.setStyle(Paint.Style.FILL);
             paint.setStrokeWidth(3);
@@ -174,9 +169,6 @@ public class FallDetailsActivity extends AppCompatActivity {
                     (totalAcceleration)) + 50;
             int pixelsPerTimeUnit = getNumOfHorizontalPixelsPerTimeUnit(screenWidth);
             int pixelsPerAccUnit = getNumOfVerticalPixelsPerAccelerationUnit(screenHeight);
-
-
-
             int endOfPrecedentLine = screenHeight/2;
             double precedentStopY = totalAcceleration[0];
             int j = 1;

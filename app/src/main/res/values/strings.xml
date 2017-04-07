@@ -49,6 +49,7 @@
     <string name="pref_accelerometer_rate_title">Accelerometer update rate</string>
     <string name="pref_accelerometer_rate_summary">Set an appropriate update rate of the
         accelerometer.</string>
+    <string name="pref_accelerometer_rate_default">normal</string>
     <string name="pref_email_address_category_title">E-mail addresses</string>
     <string name="pref_email_address_category_summary">Set up to 5 email address to which send the
         notice of a fall.</string>

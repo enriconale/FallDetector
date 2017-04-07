@@ -1,69 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
     <PreferenceCategory
         android:key="button_general_category_key"
         android:title="@string/pref_general_category_title">
-
         <CheckBoxPreference
-            android:defaultValue="false"
             android:key="pref_daily_notification"
+            android:defaultValue="false"
             android:summary="@string/pref_daily_notification_summary"
             android:title="@string/pref_daily_notification_title" />
-
         <CheckBoxPreference
-            android:defaultValue="true"
             android:key="pref_ongoing_notification"
+            android:defaultValue="true"
             android:summary="@string/pref_ongoing_notification_summary"
             android:title="@string/pref_ongoing_notification_title" />
-
         <EditTextPreference
-            android:defaultValue="12"
             android:key="pref_session_duration"
+            android:defaultValue="12"
             android:numeric="integer"
             android:selectAllOnFocus="true"
             android:summary="@string/pref_session_duration_summary"
             android:title="@string/pref_session_duration_title" />
-
         <ListPreference
-            android:defaultValue="Normal"
+            android:key="pref_accelerometer_rate"
             android:entries="@array/rates"
             android:entryValues="@array/rate_values"
-            android:key="pref_accelerometer_rate"
+            android:defaultValue="@string/pref_accelerometer_rate_default"
             android:summary="@string/pref_accelerometer_rate_summary"
             android:title="@string/pref_accelerometer_rate_title" />
-
     </PreferenceCategory>
-
     <PreferenceCategory
         android:key="button_emails_category_key"
         android:summary="@string/pref_email_address_category_summary"
         android:title="@string/pref_email_address_category_title">
-
         <EditTextPreference
             android:key="pref_email_address1"
+            android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             android:title="@string/pref_email_address_title1" />
-
         <EditTextPreference
             android:key="pref_email_address2"
+            android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             android:title="@string/pref_email_address_title2" />
-
         <EditTextPreference
             android:key="pref_email_address3"
+            android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             android:title="@string/pref_email_address_title3" />
-
         <EditTextPreference
             android:key="pref_email_address4"
+            android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             android:title="@string/pref_email_address_title4" />
-
         <EditTextPreference
             android:key="pref_email_address5"
+            android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             android:title="@string/pref_email_address_title5" />
-
     </PreferenceCategory>
 </PreferenceScreen>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_toLeftOf="@+id/fall_hour"
             android:layout_toStartOf="@+id/fall_hour"
             android:id="@+id/mail_is_sent"
-            android:src="@mipmap/email_sent"/>
+            android:src="@mipmap/email_sent" />
 
         <ImageView
             android:id="@+id/fall_more_details"
@@ -35,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:src="@mipmap/arrow_right"
-            android:contentDescription="something"/>
+            android:contentDescription="something" />
 
         <TextView
             android:id="@+id/fall_hour"
@@ -48,7 +48,7 @@
             android:layout_marginEnd="2dp"
             android:textColor="#000000"
             android:text="12:45"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </RelativeLayout>
 

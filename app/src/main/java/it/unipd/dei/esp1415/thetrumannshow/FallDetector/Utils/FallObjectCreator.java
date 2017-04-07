@@ -54,8 +54,11 @@ public class FallObjectCreator implements Runnable {
         zBuffer = zBuffer.copy();
 
         mLastFall = constructFallObject();
-
-        new DelayedLocationProvider(mLastFall, mGoogleApiClient, this, mContext);
+        mLastFall.setLocation(null);
+        SessionsLab lab = SessionsLab.get(mContext);
+        lab.getRunningSession().addFall(mLastFall);
+        lab.saveFallInDatabase(mLastFall);
+//        new DelayedLocationProvider(mLastFall, mGoogleApiClient, this, mContext);
     }
 
     public static void resetFallNameCounter() {
