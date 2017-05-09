@@ -11,12 +11,8 @@ import java.util.Date;
 public class Fall {
     private final String mFallName;
     private final Date mDate;
-
     private Double mLatitude;
     private Double mLongitude;
-
-    private Address mAddress;
-
     private final float[] mXAcceleration;
     private final float[] mYAcceleration;
     private final float[] mZAcceleration;

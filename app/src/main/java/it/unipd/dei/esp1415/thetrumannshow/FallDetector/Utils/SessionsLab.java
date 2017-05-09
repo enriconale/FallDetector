@@ -36,7 +36,6 @@ public class SessionsLab {
     private ArrayList<Session> mSessionsList;
     private Session mRunningSession;
     private DataAcquisitionUnit mDataAcquisitionUnit;
-    NotificationManager mNotificationManager;
 
     //Private constructor
     private SessionsLab(Context appContext) {
@@ -45,8 +44,6 @@ public class SessionsLab {
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
                 java.util.Locale.getDefault());
         mSessionsList = mDatabaseManager.getAllSessionsFromDatabase();
-        mNotificationManager = (NotificationManager) mAppContext.getSystemService(Context
-                .NOTIFICATION_SERVICE);
     }
 
     //Public method used to get the unique instance of SessionsLab.
@@ -78,43 +75,12 @@ public class SessionsLab {
         return mDateFormatter;
     }
 
-    public NotificationManager getNotificationManager() {
-        return mNotificationManager;
-    }
-
     //Resumes the running session when paused, and accordingly changes the ongoing notification (if
     // present)
     public void resumeCurrentlyRunningSession() {
         mIsRunningSessionPlaying = true;
         mDataAcquisitionUnit.resume();
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mAppContext);
-        boolean userWantsOnGoingNotification = sp.getBoolean(SettingsActivity
-                .PREF_ONGOING_NOTIFICATION, true);
-        if (userWantsOnGoingNotification) {
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(mAppContext)
-                            .setSmallIcon(R.mipmap.notification_icon)
-                            .setContentTitle(mAppContext.getString(R.string.notification_title_text))
-                            .setContentText(mAppContext.getString(R.string
-                                    .notification_content_text))
-                            .setOngoing(true);
-
-            Intent resultIntent = new Intent(mAppContext, RunningSessionActivity.class);
-
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(mAppContext);
-            stackBuilder.addParentStack(RunningSessionActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            mBuilder.setContentIntent(resultPendingIntent);
-
-            mNotificationManager.notify(1, mBuilder.build());
-        }
+        PersistentNotificationManager.createPersistentNotificationForRunningSession(mAppContext);
     }
 
     //Pauses the running session, and accordingly changes the ongoing notification (if present)
@@ -122,33 +88,7 @@ public class SessionsLab {
         mIsRunningSessionPlaying = false;
         mDataAcquisitionUnit.detach();
         saveRunningSessionInDatabase();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mAppContext);
-        boolean userWantsOnGoingNotification = sp.getBoolean(SettingsActivity
-                .PREF_ONGOING_NOTIFICATION, true);
-        if (userWantsOnGoingNotification) {
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(mAppContext)
-                            .setSmallIcon(R.mipmap.notification_icon)
-                            .setContentTitle(mAppContext.getString(R.string.notification_title_text_paused))
-                            .setContentText(mAppContext.getString(R.string
-                                    .notification_content_text_paused))
-                            .setOngoing(true);
-
-            Intent resultIntent = new Intent(mAppContext, RunningSessionActivity.class);
-
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(mAppContext);
-            stackBuilder.addParentStack(RunningSessionActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            mBuilder.setContentIntent(resultPendingIntent);
-
-            mNotificationManager.notify(1, mBuilder.build());
-        }
+        PersistentNotificationManager.createPersistentNotificationForPausedSession(mAppContext);
     }
 
     //Stops and saves into the database the running session
@@ -158,12 +98,7 @@ public class SessionsLab {
         mHasRunningSession = false;
         mDataAcquisitionUnit.detach();
         mDataAcquisitionUnit = null;
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mAppContext);
-        boolean userWantsOnGoingNotification = sp.getBoolean(SettingsActivity
-                .PREF_ONGOING_NOTIFICATION, true);
-        if (userWantsOnGoingNotification) {
-            mNotificationManager.cancel(1);
-        }
+        PersistentNotificationManager.deletePersistentNotification(mAppContext);
         mRunningSession = null;
     }
 

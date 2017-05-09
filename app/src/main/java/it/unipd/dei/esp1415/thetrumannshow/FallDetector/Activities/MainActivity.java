@@ -28,6 +28,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Services.RunningSessionS
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.SessionAlreadyRunningDialogFragment;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.Helper;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.PersistentNotificationManager;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
@@ -129,34 +130,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         startService(intent);
         FallObjectCreator.resetFallNameCounter();
         SessionsLab.get(getApplicationContext()).saveRunningSessionInDatabase();
-
-        boolean userWantsOnGoingNotification = mSharedPreferences.getBoolean(SettingsActivity
-                .PREF_ONGOING_NOTIFICATION, true);
-
-        if (userWantsOnGoingNotification) {
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.mipmap.notification_icon)
-                            .setContentTitle(getApplicationContext().getString(R.string.notification_title_text))
-                            .setContentText(getApplicationContext().getString(R.string
-                                    .notification_content_text))
-                            .setOngoing(true);
-
-            Intent resultIntent = new Intent(this, RunningSessionActivity.class);
-
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            stackBuilder.addParentStack(RunningSessionActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.setContentIntent(resultPendingIntent);
-
-            NotificationManager mNotificationManager =
-                    SessionsLab.get(getApplicationContext()).getNotificationManager();
-            mNotificationManager.notify(1, mBuilder.build());
-        }
-
+        PersistentNotificationManager.createPersistentNotificationForRunningSession(getApplicationContext());
         mAdapter.notifyDataSetChanged();
     }
 
