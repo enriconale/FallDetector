@@ -23,7 +23,7 @@ import java.util.Locale;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.Helper;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.EmailValidator;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
@@ -76,7 +76,7 @@ public class FallDetailsActivity extends AppCompatActivity {
         }
 
         mFallNameTextView = (TextView)findViewById(R.id.fall_name);
-        mFallNameTextView.setText(Helper.getFormattedSessionName(mFall.getName()));
+        mFallNameTextView.setText(mFall.getName());
 
         mSessionNameTextView = (TextView)findViewById(R.id.session_name);
         mSessionNameTextView.setText(mSession.getSessionName());

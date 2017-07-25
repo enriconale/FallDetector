@@ -17,7 +17,7 @@ import android.support.v4.app.NavUtils;
 import android.widget.Toast;
 
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.Helper;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.EmailValidator;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
@@ -43,7 +43,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     if ("".equals(val) || val == null) {
                         preference.setSummary(mAppContext.getString(R.string.pref_email_summary_nomailset));
                     } else {
-                        if (Helper.isValidEmailAddress(val)) {
+                        if (EmailValidator.isValidEmailAddress(val)) {
                             preference.setSummary(val);
                         } else {
                             mAppContext.getSharedPreferences(e.getKey(), 0).edit().clear().apply();

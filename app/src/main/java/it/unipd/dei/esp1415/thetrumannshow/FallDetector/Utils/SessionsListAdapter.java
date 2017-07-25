@@ -89,7 +89,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         viewHolder.appContext = mAppContext;
 
 
-        viewHolder.mSessionName.setText(Helper.getFormattedSessionName(tmpSession.getSessionName()));
+        viewHolder.mSessionName.setText(tmpSession.getFormattedSessionName());
         viewHolder.mNumOfFalls.setText(Integer.toString(tmpSession.getNumberOfFalls()));
         viewHolder.mStartDateTime.setText(mDateFormatter.format(tmpSession.getDate()));
         viewHolder.mSessionDuration.setText(tmpSession.getFormattedDuration());

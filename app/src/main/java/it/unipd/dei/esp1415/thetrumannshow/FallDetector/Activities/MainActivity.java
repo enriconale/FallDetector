@@ -27,7 +27,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Services.RunningSessionService;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.SessionAlreadyRunningDialogFragment;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.Helper;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.EmailValidator;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.PersistentNotificationManager;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         setContentView(R.layout.activity_main);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (Helper.hasIncorrectEmailSettings(mSharedPreferences)) {
+        if (EmailValidator.hasIncorrectEmailSettings(mSharedPreferences)) {
             Toast.makeText(getApplicationContext(), R.string.insert_valid_email,
                     Toast.LENGTH_LONG).show();
         }
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
                 startActivity(intent);
                 break;
             case R.id.action_start_session:
-                if (Helper.hasIncorrectEmailSettings(mSharedPreferences)) {
+                if (EmailValidator.hasIncorrectEmailSettings(mSharedPreferences)) {
                     Toast.makeText(getApplicationContext(), R.string.insert_valid_email,
                             Toast.LENGTH_LONG).show();
                 } else {

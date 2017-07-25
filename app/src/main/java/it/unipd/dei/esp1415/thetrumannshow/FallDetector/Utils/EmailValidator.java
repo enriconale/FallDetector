@@ -9,10 +9,10 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SettingsActiv
 
 /**
  * @author Enrico Naletto
- *         Helper class
+ *         EmailValidator class
  */
 
-public class Helper {
+public class EmailValidator {
     public static boolean isValidEmailAddress(String email) {
         String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -20,15 +20,6 @@ public class Helper {
         Matcher matcher = pattern.matcher(email);
 
         return matcher.matches();
-    }
-
-    public static String getFormattedSessionName(String sessionName) {
-        int maxCharactersToShow = 30;
-        if (sessionName.length() > maxCharactersToShow) {
-            return sessionName.substring(0, maxCharactersToShow) + "...";
-        }
-
-        return sessionName;
     }
 
     public static boolean hasIncorrectEmailSettings(SharedPreferences sharedPreferences) {
@@ -43,10 +34,10 @@ public class Helper {
         String emailString5 = sharedPreferences.getString(SettingsActivity
                 .PREF_EMAIL_ADDRESS5, "");
 
-        return ((!Helper.isValidEmailAddress(emailString1))
-                && (!Helper.isValidEmailAddress(emailString2))
-                && (!Helper.isValidEmailAddress(emailString3))
-                && (!Helper.isValidEmailAddress(emailString4))
-                && (!Helper.isValidEmailAddress(emailString5)));
+        return ((!EmailValidator.isValidEmailAddress(emailString1))
+                && (!EmailValidator.isValidEmailAddress(emailString2))
+                && (!EmailValidator.isValidEmailAddress(emailString3))
+                && (!EmailValidator.isValidEmailAddress(emailString4))
+                && (!EmailValidator.isValidEmailAddress(emailString5)));
     }
 }

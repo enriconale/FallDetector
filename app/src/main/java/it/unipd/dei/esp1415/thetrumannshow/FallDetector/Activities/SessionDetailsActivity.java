@@ -21,7 +21,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.DeleteSessionDia
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.Helper;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.EmailValidator;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
@@ -61,7 +61,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         mSessionIcon = (ImageView)findViewById(R.id.session_icon);
 
 
-        mSessionName.setText(Helper.getFormattedSessionName(mSession.getSessionName()));
+        mSessionName.setText(mSession.getFormattedSessionName());
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
         mSessionDuration.setText(mSession.getFormattedDuration());
         mSessionIcon.setImageResource(R.mipmap.recording_icon);

@@ -27,7 +27,7 @@ import java.text.SimpleDateFormat;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.FallObjectCreator;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.Helper;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.EmailValidator;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
@@ -81,7 +81,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         mEditSessionNameImageView = (ImageView)findViewById(R.id.modify_session_name);
 
         try {
-            mSessionName.setText(Helper.getFormattedSessionName(mSession.getSessionName()));
+            mSessionName.setText(mSession.getFormattedSessionName());
             mEditSessionNameEditText.setText(mSession.getSessionName());
             mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
 
@@ -108,7 +108,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
                         mEditSessionNameEditText.setVisibility(View.GONE);
                         String newName = mEditSessionNameEditText.getText().toString();
                         mSession.setSessionName(newName);
-                        mSessionName.setText(Helper.getFormattedSessionName(newName));
+                        mSessionName.setText(mSession.getFormattedSessionName());
                         mEditSessionNameEditText.setText(newName);
                         mEditingName = false;
                         SessionsLab.get(getApplicationContext()).saveRunningSessionInDatabase();

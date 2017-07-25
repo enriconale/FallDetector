@@ -52,6 +52,15 @@ public class Session {
         return mSessionName;
     }
 
+    public String getFormattedSessionName() {
+        int maxCharactersToShow = 30;
+        if (mSessionName.length() > maxCharactersToShow) {
+            return mSessionName.substring(0, maxCharactersToShow) + "...";
+        }
+
+        return mSessionName;
+    }
+
     public Date getDate() {
         return mStartDate;
     }
