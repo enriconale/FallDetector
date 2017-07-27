@@ -22,11 +22,11 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
  *         Receiver that displays a simple notification after the phone boot process.
  */
 public class BootBroadcastReceiver extends BroadcastReceiver {
-    private final String APP_PACKAGE_NAME = "it.unipd.dei.esp1415.thetrumannshow.FallDetector";
-    private final String LAST_NOTIFICATION_DATE_KEY = "it.unipd.dei.esp1415.thetrumannshow" +
+    private static final String APP_PACKAGE_NAME = "it.unipd.dei.esp1415.thetrumannshow.FallDetector";
+    private static final String LAST_NOTIFICATION_DATE_KEY = "it.unipd.dei.esp1415.thetrumannshow" +
             ".FallDetector.lastNotificationDate";
-    private final long TWELVE_HOURS = 43200000;
-    private final long FIVE_SECONDS = 5000;
+    private static final long TWELVE_HOURS = 43200000;
+    private static final long FIVE_SECONDS = 5000;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -62,7 +62,8 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
             mBuilder.setContentIntent(resultPendingIntent);
 
             NotificationManager mNotificationManager =
-                    SessionsLab.get(context).getNotificationManager();
+                    (NotificationManager) context.getSystemService(Context
+                            .NOTIFICATION_SERVICE);
             mNotificationManager.notify(2, mBuilder.build());
 
             prefs.edit().putLong(LAST_NOTIFICATION_DATE_KEY, today).apply();

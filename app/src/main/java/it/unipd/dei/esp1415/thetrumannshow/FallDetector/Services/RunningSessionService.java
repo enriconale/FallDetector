@@ -18,11 +18,11 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
  *         the maximum duration set by the user.
  */
 public class RunningSessionService extends IntentService {
-    private final long ONE_HOUR_IN_MILLIS = 3600000;
+    private static final long ONE_HOUR_IN_MILLIS = 3600000;
     private Timer mTimer;
     private long mExecutionTime = 0;
     private SessionsLab mSessionsLab;
-    long mMaxSessionDuration;
+    private long mMaxSessionDuration;
 
     public RunningSessionService() {
         super("RunningSessionService");
