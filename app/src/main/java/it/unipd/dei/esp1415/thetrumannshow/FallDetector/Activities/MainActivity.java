@@ -38,11 +38,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
     private static final String NEW_SESSION_DIALOG = "new_session_dialog";
     private static final String SESSION_RUNNING_DIALOG = "session_running_dialog";
 
-
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<Session> mSessionsList;
     private TextView mEmptyListMessage;
     private SharedPreferences mSharedPreferences;
 
@@ -62,11 +58,11 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
         }
 
         mEmptyListMessage = (TextView) findViewById(R.id.empty_list_message);
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mSessionsList = SessionsLab.get(getApplicationContext()).getSessions();
+        ArrayList<Session> mSessionsList = SessionsLab.get(getApplicationContext()).getSessions();
 
         mAdapter = new SessionsListAdapter(mSessionsList, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
@@ -122,8 +118,7 @@ public class MainActivity extends AppCompatActivity implements NewSessionNameDia
     @Override
     public void onReturnValueFromNewSessionNameDialog(String sessionName) {
         mEmptyListMessage.setVisibility(View.GONE);
-        Session newSession = new Session();
-        newSession.setSessionName(sessionName);
+        Session newSession = new Session.Builder().sessionName(sessionName).build();
         SessionsLab.get(getApplicationContext()).getSessions().add(0, newSession);
         SessionsLab.get(getApplicationContext()).createNewRunningSession(newSession);
         Intent intent = new Intent(this, RunningSessionService.class);

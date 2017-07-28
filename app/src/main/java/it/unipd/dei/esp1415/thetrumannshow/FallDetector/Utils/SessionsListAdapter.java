@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.RunningSessionActivity;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SessionDetailsActivity;
@@ -47,10 +49,9 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
         protected Runnable mUpdateTimeTask = new Runnable() {
             public void run() {
                 mSessionDuration.setText(session.getFormattedDuration());
-                mNumOfFalls.setText(Integer.toString(session.getFalls().size()));
-
+                Locale currentLocale = CurrentLocale.getCurrentLocale(appContext);
+                mNumOfFalls.setText(String.format(currentLocale, "%d", session.getNumberOfFalls()));
                 mHandler.postDelayed(mUpdateTimeTask, 200);
-
             }
         };
 
@@ -90,7 +91,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
 
 
         viewHolder.mSessionName.setText(tmpSession.getFormattedSessionName());
-        viewHolder.mNumOfFalls.setText(Integer.toString(tmpSession.getNumberOfFalls()));
+        viewHolder.mNumOfFalls.setText(String.format(CurrentLocale.getCurrentLocale(mAppContext), "%d", tmpSession.getNumberOfFalls()));
         viewHolder.mStartDateTime.setText(mDateFormatter.format(tmpSession.getDate()));
         viewHolder.mSessionDuration.setText(tmpSession.getFormattedDuration());
         viewHolder.mSessionIcon.clearColorFilter();
@@ -108,7 +109,7 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
             });
         } else {
             viewHolder.mSessionIcon.setImageResource(R.mipmap.recording_icon);
-            viewHolder.mSessionIcon.setColorFilter(Color.rgb(tmpSession.getColor1(), tmpSession.getColor2(), tmpSession.getColor3()));
+            viewHolder.mSessionIcon.setColorFilter(tmpSession.getIconColorRgbValue());
             viewHolder.mMainCardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

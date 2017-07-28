@@ -45,7 +45,6 @@ public class NewSessionNameDialogFragment extends DialogFragment {
         });
 
         builder.setTitle(R.string.new_session_name_dialog_title);
-
         builder.setPositiveButton(R.string.new_session_name_dialog_positive_button,
                 new DialogInterface.OnClickListener() {
             @Override

@@ -1,7 +1,6 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
@@ -21,7 +20,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.DeleteSessionDia
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.EmailValidator;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.CurrentLocale;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
@@ -47,7 +46,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         setContentView(R.layout.activity_session_details);
 
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy\nHH:mm",
-                java.util.Locale.getDefault());
+                CurrentLocale.getCurrentLocale(getApplicationContext()));
 
         mSessionPositionInList = getIntent().getExtras().getInt(SessionsListAdapter.SESSION_DETAILS);
         mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mSessionPositionInList);
@@ -65,8 +64,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         mSessionCreationDate.setText(mDateFormatter.format(mSession.getDate()));
         mSessionDuration.setText(mSession.getFormattedDuration());
         mSessionIcon.setImageResource(R.mipmap.recording_icon);
-        mSessionIcon.setColorFilter(Color.rgb(mSession.getColor1(), mSession.getColor2(),
-                mSession.getColor3()));
+        mSessionIcon.setColorFilter(mSession.getIconColorRgbValue());
 
         RelativeLayout fallsListContainer = (RelativeLayout)findViewById(R.id.falls_list_container);
         LinearLayout itemsWrapper = new LinearLayout(getApplicationContext());

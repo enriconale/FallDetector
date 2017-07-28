@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.IconColor;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
@@ -23,7 +24,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 /**
  * @author Alessandro Fuser
  */
-public class DatabaseManager {
+public class SessionDbManager {
 
     private static AppDatabaseHelper mDbHelper;
     private SQLiteDatabase mDatabase;
@@ -31,7 +32,7 @@ public class DatabaseManager {
     private Context mAppContext;
 
 
-    public DatabaseManager(Context ctx) {
+    public SessionDbManager(Context ctx) {
         mAppContext = ctx;
         mContentValues = new ContentValues();
         mDbHelper = AppDatabaseHelper.getInstance(ctx);
@@ -44,9 +45,7 @@ public class DatabaseManager {
         mContentValues.put(AppDatabaseHelper.SESSION_DATE, SessionsLab.get(mAppContext).getDateFormat().format
                 (session.getDate()));
         mContentValues.put(AppDatabaseHelper.SESSION_DURATION, session.getDuration());
-        mContentValues.put(AppDatabaseHelper.SESSION_ICON_COLOR_1, session.getColor1());
-        mContentValues.put(AppDatabaseHelper.SESSION_ICON_COLOR_2, session.getColor2());
-        mContentValues.put(AppDatabaseHelper.SESSION_ICON_COLOR_3, session.getColor3());
+        mContentValues.put(AppDatabaseHelper.SESSION_ICON_COLOR, session.getIconColorRgbValue());
         mContentValues.put(AppDatabaseHelper.SESSION_NUMBER_OF_FALLS, session.getNumberOfFalls());
 
         try {
@@ -178,19 +177,19 @@ public class DatabaseManager {
                 .SESSION_DURATION));
 
         int sessionIconColor1 = cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper
-                .SESSION_ICON_COLOR_1));
-
-        int sessionIconColor2 = cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper
-                .SESSION_ICON_COLOR_2));
-
-        int sessionIconColor3 = cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper
-                .SESSION_ICON_COLOR_3));
+                .SESSION_ICON_COLOR));
 
         int sessionNumberOfFalls = cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper
                 .SESSION_NUMBER_OF_FALLS));
 
-        return new Session(sessionUUID, sessionName, sessionDate, sessionDuration,
-                sessionIconColor1, sessionIconColor2, sessionIconColor3, sessionNumberOfFalls);
+        return new Session.Builder()
+                .UUID(sessionUUID)
+                .sessionName(sessionName)
+                .startDate(sessionDate)
+                .duration(sessionDuration)
+                .iconColor(sessionIconColor1)
+                .numberOfFalls(sessionNumberOfFalls)
+                .build();
     }
 
     private Fall getFallFromCursor(Cursor cursor) {

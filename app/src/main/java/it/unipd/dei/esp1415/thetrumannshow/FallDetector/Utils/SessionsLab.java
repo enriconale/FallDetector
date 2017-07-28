@@ -1,24 +1,14 @@
 package it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.Context;
-import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.RunningSessionActivity;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SettingsActivity;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Database.DatabaseManager;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Database.SessionDbManager;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 
 /**
  * @author Enrico Naletto
@@ -31,7 +21,7 @@ public class SessionsLab {
     private static boolean mIsRunningSessionAlreadySavedInDatabase = false;
     private static SimpleDateFormat mDateFormatter;
     private static SessionsLab sSessionsLab;
-    private static DatabaseManager mDatabaseManager;
+    private static SessionDbManager mSessionDbManager;
     private Context mAppContext;
     private ArrayList<Session> mSessionsList;
     private Session mRunningSession;
@@ -40,10 +30,10 @@ public class SessionsLab {
     //Private constructor
     private SessionsLab(Context appContext) {
         mAppContext = appContext;
-        mDatabaseManager = new DatabaseManager(appContext);
+        mSessionDbManager = new SessionDbManager(appContext);
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
                 java.util.Locale.getDefault());
-        mSessionsList = mDatabaseManager.getAllSessionsFromDatabase();
+        mSessionsList = mSessionDbManager.getAllSessionsFromDatabase();
     }
 
     //Public method used to get the unique instance of SessionsLab.
@@ -111,25 +101,25 @@ public class SessionsLab {
     }
 
     public LinkedList<Fall> getFallsOfSession(Session session) {
-        return mDatabaseManager.getFallsFromDatabase(session);
+        return mSessionDbManager.getFallsFromDatabase(session);
     }
 
     //Saves (or updates in case it has been already saved) the running session into the database
     public void saveRunningSessionInDatabase() {
         if (mIsRunningSessionAlreadySavedInDatabase) {
-            mDatabaseManager.updateRunningSessionInDatabase();
+            mSessionDbManager.updateRunningSessionInDatabase();
         } else {
-            mDatabaseManager.saveSession(mRunningSession);
+            mSessionDbManager.saveSession(mRunningSession);
             mIsRunningSessionAlreadySavedInDatabase = true;
         }
 
     }
 
     public void saveFallInDatabase(Fall fall) {
-        mDatabaseManager.saveFall(fall);
+        mSessionDbManager.saveFall(fall);
     }
 
     public void deleteSessionFromDatabase(Session session) {
-        mDatabaseManager.deleteSession(session);
+        mSessionDbManager.deleteSession(session);
     }
 }

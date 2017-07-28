@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
 
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.CurrentLocale;
+
 /**
  * @author Enrico Naletto
  *         Class that represents a Session object
@@ -14,34 +16,17 @@ public class Session {
     private Date mStartDate;
     private long mDuration;
     private LinkedList<Fall> mFalls;
-    private int mColor1;
-    private int mColor2;
-    private int mColor3;
+    private int mIconColor;
     private int mNumberOfFalls;
 
-    public Session() {
-        mUUID = UUID.randomUUID();
-        mSessionName = "";
-        mStartDate = new Date();
-        mDuration = 0;
-        mFalls = new LinkedList<>();
-        mColor1 = (int) (Math.random() * 256);
-        mColor2 = (int) (Math.random() * 256);
-        mColor3 = (int) (Math.random() * 256);
-        mNumberOfFalls = 0;
-    }
-
-    public Session(UUID uuid, String sessionName, Date date, long duration, int color1,
-                   int color2, int color3, int numberOfFalls) {
-        mUUID = uuid;
-        mSessionName = sessionName;
-        mStartDate = date;
-        mDuration = duration;
-        mFalls = new LinkedList<>();
-        mColor1 = color1;
-        mColor2 = color2;
-        mColor3 = color3;
-        mNumberOfFalls = numberOfFalls;
+    private Session(Builder builder) {
+        mUUID = builder.mUUID;
+        mSessionName = builder.mSessionName;
+        mStartDate = builder.mStartDate;
+        mFalls = builder.mFalls;
+        mDuration = builder.mDuration;
+        mIconColor = builder.mIconColor;
+        mNumberOfFalls = builder.mNumberOfFalls;
     }
 
     public UUID getUUID() {
@@ -69,16 +54,8 @@ public class Session {
         return mDuration;
     }
 
-    public int getColor1() {
-        return mColor1;
-    }
-
-    public int getColor2() {
-        return mColor2;
-    }
-
-    public int getColor3() {
-        return mColor3;
+    public int getIconColorRgbValue() {
+        return mIconColor;
     }
 
     public String getFormattedDuration() {
@@ -112,5 +89,65 @@ public class Session {
 
     public void setDuration(long duration) {
         mDuration = duration;
+    }
+
+    public static class Builder {
+        private UUID mUUID;
+        private String mSessionName;
+        private Date mStartDate;
+        private LinkedList<Fall> mFalls;
+        private long mDuration;
+        private int mIconColor;
+        private int mNumberOfFalls;
+
+        public Builder() {
+            mUUID = UUID.randomUUID();
+            mSessionName = "";
+            mStartDate = new Date();
+            mDuration = 0;
+            mFalls = new LinkedList<>();
+            mIconColor = IconColor.getRandomColor();
+            mNumberOfFalls = 0;
+        }
+
+        public Builder UUID(UUID val) {
+            mUUID = val;
+            return this;
+        }
+
+        public Builder sessionName(String val) {
+            mSessionName = val;
+            return this;
+        }
+
+        public Builder startDate(Date val) {
+            mStartDate = val;
+            return this;
+        }
+
+        public Builder falls(LinkedList<Fall> val) {
+            mFalls = val;
+            mNumberOfFalls = mFalls.size();
+            return this;
+        }
+
+        public Builder duration(long val) {
+            mDuration = val;
+            return this;
+        }
+
+        public Builder iconColor(int val) {
+            mIconColor = val;
+            return this;
+        }
+
+        public Builder numberOfFalls(int val) {
+            mNumberOfFalls = val;
+            return this;
+        }
+
+        public Session build() {
+            return new Session(this);
+        }
     }
 }

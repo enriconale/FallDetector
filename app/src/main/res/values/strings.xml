@@ -6,85 +6,63 @@
     <string name="cardview_startdate">Start:</string>
     <string name="cardview_duration">Duration:</string>
     <string name="empty_list_message">Press the \"+\" button to start a new session.</string>
-
     <string name="new_session_name_dialog_title">Set a name</string>
     <string name="new_session_name_dialog_new_session">New session</string>
     <string name="new_session_name_dialog_positive_button">OK</string>
     <string name="new_session_name_dialog_negative_button">Cancel</string>
-
     <string name="session_running_dialog_title">Warning</string>
-    <string name="session_running_dialog_message">There is already a running session. Do
-        you want to stop it and start a new one?</string>
+    <string name="session_running_dialog_message">There is already a running session. Do you want to stop it and start a new one?</string>
     <string name="session_running_dialog_positive_button">Yes</string>
     <string name="session_running_dialog_negative_button">No</string>
-    <string name="insert_valid_email">Please insert at least one valid e-mail address in the
-        application settings</string>
-
+    <string name="insert_valid_email">Please insert at least one valid e-mail address in the application settings</string>
     <string name="session_icon">Session icon.</string>
     <string name="title_activity_fall_details">Fall Details</string>
-
     <string name="title_activity_session_details">Session Details</string>
     <string name="action_delete_session">Delete session</string>
     <string name="falls_list">Falls list:</string>
-    <string name="delete_session_dialog_message">Do you really want to delete this session and
-        all its falls?</string>
-
+    <string name="delete_session_dialog_message">Do you really want to delete this session and all its falls?</string>
     <string name="title_activity_running_session">Running Session</string>
     <string name="action_pause_resume_session">Pause or resume the session</string>
     <string name="action_stop_session">Stop the session</string>
     <string name="live_data_header">Live data from accelerometer:</string>
-    <string name="x_axis">x-Axis: </string>
-    <string name="y_axis">y-Axis: </string>
-    <string name="z_axis">z-Axis: </string>
-
+    <string name="x_axis">x-Axis: %1$f</string>
+    <string name="y_axis">y-Axis: %1$f</string>
+    <string name="z_axis">z-Axis: %1$f</string>
     <string name="database_exception">An error occurred while writing into the database.</string>
-
     <string name="pref_general_category_title">General</string>
     <string name="pref_daily_notification_title">Daily notification</string>
-    <string name="pref_daily_notification_summary">Let the app notify you to start a new session
-        every day.</string>
+    <string name="pref_daily_notification_summary">Let the app notify you to start a new session every day.</string>
     <string name="pref_session_duration_title">Maximum session duration</string>
-    <string name="pref_session_duration_summary">Set a default maximum limit in hours for a session
-        duration.</string>
+    <string name="pref_session_duration_summary">Set a default maximum limit in hours for a session duration.</string>
     <string name="pref_accelerometer_rate_title">Accelerometer update rate</string>
-    <string name="pref_accelerometer_rate_summary">Set an appropriate update rate of the
-        accelerometer.</string>
+    <string name="pref_accelerometer_rate_summary">Set an appropriate update rate of the accelerometer.</string>
     <string name="pref_accelerometer_rate_default">normal</string>
     <string name="pref_email_address_category_title">E-mail addresses</string>
-    <string name="pref_email_address_category_summary">Set up to 5 email address to which send the
-        notice of a fall.</string>
+    <string name="pref_email_address_category_summary">Set up to 5 email address to which send the notice of a fall.</string>
     <string name="pref_email_address_title1">Address #1</string>
     <string name="pref_email_address_title2">Address #2</string>
     <string name="pref_email_address_title3">Address #3</string>
     <string name="pref_email_address_title4">Address #4</string>
     <string name="pref_email_address_title5">Address #5</string>
     <string name="pref_email_summary_nomailset">Empty</string>
-    <string name="pref_invalid_session_duration">You inserted an invalid number! Setting
-        reset to 12 hours.</string>
+    <string name="pref_invalid_session_duration">You inserted an invalid number! Setting reset to 12 hours.</string>
     <string name="pref_invalid_email">E-mail address not valid.</string>
-
     <string name="pref_ongoing_notification_title">Ongoing notification</string>
-    <string name="pref_ongoing_notification_summary">Let the app show an ongoing
-        notification when you start a new session.</string>
-
+    <string name="pref_ongoing_notification_summary">Let the app show an ongoing notification when you start a new session.</string>
     <string name="fall_latitude">Latitude: </string>
     <string name="fall_longitude">Longitude: </string>
     <string name="location_icon_description">Location</string>
     <string name="graph_header">Acceleration graph:</string>
-
     <string name="register_fall_event">REGISTERED FALL EVENT</string>
     <string name="error_deleting_session">An error occurred while deleting the session</string>
     <string name="error_updating_database">Error updating database</string>
     <string name="fallen">I fell right now</string>
     <string name="google_location">Come get me at www.google.it/maps/@</string>
     <string name="resolution">,15z</string>
-
     <string name="notification_title_text">Fall Detector active</string>
     <string name="notification_content_text">I\'m detecting all your falls</string>
     <string name="notification_title_text_paused">Fall Detector currently paused</string>
     <string name="notification_content_text_paused">Tap to open the application</string>
     <string name="boot_notification_title">You should start a new session</string>
     <string name="boot_notification_text">Tap to open Fall Detector and start a new session</string>
-
-
 </resources>

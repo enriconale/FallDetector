@@ -11,6 +11,7 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -142,11 +143,9 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_running_session, menu);
         if (SessionsLab.get(getApplicationContext()).isRunningSessionPlaying()) {
-            menu.getItem(0).setIcon(getResources()
-                    .getDrawable(R.mipmap.action_pause_circle_outline));
+            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.mipmap.action_pause_circle_outline));
         } else {
-            menu.getItem(0).setIcon(getResources()
-                    .getDrawable(R.mipmap.action_play_circle_outline));
+            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.mipmap.action_play_circle_outline));
         }
         return true;
     }
@@ -161,10 +160,10 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         switch (id) {
             case R.id.action_pause_resume_session:
                 if (SessionsLab.get(getApplicationContext()).isRunningSessionPlaying()) {
-                    item.setIcon(getResources().getDrawable(R.mipmap.action_play_circle_outline));
+                    item.setIcon(ContextCompat.getDrawable(this, R.mipmap.action_play_circle_outline));
                     SessionsLab.get(getApplicationContext()).pauseCurrentlyRunningSession();
                 } else {
-                    item.setIcon(getResources().getDrawable(R.mipmap.action_pause_circle_outline));
+                    item.setIcon(ContextCompat.getDrawable(this, R.mipmap.action_pause_circle_outline));
                     SessionsLab.get(getApplicationContext()).resumeCurrentlyRunningSession();
                 }
                 break;
@@ -211,12 +210,9 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
         float xAxisValue = event.values[0];
         float yAxisValue = event.values[1];
         float zAxisValue = event.values[2];
-        mAccXAxis.setText(getApplicationContext().getString(R.string.x_axis) +
-                String.format("  %.2f", xAxisValue));
-        mAccYAxis.setText(getApplicationContext().getString(R.string.y_axis) +
-                String.format("  %.2f", yAxisValue));
-        mAccZAxis.setText(getApplicationContext().getString(R.string.z_axis) +
-                String.format("  %.2f", zAxisValue));
+        mAccXAxis.setText(String.format(getApplicationContext().getString(R.string.x_axis), xAxisValue));
+        mAccYAxis.setText(String.format(getApplicationContext().getString(R.string.y_axis), yAxisValue));
+        mAccZAxis.setText(String.format(getApplicationContext().getString(R.string.z_axis), zAxisValue));
 
     }
 

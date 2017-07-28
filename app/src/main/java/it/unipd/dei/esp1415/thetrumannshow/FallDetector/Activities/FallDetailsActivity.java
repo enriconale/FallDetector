@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,12 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
-import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.EmailValidator;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
@@ -67,12 +64,10 @@ public class FallDetailsActivity extends AppCompatActivity {
         mSessionIcon.setImageResource(R.mipmap.recording_icon);
         if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {
             if (mSessionPositionInList != 0) {
-                mSessionIcon.setColorFilter(Color.rgb(mSession.getColor1(), mSession.getColor2(),
-                        mSession.getColor3()));
+                mSessionIcon.setColorFilter(mSession.getIconColorRgbValue());
             }
         } else {
-            mSessionIcon.setColorFilter(Color.rgb(mSession.getColor1(), mSession.getColor2(),
-                    mSession.getColor3()));
+            mSessionIcon.setColorFilter(mSession.getIconColorRgbValue());
         }
 
         mFallNameTextView = (TextView)findViewById(R.id.fall_name);

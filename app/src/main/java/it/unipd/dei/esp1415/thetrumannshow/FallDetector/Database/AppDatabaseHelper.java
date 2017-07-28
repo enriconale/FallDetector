@@ -20,9 +20,7 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
     public static final String SESSION_NAME = "name";
     public static final String SESSION_DATE = "date";
     public static final String SESSION_DURATION = "duration";
-    public static final String SESSION_ICON_COLOR_1 = "icon_color_1";
-    public static final String SESSION_ICON_COLOR_2 = "icon_color_2";
-    public static final String SESSION_ICON_COLOR_3 = "icon_color_3";
+    public static final String SESSION_ICON_COLOR = "icon_color";
     public static final String SESSION_NUMBER_OF_FALLS = "number_of_falls";
 
     //definition of variables for the column of fall table
@@ -44,9 +42,7 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
             + SESSION_NAME + " text, "
             + SESSION_DATE + " text, "
             + SESSION_DURATION + " integer, "
-            + SESSION_ICON_COLOR_1 + " integer, "
-            + SESSION_ICON_COLOR_2 + " integer, "
-            + SESSION_ICON_COLOR_3 + " integer, "
+            + SESSION_ICON_COLOR + " integer, "
             + SESSION_NUMBER_OF_FALLS + " integer);";
 
     //creation of the fall table

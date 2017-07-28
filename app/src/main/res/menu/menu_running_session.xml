@@ -2,18 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.RunningSessionActivity">
-
     <item
         android:id="@+id/action_pause_resume_session"
         android:title="@string/action_pause_resume_session"
         app:showAsAction="ifRoom" />
-
     <item
         android:id="@+id/action_stop_session"
         android:title="@string/action_stop_session"
         android:icon="@mipmap/action_stop_circle_outline"
         app:showAsAction="ifRoom" />
-
     <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
