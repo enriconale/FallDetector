@@ -11,6 +11,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Database.FallDbManager;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 
 /**
@@ -51,8 +52,9 @@ public class DelayedLocationProvider implements LocationListener {
     public void onLocationChanged(Location location) {
         mFall.setLocation(location);
         SessionsLab lab = SessionsLab.get(mAppContext);
+        FallDbManager fallDbManager = new FallDbManager(mAppContext);
+        fallDbManager.saveFall(mFall);
         lab.getRunningSession().addFall(mFall);
-        lab.saveFallInDatabase(mFall);
         unregisterListener();
 
         mFallObjectCreator.locationFixed();

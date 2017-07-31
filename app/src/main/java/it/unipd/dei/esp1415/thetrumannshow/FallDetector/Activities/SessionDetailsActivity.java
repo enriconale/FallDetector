@@ -16,6 +16,8 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Database.FallDbManager;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Database.SessionDbManager;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Dialogs.DeleteSessionDialog;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
@@ -51,7 +53,8 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         mSessionPositionInList = getIntent().getExtras().getInt(SessionsListAdapter.SESSION_DETAILS);
         mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mSessionPositionInList);
 
-        LinkedList<Fall> listOfFalls = SessionsLab.get(getApplicationContext()).getFallsOfSession(mSession);
+        FallDbManager fallDbManager = new FallDbManager(getApplicationContext());
+        LinkedList<Fall> listOfFalls = fallDbManager.getFallsFromDatabase(mSession);
         mSession.setListOfFalls(listOfFalls);
 
         mSessionName = (TextView)findViewById(R.id.session_name);
@@ -132,7 +135,8 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
     public void onDeleteSessionDialogPositiveClick() {
         SessionsLab tmp = SessionsLab.get(getApplicationContext());
         tmp.getSessions().remove(mSessionPositionInList);
-        tmp.deleteSessionFromDatabase(mSession);
+        SessionDbManager sessionDbManager = new SessionDbManager(getApplicationContext());
+        sessionDbManager.deleteSession(mSession);
         NavUtils.navigateUpFromSameTask(this);
     }
 

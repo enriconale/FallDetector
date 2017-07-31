@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Activities.SettingsActivity;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Database.FallDbManager;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 
@@ -56,8 +57,9 @@ public class FallObjectCreator implements Runnable {
         mLastFall = constructFallObject();
         mLastFall.setLocation(null);
         SessionsLab lab = SessionsLab.get(mContext);
+        FallDbManager fallDbManager = new FallDbManager(mContext);
         lab.getRunningSession().addFall(mLastFall);
-        lab.saveFallInDatabase(mLastFall);
+        fallDbManager.saveFall(mLastFall);
 //        new DelayedLocationProvider(mLastFall, mGoogleApiClient, this, mContext);
     }
 

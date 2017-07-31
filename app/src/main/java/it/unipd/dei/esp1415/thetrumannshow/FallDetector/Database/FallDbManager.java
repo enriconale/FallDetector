@@ -25,7 +25,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
  */
 public class FallDbManager {
 
-    private static AppDatabaseHelper mDbHelper;
+    private AppDatabaseHelper mDbHelper;
     private SQLiteDatabase mDatabase;
     private ContentValues mContentValues;
     private Context mAppContext;
@@ -34,7 +34,7 @@ public class FallDbManager {
     public FallDbManager(Context ctx) {
         mAppContext = ctx;
         mContentValues = new ContentValues();
-        mDbHelper = AppDatabaseHelper.getInstance(ctx);
+        mDbHelper = new AppDatabaseHelper(ctx);
     }
 
     public void saveFall(Fall fall) {

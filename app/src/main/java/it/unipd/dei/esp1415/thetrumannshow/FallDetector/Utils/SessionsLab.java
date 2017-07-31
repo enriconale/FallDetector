@@ -21,7 +21,7 @@ public class SessionsLab {
     private static boolean mIsRunningSessionAlreadySavedInDatabase = false;
     private static SimpleDateFormat mDateFormatter;
     private static SessionsLab sSessionsLab;
-    private static SessionDbManager mSessionDbManager;
+    private SessionDbManager mSessionDbManager;
     private Context mAppContext;
     private ArrayList<Session> mSessionsList;
     private Session mRunningSession;
@@ -32,7 +32,7 @@ public class SessionsLab {
         mAppContext = appContext;
         mSessionDbManager = new SessionDbManager(appContext);
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-                java.util.Locale.getDefault());
+                CurrentLocale.getCurrentLocale(mAppContext));
         mSessionsList = mSessionDbManager.getAllSessionsFromDatabase();
     }
 
@@ -100,10 +100,6 @@ public class SessionsLab {
         return mIsRunningSessionPlaying;
     }
 
-    public LinkedList<Fall> getFallsOfSession(Session session) {
-        return mSessionDbManager.getFallsFromDatabase(session);
-    }
-
     //Saves (or updates in case it has been already saved) the running session into the database
     public void saveRunningSessionInDatabase() {
         if (mIsRunningSessionAlreadySavedInDatabase) {
@@ -113,13 +109,5 @@ public class SessionsLab {
             mIsRunningSessionAlreadySavedInDatabase = true;
         }
 
-    }
-
-    public void saveFallInDatabase(Fall fall) {
-        mSessionDbManager.saveFall(fall);
-    }
-
-    public void deleteSessionFromDatabase(Session session) {
-        mSessionDbManager.deleteSession(session);
     }
 }

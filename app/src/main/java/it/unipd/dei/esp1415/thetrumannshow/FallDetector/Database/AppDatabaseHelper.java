@@ -68,17 +68,8 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
 
     private static AppDatabaseHelper mDBHelper;
 
-
-    public static AppDatabaseHelper getInstance(Context ctx) {
-
-        if (mDBHelper == null) { //this will ensure no multiple instances out there.
-            mDBHelper = new AppDatabaseHelper(ctx.getApplicationContext());
-        }
-        return mDBHelper;
-    }
-
     //constructor
-    private AppDatabaseHelper(Context context) {
+    public AppDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
