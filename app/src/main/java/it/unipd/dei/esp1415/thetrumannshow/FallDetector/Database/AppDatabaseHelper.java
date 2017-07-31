@@ -32,7 +32,6 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
     public static final String X_ACCELERATION = "x_acceleration";
     public static final String Y_ACCELERATION = "y_acceleration";
     public static final String Z_ACCELERATION = "z_acceleration";
-    public static final String EMAIL_SENT = "email_sent";
     public static final String OWNER_SESSION = "session_id";
 
     //creation of the session table
@@ -55,7 +54,6 @@ public class AppDatabaseHelper extends SQLiteOpenHelper{
             + X_ACCELERATION + " text, "
             + Y_ACCELERATION + " text, "
             + Z_ACCELERATION + " text, "
-            + EMAIL_SENT + " integer, "
             + OWNER_SESSION + " text, "
             + "FOREIGN KEY ("
             + OWNER_SESSION + ") REFERENCES "

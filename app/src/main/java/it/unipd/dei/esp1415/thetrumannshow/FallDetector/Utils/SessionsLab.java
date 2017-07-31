@@ -19,7 +19,6 @@ public class SessionsLab {
     private static boolean mHasRunningSession = false;
     private static boolean mIsRunningSessionPlaying = false;
     private static boolean mIsRunningSessionAlreadySavedInDatabase = false;
-    private static SimpleDateFormat mDateFormatter;
     private static SessionsLab sSessionsLab;
     private SessionDbManager mSessionDbManager;
     private Context mAppContext;
@@ -31,8 +30,6 @@ public class SessionsLab {
     private SessionsLab(Context appContext) {
         mAppContext = appContext;
         mSessionDbManager = new SessionDbManager(appContext);
-        mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-                CurrentLocale.getCurrentLocale(mAppContext));
         mSessionsList = mSessionDbManager.getAllSessionsFromDatabase();
     }
 
@@ -59,10 +56,6 @@ public class SessionsLab {
 
     public Session getRunningSession() {
         return mRunningSession;
-    }
-
-    public SimpleDateFormat getDateFormat() {
-        return mDateFormatter;
     }
 
     //Resumes the running session when paused, and accordingly changes the ongoing notification (if

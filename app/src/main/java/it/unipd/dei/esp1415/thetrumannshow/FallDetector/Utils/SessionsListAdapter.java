@@ -70,7 +70,8 @@ public class SessionsListAdapter extends RecyclerView.Adapter<SessionsListAdapte
     public SessionsListAdapter(ArrayList<Session> myDataset, Context appContext) {
         mDataset = myDataset;
         mAppContext = appContext;
-        mDateFormatter = SessionsLab.get(appContext).getDateFormat();
+        mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
+                CurrentLocale.getCurrentLocale(appContext));
     }
 
     @Override

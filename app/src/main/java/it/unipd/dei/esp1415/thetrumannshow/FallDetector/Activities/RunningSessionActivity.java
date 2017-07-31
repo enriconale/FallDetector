@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.CurrentLocale;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.FallObjectCreator;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
@@ -73,7 +74,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
 
         mSession = SessionsLab.get(getApplicationContext()).getRunningSession();
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy\nHH:mm",
-                java.util.Locale.getDefault());
+                CurrentLocale.getCurrentLocale(getApplicationContext()));
 
         mSessionName = (TextView)findViewById(R.id.session_name);
         mEditSessionNameEditText = (EditText)findViewById(R.id.edit_session_name);
@@ -238,7 +239,7 @@ public class RunningSessionActivity extends AppCompatActivity implements SensorE
     private void createListOfFalls(RelativeLayout fallsListContainer, LinearLayout itemsWrapper,
                                    RelativeLayout.LayoutParams lp) {
         SimpleDateFormat fallItemDateFormatter = new SimpleDateFormat("HH:mm",
-                java.util.Locale.getDefault());
+                CurrentLocale.getCurrentLocale(getApplicationContext()));
         for (int i = 0; i < mSession.getFalls().size(); i++) {
             final int fallPositionInList = i;
             final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,

@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.CurrentLocale;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsListAdapter;
 
@@ -52,14 +53,14 @@ public class FallDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fall_details);
 
         mDateFormatter = new SimpleDateFormat("dd/MM/yyyy\nHH:mm",
-                java.util.Locale.getDefault());
+                CurrentLocale.getCurrentLocale(getApplicationContext()));
 
         int mSessionPositionInList = getIntent().getExtras().getInt(
                 SessionsListAdapter.SESSION_DETAILS);
         mSession = SessionsLab.get(getApplicationContext()).getSessions().get(mSessionPositionInList);
-        int mFallPostitionInList = getIntent().getExtras().getInt(SessionDetailsActivity
+        int mFallPositionInList = getIntent().getExtras().getInt(SessionDetailsActivity
                 .FALL_DETAILS);
-        mFall = mSession.getFalls().get(mFallPostitionInList);
+        mFall = mSession.getFalls().get(mFallPositionInList);
         mSessionIcon = (ImageView)findViewById(R.id.session_icon);
         mSessionIcon.setImageResource(R.mipmap.recording_icon);
         if (SessionsLab.get(getApplicationContext()).hasRunningSession()) {

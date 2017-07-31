@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -18,6 +17,7 @@ import java.util.UUID;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.CurrentLocale;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 
 /**
@@ -29,19 +29,22 @@ public class FallDbManager {
     private SQLiteDatabase mDatabase;
     private ContentValues mContentValues;
     private Context mAppContext;
+    private SimpleDateFormat mDateFormatter;
 
 
     public FallDbManager(Context ctx) {
         mAppContext = ctx;
         mContentValues = new ContentValues();
         mDbHelper = new AppDatabaseHelper(ctx);
+        mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
+                CurrentLocale.getCurrentLocale(mAppContext));
     }
 
     public void saveFall(Fall fall) {
         SessionsLab.get(mAppContext).saveRunningSessionInDatabase();
         openDatabaseConnection();
         mContentValues.put(AppDatabaseHelper.FALL_NAME, fall.getName());
-        mContentValues.put(AppDatabaseHelper.FALL_DATE, SessionsLab.get(mAppContext).getDateFormat().format(fall
+        mContentValues.put(AppDatabaseHelper.FALL_DATE, mDateFormatter.format(fall
                 .getDate()));
 
         if (fall.getLatitude() != null) {
@@ -60,13 +63,6 @@ public class FallDbManager {
         mContentValues.put(AppDatabaseHelper.X_ACCELERATION, formatFloatArray(fall.getXAcceleration()));
         mContentValues.put(AppDatabaseHelper.Y_ACCELERATION, formatFloatArray(fall.getYAcceleration()));
         mContentValues.put(AppDatabaseHelper.Z_ACCELERATION, formatFloatArray(fall.getZAcceleration()));
-
-        if (fall.isEmailSent()) {
-            mContentValues.put(AppDatabaseHelper.EMAIL_SENT, 1);
-        } else {
-            mContentValues.put(AppDatabaseHelper.EMAIL_SENT, 0);
-        }
-
         mContentValues.put(AppDatabaseHelper.OWNER_SESSION, SessionsLab.get(mAppContext).getRunningSession()
                 .getUUID().toString());
 
@@ -107,9 +103,7 @@ public class FallDbManager {
 
         Date fallDate;
         try {
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-                    java.util.Locale.getDefault());
-            fallDate = dateFormatter.parse(cursor.getString
+            fallDate = mDateFormatter.parse(cursor.getString
                     (cursor.getColumnIndex(AppDatabaseHelper.FALL_DATE)));
         } catch (ParseException e) {
             fallDate = new Date();
@@ -129,25 +123,28 @@ public class FallDbManager {
         float[] zAccelerationData = parseAccelerationDataFromString(cursor.getString(cursor
                 .getColumnIndex(AppDatabaseHelper.Z_ACCELERATION)));
 
-        boolean isEmailSent = false;
-        switch (cursor.getInt(cursor.getColumnIndex(AppDatabaseHelper.EMAIL_SENT))) {
-            case 0:
-                break;
-            case 1:
-                isEmailSent = true;
-                break;
-        }
-
         Fall resultFall;
         if (fallLatitude == 0) {
-            resultFall = new Fall(fallName, fallDate, null, null, xAccelerationData,
-                    yAccelerationData, zAccelerationData);
+            resultFall = new Fall.Builder()
+                    .fallName(fallName)
+                    .date(fallDate)
+                    .latitude(null)
+                    .longitude(null)
+                    .xAcceleration(xAccelerationData)
+                    .yAcceleration(yAccelerationData)
+                    .zAcceleration(zAccelerationData)
+                    .build();
         } else {
-            resultFall = new Fall(fallName, fallDate, fallLatitude, fallLongitude, xAccelerationData,
-                    yAccelerationData, zAccelerationData);
+            resultFall = new Fall.Builder()
+                    .fallName(fallName)
+                    .date(fallDate)
+                    .latitude(fallLatitude)
+                    .longitude(fallLongitude)
+                    .xAcceleration(xAccelerationData)
+                    .yAcceleration(yAccelerationData)
+                    .zAcceleration(zAccelerationData)
+                    .build();
         }
-
-        resultFall.setIsEmailSent(isEmailSent);
 
         return resultFall;
     }

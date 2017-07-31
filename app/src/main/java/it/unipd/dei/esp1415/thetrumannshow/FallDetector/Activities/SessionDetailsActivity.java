@@ -75,7 +75,7 @@ public class SessionDetailsActivity extends AppCompatActivity implements DeleteS
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         SimpleDateFormat fallItemDateFormatter = new SimpleDateFormat("HH:mm",
-                java.util.Locale.getDefault());
+                CurrentLocale.getCurrentLocale(getApplicationContext()));
         for (int i = 0; i < listOfFalls.size(); i++) {
             final int fallPositionInList = i;
             final View singleFallListItem = getLayoutInflater().inflate(R.layout.single_fall_list_item,

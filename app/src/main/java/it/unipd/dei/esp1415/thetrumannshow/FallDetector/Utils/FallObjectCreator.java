@@ -71,8 +71,16 @@ public class FallObjectCreator implements Runnable {
         float[] xArr = xBuffer.readRange(mStart, mEnd);
         float[] yArr = yBuffer.readRange(mStart, mEnd);
         float[] zArr = zBuffer.readRange(mStart, mEnd);
-        return new Fall("Fall #" + mFallNameIndex, new java.util.Date(), null, null, xArr, yArr,
-                zArr);
+
+        return new Fall.Builder()
+                .fallName("Fall #" + mFallNameIndex)
+                .date(new java.util.Date())
+                .latitude(null)
+                .longitude(null)
+                .xAcceleration(xArr)
+                .yAcceleration(yArr)
+                .zAcceleration(zArr)
+                .build();
     }
 
     void locationFixed() {

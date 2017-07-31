@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Fall;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.IconColor;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.R;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Objects.Session;
+import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.CurrentLocale;
 import it.unipd.dei.esp1415.thetrumannshow.FallDetector.Utils.SessionsLab;
 
 /**
@@ -30,20 +32,22 @@ public class SessionDbManager {
     private SQLiteDatabase mDatabase;
     private ContentValues mContentValues;
     private Context mAppContext;
+    private SimpleDateFormat mDateFormatter;
 
 
     public SessionDbManager(Context ctx) {
         mAppContext = ctx;
         mContentValues = new ContentValues();
         mDbHelper = new AppDatabaseHelper(ctx);
+        mDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
+                CurrentLocale.getCurrentLocale(mAppContext));
     }
 
     public void saveSession(Session session) {
         openDatabaseConnection();
         mContentValues.put(AppDatabaseHelper.SESSION_ID, session.getUUID().toString());
         mContentValues.put(AppDatabaseHelper.SESSION_NAME, session.getSessionName());
-        mContentValues.put(AppDatabaseHelper.SESSION_DATE, SessionsLab.get(mAppContext).getDateFormat().format
-                (session.getDate()));
+        mContentValues.put(AppDatabaseHelper.SESSION_DATE, mDateFormatter.format(session.getDate()));
         mContentValues.put(AppDatabaseHelper.SESSION_DURATION, session.getDuration());
         mContentValues.put(AppDatabaseHelper.SESSION_ICON_COLOR, session.getIconColorRgbValue());
         mContentValues.put(AppDatabaseHelper.SESSION_NUMBER_OF_FALLS, session.getNumberOfFalls());
@@ -101,7 +105,7 @@ public class SessionDbManager {
         Date sessionDate;
         try {
             SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm",
-                    java.util.Locale.getDefault());
+                    CurrentLocale.getCurrentLocale(mAppContext));
             sessionDate = dateFormatter.parse(cursor.getString
                     (cursor.getColumnIndex(AppDatabaseHelper.SESSION_DATE)));
         } catch (ParseException e) {
