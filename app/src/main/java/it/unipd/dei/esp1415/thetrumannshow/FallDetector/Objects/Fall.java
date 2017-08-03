@@ -64,7 +64,6 @@ public class Fall {
         }
     }
 
-
     public static class Builder {
         private String mFallName;
         private Date mDate;

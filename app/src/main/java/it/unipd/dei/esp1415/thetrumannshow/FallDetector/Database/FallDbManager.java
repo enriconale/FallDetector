@@ -59,13 +59,11 @@ public class FallDbManager {
             mContentValues.put(AppDatabaseHelper.FALL_LONGITUDE, 0);
         }
 
-
         mContentValues.put(AppDatabaseHelper.X_ACCELERATION, formatFloatArray(fall.getXAcceleration()));
         mContentValues.put(AppDatabaseHelper.Y_ACCELERATION, formatFloatArray(fall.getYAcceleration()));
         mContentValues.put(AppDatabaseHelper.Z_ACCELERATION, formatFloatArray(fall.getZAcceleration()));
         mContentValues.put(AppDatabaseHelper.OWNER_SESSION, SessionsLab.get(mAppContext).getRunningSession()
                 .getUUID().toString());
-
 
         try {
             mDatabase.insert(AppDatabaseHelper.FALL_TABLE, null, mContentValues);
@@ -109,9 +107,8 @@ public class FallDbManager {
             fallDate = new Date();
         }
 
-        double fallLatitude = cursor.getDouble(cursor.getColumnIndex(AppDatabaseHelper.FALL_LATITUDE));
-
-        double fallLongitude = cursor.getDouble(cursor.getColumnIndex(AppDatabaseHelper
+        Double fallLatitude = cursor.getDouble(cursor.getColumnIndex(AppDatabaseHelper.FALL_LATITUDE));
+        Double fallLongitude = cursor.getDouble(cursor.getColumnIndex(AppDatabaseHelper
                 .FALL_LONGITUDE));
 
         float[] xAccelerationData = parseAccelerationDataFromString(cursor.getString(cursor
@@ -125,26 +122,19 @@ public class FallDbManager {
 
         Fall resultFall;
         if (fallLatitude == 0) {
-            resultFall = new Fall.Builder()
-                    .fallName(fallName)
-                    .date(fallDate)
-                    .latitude(null)
-                    .longitude(null)
-                    .xAcceleration(xAccelerationData)
-                    .yAcceleration(yAccelerationData)
-                    .zAcceleration(zAccelerationData)
-                    .build();
-        } else {
-            resultFall = new Fall.Builder()
-                    .fallName(fallName)
-                    .date(fallDate)
-                    .latitude(fallLatitude)
-                    .longitude(fallLongitude)
-                    .xAcceleration(xAccelerationData)
-                    .yAcceleration(yAccelerationData)
-                    .zAcceleration(zAccelerationData)
-                    .build();
+            fallLatitude = null;
+            fallLongitude = null;
         }
+
+        resultFall = new Fall.Builder()
+                .fallName(fallName)
+                .date(fallDate)
+                .latitude(fallLatitude)
+                .longitude(fallLongitude)
+                .xAcceleration(xAccelerationData)
+                .yAcceleration(yAccelerationData)
+                .zAcceleration(zAccelerationData)
+                .build();
 
         return resultFall;
     }
